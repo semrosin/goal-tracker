@@ -68,3 +68,28 @@ test('removes a transaction by id', () => {
 
   expect(next.transactions).toEqual([]);
 });
+
+test('does not remove a deposit when it would leave a withdrawal without funds', () => {
+  const state: RootState = { goals: [goal], transactions: [deposit(100), withdrawal(100)] };
+
+  const next = rootReducer(state, transactionsActions.transactionRemoved('deposit-100'));
+
+  expect(next.transactions).toEqual([deposit(100), withdrawal(100)]);
+});
+
+test('rejects a forged transaction creation with an invalid type', () => {
+  const forgedAction = {
+    type: transactionsActions.transactionCreated.type,
+    payload: { ...deposit(1), type: 'invalid' },
+  };
+
+  const next = rootReducer({ goals: [goal], transactions: [] }, forgedAction);
+
+  expect(next.transactions).toEqual([]);
+});
+
+test('rejects a transaction creation action without a payload', () => {
+  const next = rootReducer({ goals: [goal], transactions: [] }, { type: transactionsActions.transactionCreated.type });
+
+  expect(next.transactions).toEqual([]);
+});

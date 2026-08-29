@@ -65,9 +65,13 @@ const isValidState = (value: unknown): value is RootState => {
   });
 };
 
-export const loadPersistedState = (): RootState | undefined =>
-  readJson(STORAGE_KEY, isValidState) ?? undefined;
+export const loadPersistedState = (): RootState | undefined => {
+  const persistedState = readJson(STORAGE_KEY, isValidState);
+  if (persistedState === null) return undefined;
+
+  return { goals: persistedState.goals, transactions: persistedState.transactions };
+};
 
 export const savePersistedState = (state: RootState): void => {
-  writeJson(STORAGE_KEY, state);
+  writeJson(STORAGE_KEY, { goals: state.goals, transactions: state.transactions });
 };

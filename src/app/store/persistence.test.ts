@@ -51,3 +51,15 @@ test('persists the complete normalized state', () => {
 
   expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null')).toEqual(validState);
 });
+
+test('normalizes a persisted snapshot that contains a forbidden saved amount', () => {
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...validState, savedAmount: 500 }));
+
+  expect(loadPersistedState()).toEqual(validState);
+});
+
+test('serializes only goals and transactions when passed an object with extra properties', () => {
+  savePersistedState({ ...validState, savedAmount: 500 } as RootState);
+
+  expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null')).toEqual(validState);
+});
