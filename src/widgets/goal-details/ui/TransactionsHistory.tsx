@@ -1,3 +1,5 @@
+import { shallowEqual } from 'react-redux';
+
 import { useAppSelector } from '../../../app/store/hooks';
 import { DeleteTransactionButton } from '../../../features/delete-transaction/ui/DeleteTransactionButton';
 import { selectTransactionsForGoal } from '../../../entities/transaction/model/selectors';
@@ -16,10 +18,12 @@ const sortNewestFirst = (left: Transaction, right: Transaction): number =>
   right.id.localeCompare(left.id);
 
 export const TransactionsHistory = ({ goalId }: TransactionsHistoryProps) => {
-  const transactions = useAppSelector((state) =>
-    selectTransactionsForGoal(state.transactions, goalId)
-      .slice()
-      .sort(sortNewestFirst)
+  const transactions = useAppSelector(
+    (state) =>
+      selectTransactionsForGoal(state.transactions, goalId)
+        .slice()
+        .sort(sortNewestFirst),
+    shallowEqual
   );
   return (
     <section

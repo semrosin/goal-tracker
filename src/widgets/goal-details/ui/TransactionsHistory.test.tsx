@@ -12,6 +12,28 @@ const goal = {
 };
 
 describe('TransactionsHistory', () => {
+  it('keeps its selected ledger stable for an unchanged store', () => {
+    const warning = jest
+      .spyOn(console, 'warn')
+      .mockImplementation(() => undefined);
+
+    renderWithStore(<TransactionsHistory goalId="g1" />, {
+      goals: [goal],
+      transactions: [
+        {
+          id: 'deposit',
+          goalId: 'g1',
+          type: 'deposit',
+          amount: 100,
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      ],
+    });
+
+    expect(warning).not.toHaveBeenCalled();
+    warning.mockRestore();
+  });
+
   it('shows only goal transactions newest first with id as a deterministic tie-breaker', () => {
     renderWithStore(<TransactionsHistory goalId="g1" />, {
       goals: [goal],
