@@ -1,0 +1,22 @@
+.page {
+  margin: 0 auto;
+  max-width: 72rem;
+  padding: 2rem 1rem;
+}
+
+.header h1 {
+  color: #172033;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.createTargetSlot {
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 48rem) {
+  .page {
+    padding: 3rem 2rem;
+  }
+}

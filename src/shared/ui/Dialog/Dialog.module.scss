@@ -1,0 +1,46 @@
+.backdrop {
+  align-items: center;
+  background: rgba(17, 29, 51, 0.54);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1rem;
+  position: fixed;
+  z-index: 10;
+}
+
+.dialog {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 48px rgba(17, 29, 51, 0.24);
+  max-height: calc(100vh - 2rem);
+  max-width: 32rem;
+  overflow: auto;
+  padding: 1.25rem;
+  width: 100%;
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.title {
+  color: #172033;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.closeButton {
+  flex: 0 0 auto;
+  font-size: 1.35rem;
+  min-height: 36px;
+  padding: 0.1rem 0.55rem;
+}
+
+.content {
+  color: #394863;
+  margin-top: 1rem;
+}
