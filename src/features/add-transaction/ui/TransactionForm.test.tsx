@@ -1,0 +1,87 @@
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import { renderWithStore } from '../../../app/test/renderWithStore';
+import { TransactionForm } from './TransactionForm';
+
+const goal = {
+  id: 'g1',
+  title: 'Отпуск',
+  targetAmount: 1_000,
+  createdAt: '2026-01-01T00:00:00.000Z',
+};
+
+describe('TransactionForm', () => {
+  it('adds a valid deposit and clears the amount field', async () => {
+    const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
+      goals: [goal],
+      transactions: [],
+    });
+
+    await userEvent.type(screen.getByLabelText('Сумма'), '500');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Добавить операцию' })
+    );
+
+    expect(store.getState().transactions).toHaveLength(1);
+    expect(store.getState().transactions[0]).toMatchObject({
+      goalId: 'g1',
+      type: 'deposit',
+      amount: 500,
+    });
+    expect(screen.getByLabelText('Сумма')).toHaveValue('');
+  });
+
+  it('shows an inline error and does not dispatch an over-balance withdrawal', async () => {
+    const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
+      goals: [goal],
+      transactions: [
+        {
+          id: 't1',
+          goalId: 'g1',
+          type: 'deposit',
+          amount: 100,
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      ],
+    });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Снять' }));
+    await userEvent.type(screen.getByLabelText('Сумма'), '101');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Добавить операцию' })
+    );
+
+    expect(
+      screen.getByText('Нельзя снять больше, чем накоплено')
+    ).toBeInTheDocument();
+    expect(store.getState().transactions).toHaveLength(1);
+    expect(screen.getByLabelText('Сумма')).toHaveValue('101');
+  });
+
+  it('rejects a non-positive whole withdrawal without changing the ledger', async () => {
+    const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
+      goals: [goal],
+      transactions: [
+        {
+          id: 't1',
+          goalId: 'g1',
+          type: 'deposit',
+          amount: 100,
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      ],
+    });
+
+    await userEvent.click(screen.getByRole('button', { name: 'Снять' }));
+    await userEvent.type(screen.getByLabelText('Сумма'), '0');
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Добавить операцию' })
+    );
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Укажите положительную целую сумму'
+    );
+    expect(store.getState().transactions).toHaveLength(1);
+  });
+});

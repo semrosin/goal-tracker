@@ -16,6 +16,17 @@
   font-weight: 700;
 }
 
+.backLink {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+}
+
+.layout {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -25,5 +36,14 @@
 @media (min-width: 48rem) {
   .page {
     padding: 3rem 2rem;
+  }
+
+  .layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .layout > :nth-child(3),
+  .actions {
+    grid-column: 1 / -1;
   }
 }

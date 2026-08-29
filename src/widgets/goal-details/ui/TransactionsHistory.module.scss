@@ -1,0 +1,60 @@
+.panel {
+  background: #ffffff;
+  border: 1px solid #d9e1ef;
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+.panel h2 {
+  color: #172033;
+  font-size: 1.25rem;
+  margin: 0 0 1rem;
+}
+.empty {
+  color: #5c6980;
+  margin: 0;
+}
+.list {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.item {
+  align-items: center;
+  border-top: 1px solid #e6ebf4;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  padding-top: 0.75rem;
+}
+.details {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+.details strong {
+  color: #172033;
+}
+.details span {
+  color: #5c6980;
+  font-size: 0.875rem;
+}
+.deposit {
+  color: #16794a;
+  white-space: nowrap;
+}
+.withdrawal {
+  color: #bd3030;
+  white-space: nowrap;
+}
+@media (max-width: 32rem) {
+  .item {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .item button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
