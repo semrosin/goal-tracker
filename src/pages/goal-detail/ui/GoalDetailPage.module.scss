@@ -16,6 +16,12 @@
   font-weight: 700;
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 @media (min-width: 48rem) {
   .page {
     padding: 3rem 2rem;

@@ -11,12 +11,35 @@
   margin: 0;
 }
 
-.createTargetSlot {
+.header {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.content {
   margin-top: 1.5rem;
+}
+
+.emptyState {
+  color: #56627a;
+  margin: 0;
 }
 
 @media (min-width: 48rem) {
   .page {
     padding: 3rem 2rem;
+  }
+}
+
+@media (max-width: 35rem) {
+  .header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .createButton {
+    width: 100%;
   }
 }
