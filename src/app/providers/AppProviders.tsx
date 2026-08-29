@@ -1,3 +1,6 @@
 import type { PropsWithChildren } from 'react';
+import { Provider } from 'react-redux';
 
-export const AppProviders = ({ children }: PropsWithChildren) => <>{children}</>;
+import { store } from '../store/store';
+
+export const AppProviders = ({ children }: PropsWithChildren) => <Provider store={store}>{children}</Provider>;
