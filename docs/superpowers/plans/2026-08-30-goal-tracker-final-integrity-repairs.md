@@ -25,6 +25,7 @@
 ### Task 1: Canonical ledger aggregate and persistence-safe ordered invariants
 
 **Files:**
+
 - Create: `src/entities/ledger/model/ledger.ts`
 - Create: `src/entities/ledger/model/ledger.test.ts`
 - Modify: `src/app/store/rootReducer.ts`
@@ -36,6 +37,7 @@
 - Modify: `src/entities/transaction/model/transactionSlice.test.ts`
 
 **Interfaces:**
+
 - Consumes: `Goal`, `GoalUpdate`, `Transaction`, `goalsActions/goalsReducer`, `transactionsActions/transactionsReducer`, `isPositiveInteger`, safe storage adapter.
 - Produces: `LedgerState`, `ledgerInitialState`, `ledgerReducer`, `decodeLedgerState(value): LedgerState | undefined`, `serializeLedgerState(state): LedgerState`, and a pure ordered-prefix validator from the entity aggregate. `app/store/rootReducer.ts` remains a compatibility re-export only.
 
@@ -45,13 +47,35 @@ Add literal fixtures and expectations that name the bug:
 
 ```ts
 const validLedger = [
-  { id: 'd1', goalId: 'g1', type: 'deposit', amount: 100, createdAt: '2026-01-01T00:00:00.000Z' },
-  { id: 'w1', goalId: 'g1', type: 'withdrawal', amount: 100, createdAt: '2026-01-01T00:01:00.000Z' },
-  { id: 'd2', goalId: 'g1', type: 'deposit', amount: 100, createdAt: '2026-01-01T00:02:00.000Z' },
+  {
+    id: 'd1',
+    goalId: 'g1',
+    type: 'deposit',
+    amount: 100,
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'w1',
+    goalId: 'g1',
+    type: 'withdrawal',
+    amount: 100,
+    createdAt: '2026-01-01T00:01:00.000Z',
+  },
+  {
+    id: 'd2',
+    goalId: 'g1',
+    type: 'deposit',
+    amount: 100,
+    createdAt: '2026-01-01T00:02:00.000Z',
+  },
 ];
 
-expect(ledgerReducer({ goals: [goal], transactions: validLedger }, transactionsActions.transactionRemoved('d1')))
-  .toEqual({ goals: [goal], transactions: validLedger });
+expect(
+  ledgerReducer(
+    { goals: [goal], transactions: validLedger },
+    transactionsActions.transactionRemoved('d1')
+  )
+).toEqual({ goals: [goal], transactions: validLedger });
 ```
 
 Also test that `[w1, d2]` is rejected by `loadPersistedState`, that dispatch → persistence save → reload preserves the original valid ledger, a per-goal `savedAmount` and an arbitrary transaction property are stripped, duplicate goal IDs/transaction IDs return `undefined`, and saving a polluted state emits only canonical keys.
@@ -74,12 +98,16 @@ Implement entity-layer helpers that create fresh literals:
 export type LedgerState = { goals: Goal[]; transactions: Transaction[] };
 
 export const hasNonNegativeBalancePrefixes = (
-  transactions: readonly Transaction[],
+  transactions: readonly Transaction[]
 ): boolean => {
   const balances = new Map<string, number>();
   for (const transaction of transactions) {
     const previous = balances.get(transaction.goalId) ?? 0;
-    const next = previous + (transaction.type === 'deposit' ? transaction.amount : -transaction.amount);
+    const next =
+      previous +
+      (transaction.type === 'deposit'
+        ? transaction.amount
+        : -transaction.amount);
     if (next < 0) return false;
     balances.set(transaction.goalId, next);
   }
@@ -110,6 +138,7 @@ git commit -m "fix: preserve valid ledger state across persistence"
 ### Task 2: Move Redux boundary downward to satisfy FSD imports
 
 **Files:**
+
 - Create: `src/entities/ledger/model/hooks.ts`
 - Create: `src/entities/ledger/testing/renderWithLedger.tsx`
 - Create: `src/entities/ledger/index.ts`
@@ -121,6 +150,7 @@ git commit -m "fix: preserve valid ledger state across persistence"
 - Create: `src/app/fsdBoundaries.test.ts`
 
 **Interfaces:**
+
 - Consumes: Task 1 `LedgerState`, `ledgerReducer`, ledger initial state; React Redux hooks; Testing Library and `MemoryRouter`.
 - Produces: entity-level `useLedgerDispatch`, `useLedgerSelector`, `renderWithLedger`, and a re-export-compatible app helper for application-layer tests. Lower layers import only `entities/ledger` public APIs.
 
@@ -175,6 +205,7 @@ git commit -m "refactor: move ledger store boundary below app"
 ### Task 3: Explain rejected deletion and complete deletion accessibility
 
 **Files:**
+
 - Modify: `src/features/delete-transaction/ui/DeleteTransactionButton.tsx`
 - Create or modify: `src/features/delete-transaction/ui/DeleteTransactionButton.module.scss`
 - Modify: `src/features/add-transaction/ui/TransactionForm.module.scss` only if shared error styling is not reusable
@@ -183,6 +214,7 @@ git commit -m "refactor: move ledger store boundary below app"
 - Modify: `src/shared/ui/Dialog/Dialog.module.scss`
 
 **Interfaces:**
+
 - Consumes: Task 1 ordered-prefix ledger validator, typed entity ledger selector/dispatch hooks, transaction row data, `formatRubles`, `formatDate`, shared `Dialog` and `Button`.
 - Produces: a rejected-deletion explanation, unique row-specific delete labels, and a 44 × 44px dialog close target without changing deletion semantics.
 
@@ -224,13 +256,13 @@ git commit -m "fix: explain blocked transaction deletion"
 
 ### Spec coverage
 
-| Requirement | Repair task |
-| --- | --- |
-| Ledger withdrawals cannot make balances negative | Task 1 applies one ordered-prefix rule to creation, removal, hydration, and tests. |
-| Safe localStorage malformed-data fallback and no saved amount | Task 1 canonical decoder/encoder strips entity extras and rejects duplicate/invalid snapshots. |
-| FSD direction | Task 2 removes lower-to-higher runtime and test imports and locks it with a test. |
-| Confirmed deletion and accessible Russian UX | Task 3 keeps confirmation, explains rejection, distinguishes delete buttons, and fixes touch size. |
-| Quality gates | Each task uses focused RED/GREEN; Task 3 reruns full test/lint/format/build/diff checks. |
+| Requirement                                                   | Repair task                                                                                        |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Ledger withdrawals cannot make balances negative              | Task 1 applies one ordered-prefix rule to creation, removal, hydration, and tests.                 |
+| Safe localStorage malformed-data fallback and no saved amount | Task 1 canonical decoder/encoder strips entity extras and rejects duplicate/invalid snapshots.     |
+| FSD direction                                                 | Task 2 removes lower-to-higher runtime and test imports and locks it with a test.                  |
+| Confirmed deletion and accessible Russian UX                  | Task 3 keeps confirmation, explains rejection, distinguishes delete buttons, and fixes touch size. |
+| Quality gates                                                 | Each task uses focused RED/GREEN; Task 3 reruns full test/lint/format/build/diff checks.           |
 
 ### Placeholder scan
 
