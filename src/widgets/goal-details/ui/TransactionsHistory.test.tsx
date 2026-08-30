@@ -11,6 +11,13 @@ const goal = {
   createdAt: '2026-01-01T00:00:00.000Z',
 };
 
+const otherGoal = {
+  id: 'g2',
+  title: 'Покупка',
+  targetAmount: 1_000,
+  createdAt: '2026-01-01T00:00:00.000Z',
+};
+
 describe('TransactionsHistory', () => {
   it('keeps its selected ledger stable for an unchanged store', () => {
     const warning = jest
@@ -36,7 +43,7 @@ describe('TransactionsHistory', () => {
 
   it('shows only goal transactions newest first with id as a deterministic tie-breaker', () => {
     renderWithStore(<TransactionsHistory goalId="g1" />, {
-      goals: [goal],
+      goals: [goal, otherGoal],
       transactions: [
         {
           id: 'a',

@@ -1,12 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import {
+  decodeLedgerState,
+  ledgerInitialState,
+  type LedgerState,
+} from '../../entities/ledger/model/ledger';
 import { loadPersistedState, savePersistedState } from './persistence';
-import { rootReducer, type RootState as RootReducerState } from './rootReducer';
+import { rootReducer } from './rootReducer';
 
-export const createAppStore = (preloadedState?: RootReducerState) => {
+export const createAppStore = (preloadedState?: LedgerState) => {
+  const canonicalPreloadedState =
+    preloadedState === undefined
+      ? loadPersistedState()
+      : (decodeLedgerState(preloadedState) ?? ledgerInitialState);
+
   const appStore = configureStore({
     reducer: rootReducer,
-    preloadedState: preloadedState ?? loadPersistedState(),
+    preloadedState: canonicalPreloadedState,
   });
 
   appStore.subscribe(() => {

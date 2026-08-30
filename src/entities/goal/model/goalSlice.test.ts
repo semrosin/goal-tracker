@@ -1,4 +1,4 @@
-import { rootReducer, type RootState } from '../../../app/store/rootReducer';
+import { ledgerReducer, type LedgerState } from '../../ledger/model/ledger';
 import { calculateProgress } from './selectors';
 import { goalsActions } from './goalSlice';
 import type { Goal } from './types';
@@ -24,24 +24,24 @@ test('clamps progress at 100 percent', () => {
 });
 
 test('removes a goal and all of its transactions', () => {
-  const state: RootState = { goals: [goal], transactions: [deposit(100)] };
+  const state: LedgerState = { goals: [goal], transactions: [deposit(100)] };
 
-  const next = rootReducer(state, goalsActions.goalRemoved('g1'));
+  const next = ledgerReducer(state, goalsActions.goalRemoved('g1'));
 
   expect(next.goals).toEqual([]);
   expect(next.transactions).toEqual([]);
 });
 
 test('creates a goal in the entity slice', () => {
-  const next = rootReducer(undefined, goalsActions.goalCreated(goal));
+  const next = ledgerReducer(undefined, goalsActions.goalCreated(goal));
 
   expect(next.goals).toEqual([goal]);
 });
 
 test('updates an existing goal without changing its identity', () => {
-  const state: RootState = { goals: [goal], transactions: [] };
+  const state: LedgerState = { goals: [goal], transactions: [] };
 
-  const next = rootReducer(
+  const next = ledgerReducer(
     state,
     goalsActions.goalUpdated({
       id: 'g1',
@@ -60,7 +60,10 @@ test.each([0, -1, 1.5, Infinity])(
   (targetAmount) => {
     const invalidGoal = { ...goal, targetAmount } as Goal;
 
-    const next = rootReducer(undefined, goalsActions.goalCreated(invalidGoal));
+    const next = ledgerReducer(
+      undefined,
+      goalsActions.goalCreated(invalidGoal)
+    );
 
     expect(next.goals).toEqual([]);
   }
@@ -69,9 +72,9 @@ test.each([0, -1, 1.5, Infinity])(
 test.each([0, -1, 1.5, Infinity])(
   'rejects a directly dispatched goal update with target amount %p',
   (targetAmount) => {
-    const state: RootState = { goals: [goal], transactions: [] };
+    const state: LedgerState = { goals: [goal], transactions: [] };
 
-    const next = rootReducer(
+    const next = ledgerReducer(
       state,
       goalsActions.goalUpdated({ id: 'g1', title: 'Поездка', targetAmount })
     );
@@ -81,9 +84,9 @@ test.each([0, -1, 1.5, Infinity])(
 );
 
 test('rejects a directly dispatched goal update with an empty title', () => {
-  const state: RootState = { goals: [goal], transactions: [] };
+  const state: LedgerState = { goals: [goal], transactions: [] };
 
-  const next = rootReducer(
+  const next = ledgerReducer(
     state,
     goalsActions.goalUpdated({ id: 'g1', title: ' ', targetAmount: 2_000 })
   );

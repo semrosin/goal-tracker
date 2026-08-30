@@ -1,4 +1,4 @@
-import { rootReducer, type RootState } from '../../../app/store/rootReducer';
+import { ledgerReducer, type LedgerState } from '../../ledger/model/ledger';
 import { calculateBalance } from './selectors';
 import { transactionsActions } from './transactionSlice';
 import type { Transaction } from './types';
@@ -32,9 +32,9 @@ test('derives a balance from the transaction ledger', () => {
 });
 
 test('does not add a withdrawal larger than the current balance', () => {
-  const state: RootState = { goals: [goal], transactions: [deposit(500)] };
+  const state: LedgerState = { goals: [goal], transactions: [deposit(500)] };
 
-  const next = rootReducer(
+  const next = ledgerReducer(
     state,
     transactionsActions.transactionCreated(withdrawal(600))
   );
@@ -45,9 +45,9 @@ test('does not add a withdrawal larger than the current balance', () => {
 test.each([0, -1, 1.5])(
   'does not add a transaction with invalid amount %p',
   (amount) => {
-    const state: RootState = { goals: [goal], transactions: [] };
+    const state: LedgerState = { goals: [goal], transactions: [] };
 
-    const next = rootReducer(
+    const next = ledgerReducer(
       state,
       transactionsActions.transactionCreated(deposit(amount))
     );
@@ -57,7 +57,7 @@ test.each([0, -1, 1.5])(
 );
 
 test('does not add a transaction for a missing goal', () => {
-  const next = rootReducer(
+  const next = ledgerReducer(
     undefined,
     transactionsActions.transactionCreated(deposit(100))
   );
@@ -66,9 +66,9 @@ test('does not add a transaction for a missing goal', () => {
 });
 
 test('adds a valid withdrawal equal to the balance', () => {
-  const state: RootState = { goals: [goal], transactions: [deposit(500)] };
+  const state: LedgerState = { goals: [goal], transactions: [deposit(500)] };
 
-  const next = rootReducer(
+  const next = ledgerReducer(
     state,
     transactionsActions.transactionCreated(withdrawal(500))
   );
@@ -77,9 +77,9 @@ test('adds a valid withdrawal equal to the balance', () => {
 });
 
 test('removes a transaction by id', () => {
-  const state: RootState = { goals: [goal], transactions: [deposit(100)] };
+  const state: LedgerState = { goals: [goal], transactions: [deposit(100)] };
 
-  const next = rootReducer(
+  const next = ledgerReducer(
     state,
     transactionsActions.transactionRemoved('deposit-100')
   );
@@ -88,12 +88,12 @@ test('removes a transaction by id', () => {
 });
 
 test('does not remove a deposit when it would leave a withdrawal without funds', () => {
-  const state: RootState = {
+  const state: LedgerState = {
     goals: [goal],
     transactions: [deposit(100), withdrawal(100)],
   };
 
-  const next = rootReducer(
+  const next = ledgerReducer(
     state,
     transactionsActions.transactionRemoved('deposit-100')
   );
@@ -107,13 +107,13 @@ test('rejects a forged transaction creation with an invalid type', () => {
     payload: { ...deposit(1), type: 'invalid' },
   };
 
-  const next = rootReducer({ goals: [goal], transactions: [] }, forgedAction);
+  const next = ledgerReducer({ goals: [goal], transactions: [] }, forgedAction);
 
   expect(next.transactions).toEqual([]);
 });
 
 test('rejects a transaction creation action without a payload', () => {
-  const next = rootReducer(
+  const next = ledgerReducer(
     { goals: [goal], transactions: [] },
     { type: transactionsActions.transactionCreated.type }
   );
