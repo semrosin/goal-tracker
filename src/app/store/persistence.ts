@@ -1,6 +1,9 @@
 import type { Goal } from '../../entities/goal/model/types';
 import { calculateBalance } from '../../entities/transaction/model/selectors';
-import type { Transaction, TransactionType } from '../../entities/transaction/model/types';
+import type {
+  Transaction,
+  TransactionType,
+} from '../../entities/transaction/model/types';
 import { isPositiveInteger } from '../../shared/lib/validation';
 import { readJson, writeJson } from '../../shared/lib/storage/safeStorage';
 import type { RootState } from './rootReducer';
@@ -52,7 +55,8 @@ const isValidState = (value: unknown): value is RootState => {
   if (typeof value !== 'object' || value === null) return false;
 
   const candidate = value as Record<string, unknown>;
-  if (!Array.isArray(candidate.goals) || !Array.isArray(candidate.transactions)) return false;
+  if (!Array.isArray(candidate.goals) || !Array.isArray(candidate.transactions))
+    return false;
   const goals = candidate.goals as Goal[];
   const transactions = candidate.transactions as Transaction[];
   if (!goals.every(isGoal) || !transactions.every(isTransaction)) return false;
@@ -61,7 +65,10 @@ const isValidState = (value: unknown): value is RootState => {
     const goalExists = goals.some((goal) => goal.id === transaction.goalId);
     const priorTransactions = transactions.slice(0, index) as Transaction[];
     const balance = calculateBalance(transaction.goalId, priorTransactions);
-    return goalExists && (transaction.type === 'deposit' || transaction.amount <= balance);
+    return (
+      goalExists &&
+      (transaction.type === 'deposit' || transaction.amount <= balance)
+    );
   });
 };
 
@@ -69,9 +76,15 @@ export const loadPersistedState = (): RootState | undefined => {
   const persistedState = readJson(STORAGE_KEY, isValidState);
   if (persistedState === null) return undefined;
 
-  return { goals: persistedState.goals, transactions: persistedState.transactions };
+  return {
+    goals: persistedState.goals,
+    transactions: persistedState.transactions,
+  };
 };
 
 export const savePersistedState = (state: RootState): void => {
-  writeJson(STORAGE_KEY, { goals: state.goals, transactions: state.transactions });
+  writeJson(STORAGE_KEY, {
+    goals: state.goals,
+    transactions: state.transactions,
+  });
 };

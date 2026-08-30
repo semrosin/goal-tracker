@@ -6,7 +6,10 @@ import { MemoryRouter } from 'react-router';
 import { rootInitialState, type RootState } from '../store/rootReducer';
 import { createAppStore } from '../store/store';
 
-export const renderWithStore = (ui: ReactElement, preloadedState: RootState = rootInitialState) => {
+export const renderWithStore = (
+  ui: ReactElement,
+  preloadedState: RootState = rootInitialState
+) => {
   const store = createAppStore(preloadedState);
 
   return {
@@ -14,7 +17,7 @@ export const renderWithStore = (ui: ReactElement, preloadedState: RootState = ro
     ...render(
       <Provider store={store}>
         <MemoryRouter>{ui}</MemoryRouter>
-      </Provider>,
+      </Provider>
     ),
   };
 };

@@ -10,7 +10,10 @@ const clampProgress = (value: number): number => {
   return Math.max(0, Math.min(100, value));
 };
 
-export const ProgressBar = ({ label = 'Прогресс цели', value }: ProgressBarProps) => {
+export const ProgressBar = ({
+  label = 'Прогресс цели',
+  value,
+}: ProgressBarProps) => {
   const progress = clampProgress(value);
 
   return (

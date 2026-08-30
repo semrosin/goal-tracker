@@ -21,7 +21,11 @@ type FormErrors = {
   targetAmount?: string;
 };
 
-export const EditGoalDialog = ({ goal, isOpen, onClose }: EditGoalDialogProps) => {
+export const EditGoalDialog = ({
+  goal,
+  isOpen,
+  onClose,
+}: EditGoalDialogProps) => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState(goal.title);
   const [targetAmount, setTargetAmount] = useState(String(goal.targetAmount));
@@ -42,15 +46,26 @@ export const EditGoalDialog = ({ goal, isOpen, onClose }: EditGoalDialogProps) =
     const amount = Number(targetAmount);
     const nextErrors: FormErrors = {
       title: normalizedTitle.length === 0 ? 'Введите название цели' : undefined,
-      targetAmount: isPositiveInteger(amount) ? undefined : 'Укажите положительную целую сумму',
+      targetAmount: isPositiveInteger(amount)
+        ? undefined
+        : 'Укажите положительную целую сумму',
     };
 
-    if (nextErrors.title !== undefined || nextErrors.targetAmount !== undefined) {
+    if (
+      nextErrors.title !== undefined ||
+      nextErrors.targetAmount !== undefined
+    ) {
       setErrors(nextErrors);
       return;
     }
 
-    dispatch(goalsActions.goalUpdated({ id: goal.id, title: normalizedTitle, targetAmount: amount }));
+    dispatch(
+      goalsActions.goalUpdated({
+        id: goal.id,
+        title: normalizedTitle,
+        targetAmount: amount,
+      })
+    );
     onClose();
   };
 

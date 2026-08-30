@@ -9,7 +9,10 @@
   justify-content: center;
   min-height: 44px;
   padding: 0.65rem 1rem;
-  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
 }
 
 .button:focus-visible {

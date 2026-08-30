@@ -8,7 +8,7 @@ describe('Dialog', () => {
     render(
       <Dialog isOpen title="Удалить цель" onClose={onClose}>
         Это действие нельзя отменить.
-      </Dialog>,
+      </Dialog>
     );
 
     fireEvent.keyDown(document, { key: 'Escape' });
@@ -20,9 +20,11 @@ describe('Dialog', () => {
     render(
       <Dialog isOpen title="Удалить цель" onClose={jest.fn()}>
         Это действие нельзя отменить.
-      </Dialog>,
+      </Dialog>
     );
 
-    expect(screen.getByRole('dialog', { name: 'Удалить цель' })).toHaveAttribute('aria-modal', 'true');
+    expect(
+      screen.getByRole('dialog', { name: 'Удалить цель' })
+    ).toHaveAttribute('aria-modal', 'true');
   });
 });

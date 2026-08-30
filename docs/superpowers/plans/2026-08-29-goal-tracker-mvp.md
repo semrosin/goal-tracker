@@ -102,29 +102,35 @@ export type RootState = {
 ```ts
 export const calculateBalance = (
   goalId: string,
-  transactions: Transaction[],
+  transactions: Transaction[]
 ): number =>
   transactions
     .filter((transaction) => transaction.goalId === goalId)
     .reduce(
-      (total, transaction) => total + (transaction.type === 'deposit' ? transaction.amount : -transaction.amount),
-      0,
+      (total, transaction) =>
+        total +
+        (transaction.type === 'deposit'
+          ? transaction.amount
+          : -transaction.amount),
+      0
     );
 
 export const calculateProgress = (
   balance: number,
-  targetAmount: number,
+  targetAmount: number
 ): number => Math.max(0, Math.min(100, (balance / targetAmount) * 100));
 ```
 
 ## Task 1: Bootstrap dependencies, typed application shell, and safe storage
 
 **Files:**
+
 - Modify: `package.json`, `package-lock.json`, `tsconfig.json`, `public/index.html`
 - Delete: `src/index.js`, `src/App.tsx`, `src/App.css`, `src/index.css`
 - Create: `src/index.tsx`, `src/setupTests.ts`, `src/app/App.tsx`, `src/app/providers/AppProviders.tsx`, `src/app/styles/global.scss`, `src/shared/lib/storage/safeStorage.ts`, `src/shared/lib/storage/safeStorage.test.ts`
 
 **Interfaces:**
+
 - Produces `readJson<T>(key, isValid): T | null` and `writeJson<T>(key, value): boolean`.
 - Creates the React/SCSS/TypeScript entry point consumed by every later task.
 
@@ -145,7 +151,13 @@ Create `src/shared/lib/storage/safeStorage.test.ts` with tests for missing data,
 ```ts
 it('returns null for malformed JSON', () => {
   localStorage.setItem('goal-tracker-state', '{not-json');
-  expect(readJson('goal-tracker-state', (value): value is { version: number } => typeof value === 'object' && value !== null)).toBeNull();
+  expect(
+    readJson(
+      'goal-tracker-state',
+      (value): value is { version: number } =>
+        typeof value === 'object' && value !== null
+    )
+  ).toBeNull();
 });
 
 it('writes serializable data and reports success', () => {
@@ -169,7 +181,10 @@ Expected: the test fails because `readJson`, `writeJson`, and their module do no
 Implement `safeStorage.ts` so both `getItem`/`setItem` and JSON parsing are wrapped in `try/catch`. Its public API is:
 
 ```ts
-export const readJson = <T>(key: string, isValid: (value: unknown) => value is T): T | null => {
+export const readJson = <T>(
+  key: string,
+  isValid: (value: unknown) => value is T
+): T | null => {
   try {
     const raw = window.localStorage.getItem(key);
     if (raw === null) return null;
@@ -217,6 +232,7 @@ git commit -m "chore: bootstrap typed goal tracker app"
 ## Task 2: Implement domain slices, root ledger guard, and selectors
 
 **Files:**
+
 - Create: `src/entities/goal/model/types.ts`, `src/entities/goal/model/goalSlice.ts`, `src/entities/goal/model/selectors.ts`, `src/entities/goal/model/goalSlice.test.ts`
 - Create: `src/entities/transaction/model/types.ts`, `src/entities/transaction/model/transactionSlice.ts`, `src/entities/transaction/model/selectors.ts`, `src/entities/transaction/model/transactionSlice.test.ts`
 - Create: `src/shared/lib/validation.ts`, `src/shared/lib/id.ts`, `src/shared/lib/date.ts`
@@ -224,6 +240,7 @@ git commit -m "chore: bootstrap typed goal tracker app"
 - Modify: `src/app/providers/AppProviders.tsx`
 
 **Interfaces:**
+
 - Consumes: `readJson`, `writeJson`, and the typed application shell from Task 1.
 - Produces: `goalsActions`, `transactionsActions`, `rootReducer`, `createAppStore`, `store`, `useAppDispatch`, `useAppSelector`, `loadPersistedState`, `savePersistedState`, and all balance/progress selectors.
 
@@ -276,18 +293,27 @@ it('clamps progress at 100 percent', () => {
 
 it('does not add a withdrawal larger than the current balance', () => {
   const state: RootState = { goals: [goal], transactions: [deposit(500)] };
-  const next = rootReducer(state, transactionsActions.transactionCreated(withdrawal(600)));
+  const next = rootReducer(
+    state,
+    transactionsActions.transactionCreated(withdrawal(600))
+  );
   expect(next.transactions).toHaveLength(1);
 });
 
 it('removes a goal and all of its transactions', () => {
-  const next = rootReducer({ goals: [goal], transactions: [deposit(100)] }, goalsActions.goalRemoved('g1'));
+  const next = rootReducer(
+    { goals: [goal], transactions: [deposit(100)] },
+    goalsActions.goalRemoved('g1')
+  );
   expect(next.goals).toEqual([]);
   expect(next.transactions).toEqual([]);
 });
 
 it('falls back to empty state when persisted transaction data is invalid', () => {
-  localStorage.setItem('goal-tracker-state', JSON.stringify({ goals: [], transactions: [{ amount: 1.5 }] }));
+  localStorage.setItem(
+    'goal-tracker-state',
+    JSON.stringify({ goals: [], transactions: [{ amount: 1.5 }] })
+  );
   expect(loadPersistedState()).toBeUndefined();
 });
 ```
@@ -314,8 +340,12 @@ export const calculateBalance = (goalId: string, transactions: Transaction[]) =>
   transactions
     .filter((transaction) => transaction.goalId === goalId)
     .reduce(
-      (total, transaction) => total + (transaction.type === 'deposit' ? transaction.amount : -transaction.amount),
-      0,
+      (total, transaction) =>
+        total +
+        (transaction.type === 'deposit'
+          ? transaction.amount
+          : -transaction.amount),
+      0
     );
 
 export const calculateProgress = (balance: number, targetAmount: number) =>
@@ -333,7 +363,10 @@ export const createId = (prefix: string): string =>
   `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
 export const formatDate = (iso: string): string =>
-  new Intl.DateTimeFormat('ru-RU', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso));
+  new Intl.DateTimeFormat('ru-RU', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  }).format(new Date(iso));
 ```
 
 - [ ] **Step 4: Implement domain persistence, the cross-entity root reducer, and configured store**
@@ -346,7 +379,8 @@ if (transactionsActions.transactionCreated.match(action)) {
   const goalExists = state.goals.some((goal) => goal.id === transaction.goalId);
   const balance = calculateBalance(transaction.goalId, state.transactions);
   if (!goalExists || !isPositiveInteger(transaction.amount)) return state;
-  if (transaction.type === 'withdrawal' && transaction.amount > balance) return state;
+  if (transaction.type === 'withdrawal' && transaction.amount > balance)
+    return state;
 }
 ```
 
@@ -381,6 +415,7 @@ git commit -m "feat: add goal and transaction domain state"
 ## Task 3: Add routing, reusable controls, and page-level states
 
 **Files:**
+
 - Create: `src/app/router/AppRouter.tsx`
 - Create: `src/app/test/renderWithStore.tsx`
 - Create: `src/shared/lib/money.ts`
@@ -394,6 +429,7 @@ git commit -m "feat: add goal and transaction domain state"
 - Modify: `src/app/App.tsx`, `src/app/providers/AppProviders.tsx`
 
 **Interfaces:**
+
 - Consumes: typed Redux hooks and entity selectors from Task 2.
 - Produces: a provider-wrapped two-route shell and shared accessible controls for feature and widget tasks.
 
@@ -402,7 +438,7 @@ The test helper must make later feature tests independent of the production brow
 ```tsx
 export const renderWithStore = (
   ui: React.ReactElement,
-  preloadedState: RootState = rootInitialState,
+  preloadedState: RootState = rootInitialState
 ) => {
   const store = createAppStore(preloadedState);
   return {
@@ -410,7 +446,7 @@ export const renderWithStore = (
     ...render(
       <Provider store={store}>
         <MemoryRouter>{ui}</MemoryRouter>
-      </Provider>,
+      </Provider>
     ),
   };
 };
@@ -424,7 +460,10 @@ Create tests asserting that `formatRubles(123456)` is a Russian-ruble value and 
 expect(formatRubles(123456)).toContain('₽');
 expect(formatRubles(123456)).toMatch(/123(?:\u00a0|\s)456/);
 render(<ProgressBar value={42.5} />);
-expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '42.5');
+expect(screen.getByRole('progressbar')).toHaveAttribute(
+  'aria-valuenow',
+  '42.5'
+);
 ```
 
 - [ ] **Step 2: Run the focused UI utility tests and verify failure**
@@ -476,6 +515,7 @@ git commit -m "feat: add application routing and shared controls"
 ## Task 4: Build the overview and goal-management features
 
 **Files:**
+
 - Create: `src/widgets/goals-list/ui/GoalsList.tsx`, `src/widgets/goals-list/ui/GoalsList.module.scss`
 - Create: `src/features/create-goal/ui/CreateGoalDialog.tsx`, `src/features/create-goal/ui/CreateGoalDialog.module.scss`
 - Create: `src/features/edit-goal/ui/EditGoalDialog.tsx`, `src/features/edit-goal/ui/EditGoalDialog.module.scss`
@@ -484,6 +524,7 @@ git commit -m "feat: add application routing and shared controls"
 - Test: `src/features/create-goal/ui/CreateGoalDialog.test.tsx`, `src/widgets/goals-list/ui/GoalsList.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `goalsActions`, `calculateBalance`, `calculateProgress`, typed hooks, `Dialog`, `Field`, `Button`, `ProgressBar`.
 - Produces: goal creation/edit/delete UI and minimal navigable overview cards.
 
@@ -493,7 +534,9 @@ Cover the key product decisions:
 
 ```tsx
 it('creates a new goal with no transaction', async () => {
-  const { store } = renderWithStore(<CreateGoalDialog isOpen onClose={jest.fn()} />);
+  const { store } = renderWithStore(
+    <CreateGoalDialog isOpen onClose={jest.fn()} />
+  );
   await userEvent.type(screen.getByLabelText('Название'), 'Отпуск');
   await userEvent.type(screen.getByLabelText('Целевая сумма'), '100000');
   await userEvent.click(screen.getByRole('button', { name: 'Создать' }));
@@ -503,7 +546,9 @@ it('creates a new goal with no transaction', async () => {
 
 it('keeps operation controls off an overview card', () => {
   renderWithStore(<GoalsList />);
-  expect(screen.queryByRole('button', { name: /удалить/i })).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: /удалить/i })
+  ).not.toBeInTheDocument();
 });
 ```
 
@@ -564,6 +609,7 @@ git commit -m "feat: add goal overview and management"
 ## Task 5: Build the goal detail, transaction form, and ledger history
 
 **Files:**
+
 - Create: `src/widgets/goal-details/ui/GoalSummary.tsx`, `src/widgets/goal-details/ui/GoalSummary.module.scss`
 - Create: `src/widgets/goal-details/ui/TransactionsHistory.tsx`, `src/widgets/goal-details/ui/TransactionsHistory.module.scss`
 - Create: `src/features/add-transaction/ui/TransactionForm.tsx`, `src/features/add-transaction/ui/TransactionForm.module.scss`
@@ -572,6 +618,7 @@ git commit -m "feat: add goal overview and management"
 - Test: `src/features/add-transaction/ui/TransactionForm.test.tsx`, `src/widgets/goal-details/ui/TransactionsHistory.test.tsx`
 
 **Interfaces:**
+
 - Consumes: goal/transaction actions, selectors, `formatRubles`, `formatDate`, reusable controls, and typed hooks.
 - Produces: the detail flow for current balance, progress, valid transaction creation, chronological history, and confirmed transaction deletion.
 
@@ -582,13 +629,32 @@ Create tests for valid deposits, blocked overspending, and reverse chronological
 ```tsx
 it('shows an inline error and does not dispatch an over-balance withdrawal', async () => {
   const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
-    goals: [{ id: 'g1', title: 'Отпуск', targetAmount: 1000, createdAt: '2026-01-01T00:00:00.000Z' }],
-    transactions: [{ id: 't1', goalId: 'g1', type: 'deposit', amount: 100, createdAt: '2026-01-01T00:00:00.000Z' }],
+    goals: [
+      {
+        id: 'g1',
+        title: 'Отпуск',
+        targetAmount: 1000,
+        createdAt: '2026-01-01T00:00:00.000Z',
+      },
+    ],
+    transactions: [
+      {
+        id: 't1',
+        goalId: 'g1',
+        type: 'deposit',
+        amount: 100,
+        createdAt: '2026-01-01T00:00:00.000Z',
+      },
+    ],
   });
   await userEvent.click(screen.getByRole('button', { name: 'Снять' }));
   await userEvent.type(screen.getByLabelText('Сумма'), '101');
-  await userEvent.click(screen.getByRole('button', { name: 'Добавить операцию' }));
-  expect(screen.getByText('Нельзя снять больше, чем накоплено')).toBeInTheDocument();
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Добавить операцию' })
+  );
+  expect(
+    screen.getByText('Нельзя снять больше, чем накоплено')
+  ).toBeInTheDocument();
   expect(store.getState().transactions).toHaveLength(1);
 });
 ```
@@ -649,10 +715,12 @@ git commit -m "feat: add goal transaction detail flow"
 ## Task 6: Complete regression coverage and manually verify the responsive MVP
 
 **Files:**
+
 - Modify: domain, persistence, shared, feature, widget, and page files only where verification uncovers a concrete defect.
 - Create if needed: `src/app/App.integration.test.tsx` for route-level smoke coverage.
 
 **Interfaces:**
+
 - Consumes: all completed application interfaces.
 - Produces: an independently verified MVP with no behaviour beyond the approved scope.
 
@@ -705,15 +773,15 @@ Commit only if Task 6 changes tracked source or tests; do not create an empty co
 
 ### Spec coverage
 
-| Spec requirement | Plan task |
-| --- | --- |
-| React, TypeScript, Redux Toolkit, SCSS, FSD, router | Tasks 1–3 |
-| Goal CRUD and zero starting balance | Task 4 |
-| Ledger transactions, non-negative balance, progress | Task 2 and Task 5 |
-| Overview and detail routes | Tasks 3–5 |
-| LocalStorage hydration and safe fallback | Tasks 1–2 |
-| Russian ₽ interface, Manrope, responsive layouts | Tasks 1, 3–5 |
-| Delete confirmations and unknown route | Tasks 3–5 |
+| Spec requirement                                          | Plan task            |
+| --------------------------------------------------------- | -------------------- |
+| React, TypeScript, Redux Toolkit, SCSS, FSD, router       | Tasks 1–3            |
+| Goal CRUD and zero starting balance                       | Task 4               |
+| Ledger transactions, non-negative balance, progress       | Task 2 and Task 5    |
+| Overview and detail routes                                | Tasks 3–5            |
+| LocalStorage hydration and safe fallback                  | Tasks 1–2            |
+| Russian ₽ interface, Manrope, responsive layouts          | Tasks 1, 3–5         |
+| Delete confirmations and unknown route                    | Tasks 3–5            |
 | Reducer/selector/persistence tests and final verification | Tasks 1–2 and Task 6 |
 
 ### Placeholder scan

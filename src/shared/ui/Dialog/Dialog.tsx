@@ -33,12 +33,22 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
         if (event.currentTarget === event.target) onClose();
       }}
     >
-      <section aria-labelledby={titleId} aria-modal="true" className={styles.dialog} role="dialog">
+      <section
+        aria-labelledby={titleId}
+        aria-modal="true"
+        className={styles.dialog}
+        role="dialog"
+      >
         <div className={styles.header}>
           <h2 className={styles.title} id={titleId}>
             {title}
           </h2>
-          <Button aria-label="Закрыть" className={styles.closeButton} onClick={onClose} variant="secondary">
+          <Button
+            aria-label="Закрыть"
+            className={styles.closeButton}
+            onClick={onClose}
+            variant="secondary"
+          >
             ×
           </Button>
         </div>

@@ -18,7 +18,12 @@ export const Button = ({
 }: ButtonProps) => (
   <button
     {...props}
-    className={[styles.button, styles[variant], fullWidth ? styles.fullWidth : '', className]
+    className={[
+      styles.button,
+      styles[variant],
+      fullWidth ? styles.fullWidth : '',
+      className,
+    ]
       .filter(Boolean)
       .join(' ')}
     type={type}

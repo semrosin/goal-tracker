@@ -7,9 +7,12 @@ describe('Button', () => {
     render(
       <form>
         <Button>Сохранить</Button>
-      </form>,
+      </form>
     );
 
-    expect(screen.getByRole('button', { name: 'Сохранить' })).toHaveAttribute('type', 'button');
+    expect(screen.getByRole('button', { name: 'Сохранить' })).toHaveAttribute(
+      'type',
+      'button'
+    );
   });
 });

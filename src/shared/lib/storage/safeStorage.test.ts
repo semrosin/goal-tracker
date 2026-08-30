@@ -2,7 +2,10 @@ import { readJson, writeJson } from './safeStorage';
 
 describe('safeStorage', () => {
   const isVersionedValue = (value: unknown): value is { version: number } =>
-    typeof value === 'object' && value !== null && 'version' in value && typeof value.version === 'number';
+    typeof value === 'object' &&
+    value !== null &&
+    'version' in value &&
+    typeof value.version === 'number';
 
   beforeEach(() => {
     localStorage.clear();

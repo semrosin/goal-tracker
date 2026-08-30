@@ -9,11 +9,22 @@ export type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const Field = forwardRef<HTMLInputElement, FieldProps>(
-  ({ className, error, id, label, 'aria-describedby': ariaDescribedBy, ...props }, ref) => {
+  (
+    {
+      className,
+      error,
+      id,
+      label,
+      'aria-describedby': ariaDescribedBy,
+      ...props
+    },
+    ref
+  ) => {
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const errorId = error === undefined ? undefined : `${inputId}-error`;
-    const describedBy = [ariaDescribedBy, errorId].filter(Boolean).join(' ') || undefined;
+    const describedBy =
+      [ariaDescribedBy, errorId].filter(Boolean).join(' ') || undefined;
 
     return (
       <div className={styles.field}>
@@ -35,7 +46,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
         )}
       </div>
     );
-  },
+  }
 );
 
 Field.displayName = 'Field';

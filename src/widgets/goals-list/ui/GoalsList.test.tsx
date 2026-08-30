@@ -38,13 +38,17 @@ describe('GoalsList', () => {
     expect(card).toHaveTextContent('Отпуск');
     expect(card).toHaveTextContent('25%');
     expect(card).toHaveTextContent(/25\s000 ₽ \/ 100\s000 ₽/);
-    expect(screen.getByRole('progressbar', { name: 'Прогресс цели Отпуск' })).toHaveAttribute('aria-valuenow', '25');
+    expect(
+      screen.getByRole('progressbar', { name: 'Прогресс цели Отпуск' })
+    ).toHaveAttribute('aria-valuenow', '25');
     expect(within(card).queryByRole('button')).not.toBeInTheDocument();
   });
 
   it('keeps operation controls off an overview card', () => {
     renderWithStore(<GoalsList />, { goals: [goal], transactions: [] });
 
-    expect(screen.queryByRole('button', { name: /удалить|изменить|пополнить/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /удалить|изменить|пополнить/i })
+    ).not.toBeInTheDocument();
   });
 });

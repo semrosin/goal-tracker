@@ -18,7 +18,8 @@ const goalSlice = createSlice({
         goal.targetAmount = action.payload.targetAmount;
       }
     },
-    goalRemoved: (state, action: PayloadAction<string>) => state.filter((goal) => goal.id !== action.payload),
+    goalRemoved: (state, action: PayloadAction<string>) =>
+      state.filter((goal) => goal.id !== action.payload),
   },
 });
 

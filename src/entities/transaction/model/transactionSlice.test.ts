@@ -34,21 +34,33 @@ test('derives a balance from the transaction ledger', () => {
 test('does not add a withdrawal larger than the current balance', () => {
   const state: RootState = { goals: [goal], transactions: [deposit(500)] };
 
-  const next = rootReducer(state, transactionsActions.transactionCreated(withdrawal(600)));
+  const next = rootReducer(
+    state,
+    transactionsActions.transactionCreated(withdrawal(600))
+  );
 
   expect(next.transactions).toHaveLength(1);
 });
 
-test.each([0, -1, 1.5])('does not add a transaction with invalid amount %p', (amount) => {
-  const state: RootState = { goals: [goal], transactions: [] };
+test.each([0, -1, 1.5])(
+  'does not add a transaction with invalid amount %p',
+  (amount) => {
+    const state: RootState = { goals: [goal], transactions: [] };
 
-  const next = rootReducer(state, transactionsActions.transactionCreated(deposit(amount)));
+    const next = rootReducer(
+      state,
+      transactionsActions.transactionCreated(deposit(amount))
+    );
 
-  expect(next.transactions).toEqual([]);
-});
+    expect(next.transactions).toEqual([]);
+  }
+);
 
 test('does not add a transaction for a missing goal', () => {
-  const next = rootReducer(undefined, transactionsActions.transactionCreated(deposit(100)));
+  const next = rootReducer(
+    undefined,
+    transactionsActions.transactionCreated(deposit(100))
+  );
 
   expect(next.transactions).toEqual([]);
 });
@@ -56,7 +68,10 @@ test('does not add a transaction for a missing goal', () => {
 test('adds a valid withdrawal equal to the balance', () => {
   const state: RootState = { goals: [goal], transactions: [deposit(500)] };
 
-  const next = rootReducer(state, transactionsActions.transactionCreated(withdrawal(500)));
+  const next = rootReducer(
+    state,
+    transactionsActions.transactionCreated(withdrawal(500))
+  );
 
   expect(next.transactions).toEqual([deposit(500), withdrawal(500)]);
 });
@@ -64,15 +79,24 @@ test('adds a valid withdrawal equal to the balance', () => {
 test('removes a transaction by id', () => {
   const state: RootState = { goals: [goal], transactions: [deposit(100)] };
 
-  const next = rootReducer(state, transactionsActions.transactionRemoved('deposit-100'));
+  const next = rootReducer(
+    state,
+    transactionsActions.transactionRemoved('deposit-100')
+  );
 
   expect(next.transactions).toEqual([]);
 });
 
 test('does not remove a deposit when it would leave a withdrawal without funds', () => {
-  const state: RootState = { goals: [goal], transactions: [deposit(100), withdrawal(100)] };
+  const state: RootState = {
+    goals: [goal],
+    transactions: [deposit(100), withdrawal(100)],
+  };
 
-  const next = rootReducer(state, transactionsActions.transactionRemoved('deposit-100'));
+  const next = rootReducer(
+    state,
+    transactionsActions.transactionRemoved('deposit-100')
+  );
 
   expect(next.transactions).toEqual([deposit(100), withdrawal(100)]);
 });
@@ -89,7 +113,10 @@ test('rejects a forged transaction creation with an invalid type', () => {
 });
 
 test('rejects a transaction creation action without a payload', () => {
-  const next = rootReducer({ goals: [goal], transactions: [] }, { type: transactionsActions.transactionCreated.type });
+  const next = rootReducer(
+    { goals: [goal], transactions: [] },
+    { type: transactionsActions.transactionCreated.type }
+  );
 
   expect(next.transactions).toEqual([]);
 });

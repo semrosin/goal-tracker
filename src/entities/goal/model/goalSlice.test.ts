@@ -41,31 +41,52 @@ test('creates a goal in the entity slice', () => {
 test('updates an existing goal without changing its identity', () => {
   const state: RootState = { goals: [goal], transactions: [] };
 
-  const next = rootReducer(state, goalsActions.goalUpdated({ id: 'g1', title: 'Поездка', targetAmount: 2_000 }));
+  const next = rootReducer(
+    state,
+    goalsActions.goalUpdated({
+      id: 'g1',
+      title: 'Поездка',
+      targetAmount: 2_000,
+    })
+  );
 
-  expect(next.goals).toEqual([{ ...goal, title: 'Поездка', targetAmount: 2_000 }]);
+  expect(next.goals).toEqual([
+    { ...goal, title: 'Поездка', targetAmount: 2_000 },
+  ]);
 });
 
-test.each([0, -1, 1.5, Infinity])('rejects a directly dispatched goal creation with target amount %p', (targetAmount) => {
-  const invalidGoal = { ...goal, targetAmount } as Goal;
+test.each([0, -1, 1.5, Infinity])(
+  'rejects a directly dispatched goal creation with target amount %p',
+  (targetAmount) => {
+    const invalidGoal = { ...goal, targetAmount } as Goal;
 
-  const next = rootReducer(undefined, goalsActions.goalCreated(invalidGoal));
+    const next = rootReducer(undefined, goalsActions.goalCreated(invalidGoal));
 
-  expect(next.goals).toEqual([]);
-});
+    expect(next.goals).toEqual([]);
+  }
+);
 
-test.each([0, -1, 1.5, Infinity])('rejects a directly dispatched goal update with target amount %p', (targetAmount) => {
-  const state: RootState = { goals: [goal], transactions: [] };
+test.each([0, -1, 1.5, Infinity])(
+  'rejects a directly dispatched goal update with target amount %p',
+  (targetAmount) => {
+    const state: RootState = { goals: [goal], transactions: [] };
 
-  const next = rootReducer(state, goalsActions.goalUpdated({ id: 'g1', title: 'Поездка', targetAmount }));
+    const next = rootReducer(
+      state,
+      goalsActions.goalUpdated({ id: 'g1', title: 'Поездка', targetAmount })
+    );
 
-  expect(next.goals).toEqual([goal]);
-});
+    expect(next.goals).toEqual([goal]);
+  }
+);
 
 test('rejects a directly dispatched goal update with an empty title', () => {
   const state: RootState = { goals: [goal], transactions: [] };
 
-  const next = rootReducer(state, goalsActions.goalUpdated({ id: 'g1', title: ' ', targetAmount: 2_000 }));
+  const next = rootReducer(
+    state,
+    goalsActions.goalUpdated({ id: 'g1', title: ' ', targetAmount: 2_000 })
+  );
 
   expect(next.goals).toEqual([goal]);
 });

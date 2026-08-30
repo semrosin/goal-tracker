@@ -10,7 +10,10 @@ type DeleteGoalButtonProps = {
   onDeleted?: () => void;
 };
 
-export const DeleteGoalButton = ({ goalId, onDeleted }: DeleteGoalButtonProps) => {
+export const DeleteGoalButton = ({
+  goalId,
+  onDeleted,
+}: DeleteGoalButtonProps) => {
   const dispatch = useAppDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -25,7 +28,11 @@ export const DeleteGoalButton = ({ goalId, onDeleted }: DeleteGoalButtonProps) =
       <Button onClick={() => setIsDialogOpen(true)} variant="danger">
         Удалить цель
       </Button>
-      <Dialog isOpen={isDialogOpen} title="Удалить цель" onClose={() => setIsDialogOpen(false)}>
+      <Dialog
+        isOpen={isDialogOpen}
+        title="Удалить цель"
+        onClose={() => setIsDialogOpen(false)}
+      >
         <p>Цель и все связанные операции будут удалены.</p>
         <div>
           <Button onClick={() => setIsDialogOpen(false)} variant="secondary">

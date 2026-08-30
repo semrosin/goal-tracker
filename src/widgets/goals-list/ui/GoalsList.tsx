@@ -21,7 +21,10 @@ export const GoalsList = () => {
           <Link key={goal.id} className={styles.card} to={`/goals/${goal.id}`}>
             <h2>{goal.title}</h2>
             <p>{progress.toFixed(0)}%</p>
-            <ProgressBar label={`Прогресс цели ${goal.title}`} value={progress} />
+            <ProgressBar
+              label={`Прогресс цели ${goal.title}`}
+              value={progress}
+            />
             <p>
               {formatRubles(balance)} / {formatRubles(goal.targetAmount)}
             </p>

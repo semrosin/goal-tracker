@@ -1,9 +1,15 @@
 import type { UnknownAction } from '@reduxjs/toolkit';
 
-import { goalsActions, goalsReducer } from '../../entities/goal/model/goalSlice';
+import {
+  goalsActions,
+  goalsReducer,
+} from '../../entities/goal/model/goalSlice';
 import type { Goal } from '../../entities/goal/model/types';
 import { calculateBalance } from '../../entities/transaction/model/selectors';
-import { transactionsActions, transactionsReducer } from '../../entities/transaction/model/transactionSlice';
+import {
+  transactionsActions,
+  transactionsReducer,
+} from '../../entities/transaction/model/transactionSlice';
 import type { Transaction } from '../../entities/transaction/model/types';
 import { isPositiveInteger } from '../../shared/lib/validation';
 
@@ -63,49 +69,75 @@ const isValidTransaction = (value: unknown): value is Transaction => {
   );
 };
 
-export const rootReducer = (state: RootState = rootInitialState, action: UnknownAction): RootState => {
+export const rootReducer = (
+  state: RootState = rootInitialState,
+  action: UnknownAction
+): RootState => {
   if (goalsActions.goalCreated.match(action)) {
     const goal = action.payload;
-    if (!isValidGoal(goal) || state.goals.some((item) => item.id === goal.id)) return state;
+    if (!isValidGoal(goal) || state.goals.some((item) => item.id === goal.id))
+      return state;
   }
 
   if (goalsActions.goalUpdated.match(action)) {
     const goal = action.payload;
-    if (!isValidGoalUpdate(goal) || !state.goals.some((item) => item.id === goal.id)) return state;
+    if (
+      !isValidGoalUpdate(goal) ||
+      !state.goals.some((item) => item.id === goal.id)
+    )
+      return state;
   }
 
-  if (goalsActions.goalRemoved.match(action) && !isNonEmptyString(action.payload)) return state;
+  if (
+    goalsActions.goalRemoved.match(action) &&
+    !isNonEmptyString(action.payload)
+  )
+    return state;
 
   if (transactionsActions.transactionCreated.match(action)) {
     const transaction = action.payload;
-    if (!isValidTransaction(transaction) || state.transactions.some((item) => item.id === transaction.id)) return state;
+    if (
+      !isValidTransaction(transaction) ||
+      state.transactions.some((item) => item.id === transaction.id)
+    )
+      return state;
 
-    const goalExists = state.goals.some((goal) => goal.id === transaction.goalId);
+    const goalExists = state.goals.some(
+      (goal) => goal.id === transaction.goalId
+    );
     const balance = calculateBalance(transaction.goalId, state.transactions);
 
     if (!goalExists) return state;
-    if (transaction.type === 'withdrawal' && transaction.amount > balance) return state;
+    if (transaction.type === 'withdrawal' && transaction.amount > balance)
+      return state;
   }
 
   if (transactionsActions.transactionRemoved.match(action)) {
     const transactionId = action.payload;
     if (!isNonEmptyString(transactionId)) return state;
 
-    const remainingTransactions = state.transactions.filter((transaction) => transaction.id !== transactionId);
-    if (remainingTransactions.length === state.transactions.length) return state;
+    const remainingTransactions = state.transactions.filter(
+      (transaction) => transaction.id !== transactionId
+    );
+    if (remainingTransactions.length === state.transactions.length)
+      return state;
 
     const hasNegativeBalance = state.goals.some(
-      (goal) => calculateBalance(goal.id, remainingTransactions) < 0,
+      (goal) => calculateBalance(goal.id, remainingTransactions) < 0
     );
     if (hasNegativeBalance) return state;
   }
 
   const goals = goalsReducer(state.goals, action);
   const transactions = goalsActions.goalRemoved.match(action)
-    ? transactionsReducer(state.transactions, transactionsActions.transactionsRemovedForGoal(action.payload))
+    ? transactionsReducer(
+        state.transactions,
+        transactionsActions.transactionsRemovedForGoal(action.payload)
+      )
     : transactionsReducer(state.transactions, action);
 
-  if (goals === state.goals && transactions === state.transactions) return state;
+  if (goals === state.goals && transactions === state.transactions)
+    return state;
 
   return { goals, transactions };
 };

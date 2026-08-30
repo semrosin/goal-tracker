@@ -1,4 +1,7 @@
-export const readJson = <T>(key: string, isValid: (value: unknown) => value is T): T | null => {
+export const readJson = <T>(
+  key: string,
+  isValid: (value: unknown) => value is T
+): T | null => {
   try {
     const raw = window.localStorage.getItem(key);
     if (raw === null) return null;

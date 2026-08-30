@@ -14,14 +14,24 @@ export const GoalsOverviewPage = () => {
     <main className={styles.page}>
       <header className={styles.header}>
         <h1>Мои цели</h1>
-        <Button className={styles.createButton} onClick={() => setIsCreateDialogOpen(true)}>
+        <Button
+          className={styles.createButton}
+          onClick={() => setIsCreateDialogOpen(true)}
+        >
           Создать цель
         </Button>
       </header>
       <section aria-label="Список целей" className={styles.content}>
-        {hasGoals ? <GoalsList /> : <p className={styles.emptyState}>Пока нет целей</p>}
+        {hasGoals ? (
+          <GoalsList />
+        ) : (
+          <p className={styles.emptyState}>Пока нет целей</p>
+        )}
       </section>
-      <CreateGoalDialog isOpen={isCreateDialogOpen} onClose={() => setIsCreateDialogOpen(false)} />
+      <CreateGoalDialog
+        isOpen={isCreateDialogOpen}
+        onClose={() => setIsCreateDialogOpen(false)}
+      />
     </main>
   );
 };

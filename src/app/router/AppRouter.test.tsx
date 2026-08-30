@@ -12,10 +12,14 @@ describe('AppRouter', () => {
         <MemoryRouter initialEntries={['/goals/missing']}>
           <AppRouter />
         </MemoryRouter>
-      </Provider>,
+      </Provider>
     );
 
-    expect(screen.getByRole('heading', { name: 'Цель не найдена' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'К списку целей' })).toHaveAttribute('href', '/');
+    expect(
+      screen.getByRole('heading', { name: 'Цель не найдена' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'К списку целей' })
+    ).toHaveAttribute('href', '/');
   });
 });

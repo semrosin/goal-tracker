@@ -1,4 +1,8 @@
-import { loadPersistedState, savePersistedState, STORAGE_KEY } from './persistence';
+import {
+  loadPersistedState,
+  savePersistedState,
+  STORAGE_KEY,
+} from './persistence';
 import type { RootState } from './rootReducer';
 
 const validState: RootState = {
@@ -32,7 +36,10 @@ test('loads a fully valid persisted snapshot', () => {
 });
 
 test('falls back to empty state when persisted transaction data is invalid', () => {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ goals: [], transactions: [{ amount: 1.5 }] }));
+  window.localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({ goals: [], transactions: [{ amount: 1.5 }] })
+  );
 
   expect(loadPersistedState()).toBeUndefined();
 });
@@ -40,7 +47,10 @@ test('falls back to empty state when persisted transaction data is invalid', () 
 test('rejects the entire snapshot when a goal is malformed', () => {
   window.localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify({ ...validState, goals: [{ ...validState.goals[0], createdAt: 'not-a-date' }] }),
+    JSON.stringify({
+      ...validState,
+      goals: [{ ...validState.goals[0], createdAt: 'not-a-date' }],
+    })
   );
 
   expect(loadPersistedState()).toBeUndefined();
@@ -49,11 +59,16 @@ test('rejects the entire snapshot when a goal is malformed', () => {
 test('persists the complete normalized state', () => {
   savePersistedState(validState);
 
-  expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null')).toEqual(validState);
+  expect(
+    JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null')
+  ).toEqual(validState);
 });
 
 test('normalizes a persisted snapshot that contains a forbidden saved amount', () => {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...validState, savedAmount: 500 }));
+  window.localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({ ...validState, savedAmount: 500 })
+  );
 
   expect(loadPersistedState()).toEqual(validState);
 });
@@ -61,5 +76,7 @@ test('normalizes a persisted snapshot that contains a forbidden saved amount', (
 test('serializes only goals and transactions when passed an object with extra properties', () => {
   savePersistedState({ ...validState, savedAmount: 500 } as RootState);
 
-  expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null')).toEqual(validState);
+  expect(
+    JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null')
+  ).toEqual(validState);
 });
