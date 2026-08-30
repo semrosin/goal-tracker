@@ -13,6 +13,10 @@ const transactionLabels: Record<Transaction['type'], string> = {
   deposit: 'Пополнение',
   withdrawal: 'Снятие',
 };
+const transactionDeleteLabels: Record<Transaction['type'], string> = {
+  deposit: 'пополнение',
+  withdrawal: 'снятие',
+};
 const sortNewestFirst = (left: Transaction, right: Transaction): number =>
   right.createdAt.localeCompare(left.createdAt) ||
   right.id.localeCompare(left.id);
@@ -37,19 +41,27 @@ export const TransactionsHistory = ({ goalId }: TransactionsHistoryProps) => {
         <ul className={styles.list}>
           {transactions.map((transaction) => {
             const isDeposit = transaction.type === 'deposit';
+            const formattedDate = formatDate(transaction.createdAt);
+            const signedAmount = `${isDeposit ? '+' : '-'}${formatRubles(
+              transaction.amount
+            )}`;
             return (
               <li className={styles.item} key={transaction.id}>
                 <div className={styles.details}>
                   <strong>{transactionLabels[transaction.type]}</strong>
-                  <span>{formatDate(transaction.createdAt)}</span>
+                  <span>{formattedDate}</span>
                 </div>
                 <strong
                   className={isDeposit ? styles.deposit : styles.withdrawal}
                 >
-                  {isDeposit ? '+' : '-'}
-                  {formatRubles(transaction.amount)}
+                  {signedAmount}
                 </strong>
-                <DeleteTransactionButton transactionId={transaction.id} />
+                <DeleteTransactionButton
+                  ariaLabel={`Удалить ${
+                    transactionDeleteLabels[transaction.type]
+                  } ${signedAmount} от ${formattedDate}`}
+                  transactionId={transaction.id}
+                />
               </li>
             );
           })}

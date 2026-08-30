@@ -1,39 +1,70 @@
 import { useState } from 'react';
 
-import { useLedgerDispatch } from '../../../entities/ledger';
+import {
+  hasNonNegativeBalancePrefixes,
+  useLedgerDispatch,
+  useLedgerSelector,
+} from '../../../entities/ledger';
 import { transactionsActions } from '../../../entities/transaction/model/transactionSlice';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
+import styles from './DeleteTransactionButton.module.scss';
 
-type DeleteTransactionButtonProps = { transactionId: string };
+type DeleteTransactionButtonProps = {
+  transactionId: string;
+  ariaLabel: string;
+};
 
 export const DeleteTransactionButton = ({
+  ariaLabel,
   transactionId,
 }: DeleteTransactionButtonProps) => {
   const dispatch = useLedgerDispatch();
+  const transactions = useLedgerSelector((state) => state.transactions);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const handleConfirm = () => {
-    dispatch(transactionsActions.transactionRemoved(transactionId));
+  const [isDeletionBlocked, setIsDeletionBlocked] = useState(false);
+
+  const closeDialog = () => {
     setIsDialogOpen(false);
+    setIsDeletionBlocked(false);
+  };
+
+  const openDialog = () => {
+    setIsDeletionBlocked(false);
+    setIsDialogOpen(true);
+  };
+
+  const handleConfirm = () => {
+    const remainingTransactions = transactions.filter(
+      (transaction) => transaction.id !== transactionId
+    );
+    if (!hasNonNegativeBalancePrefixes(remainingTransactions)) {
+      setIsDeletionBlocked(true);
+      return;
+    }
+
+    dispatch(transactionsActions.transactionRemoved(transactionId));
+    closeDialog();
   };
 
   return (
     <>
-      <Button
-        aria-label="Удалить операцию"
-        onClick={() => setIsDialogOpen(true)}
-        variant="danger"
-      >
+      <Button aria-label={ariaLabel} onClick={openDialog} variant="danger">
         Удалить
       </Button>
       <Dialog
         isOpen={isDialogOpen}
         title="Удалить операцию"
-        onClose={() => setIsDialogOpen(false)}
+        onClose={closeDialog}
       >
         <p>Операция будет удалена без возможности восстановления.</p>
-        <div>
-          <Button onClick={() => setIsDialogOpen(false)} variant="secondary">
+        {isDeletionBlocked && (
+          <p className={styles.error} role="alert">
+            Нельзя удалить операцию: это приведёт к отрицательному балансу
+          </p>
+        )}
+        <div className={styles.actions}>
+          <Button onClick={closeDialog} variant="secondary">
             Отмена
           </Button>
           <Button onClick={handleConfirm} variant="danger">

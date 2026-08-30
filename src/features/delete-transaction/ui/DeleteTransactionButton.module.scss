@@ -1,0 +1,10 @@
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.error {
+  color: #a92424;
+  font-weight: 700;
+}

@@ -27,4 +27,17 @@ describe('Dialog', () => {
       screen.getByRole('dialog', { name: 'Удалить цель' })
     ).toHaveAttribute('aria-modal', 'true');
   });
+
+  it('keeps the accessible close name on its dedicated close target', () => {
+    render(
+      <Dialog isOpen title="Удалить цель" onClose={jest.fn()}>
+        Это действие нельзя отменить.
+      </Dialog>
+    );
+
+    const closeButton = screen.getByRole('button', { name: 'Закрыть' });
+
+    expect(closeButton).toHaveClass('closeButton');
+    expect(closeButton).toHaveAccessibleName('Закрыть');
+  });
 });
