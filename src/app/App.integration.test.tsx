@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';
 
@@ -11,6 +11,8 @@ const goal = {
   targetAmount: 10_000,
   createdAt: '2026-08-29T00:00:00.000Z',
 };
+
+const balancePattern = /^4\s500\s₽$/;
 
 const renderRoute = (path: string) =>
   render(
@@ -48,7 +50,8 @@ describe('goal routes', () => {
     expect(
       screen.getByRole('heading', { name: 'Новый автомобиль' })
     ).toBeInTheDocument();
-    expect(screen.getByText(/4\s500\s₽/)).toBeInTheDocument();
+    const summary = screen.getByRole('region', { name: 'Состояние цели' });
+    expect(within(summary).getByText(balancePattern)).toBeInTheDocument();
 
     view.unmount();
     renderRoute('/goals/missing');
