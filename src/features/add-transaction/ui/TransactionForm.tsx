@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { useAppDispatch, useAppSelector } from '../../../app/store/hooks';
+import { useLedgerDispatch, useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction/model/selectors';
 import { transactionsActions } from '../../../entities/transaction/model/transactionSlice';
 import type { TransactionType } from '../../../entities/transaction/model/types';
@@ -18,8 +18,8 @@ const invalidAmountMessage = 'Укажите положительную целу
 const overBalanceMessage = 'Нельзя снять больше, чем накоплено';
 
 export const TransactionForm = ({ goalId }: TransactionFormProps) => {
-  const dispatch = useAppDispatch();
-  const balance = useAppSelector((state) =>
+  const dispatch = useLedgerDispatch();
+  const balance = useLedgerSelector((state) =>
     calculateBalance(goalId, state.transactions)
   );
   const [type, setType] = useState<TransactionType>('deposit');

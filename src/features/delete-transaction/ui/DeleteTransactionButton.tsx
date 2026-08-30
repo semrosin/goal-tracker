@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useAppDispatch } from '../../../app/store/hooks';
+import { useLedgerDispatch } from '../../../entities/ledger';
 import { transactionsActions } from '../../../entities/transaction/model/transactionSlice';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
@@ -10,7 +10,7 @@ type DeleteTransactionButtonProps = { transactionId: string };
 export const DeleteTransactionButton = ({
   transactionId,
 }: DeleteTransactionButtonProps) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useLedgerDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleConfirm = () => {
     dispatch(transactionsActions.transactionRemoved(transactionId));

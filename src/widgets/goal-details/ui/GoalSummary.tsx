@@ -1,4 +1,4 @@
-import { useAppSelector } from '../../../app/store/hooks';
+import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateProgress } from '../../../entities/goal/model/selectors';
 import type { Goal } from '../../../entities/goal/model/types';
 import { calculateBalance } from '../../../entities/transaction/model/selectors';
@@ -9,7 +9,7 @@ import styles from './GoalSummary.module.scss';
 type GoalSummaryProps = { goal: Goal };
 
 export const GoalSummary = ({ goal }: GoalSummaryProps) => {
-  const balance = useAppSelector((state) =>
+  const balance = useLedgerSelector((state) =>
     calculateBalance(goal.id, state.transactions)
   );
   const progress = Math.round(calculateProgress(balance, goal.targetAmount));

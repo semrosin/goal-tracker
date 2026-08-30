@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useAppDispatch } from '../../../app/store/hooks';
+import { useLedgerDispatch } from '../../../entities/ledger';
 import { goalsActions } from '../../../entities/goal/model/goalSlice';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
@@ -14,7 +14,7 @@ export const DeleteGoalButton = ({
   goalId,
   onDeleted,
 }: DeleteGoalButtonProps) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useLedgerDispatch();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleConfirm = () => {

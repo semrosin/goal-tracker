@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { useAppDispatch } from '../../../app/store/hooks';
+import { useLedgerDispatch } from '../../../entities/ledger';
 import { goalsActions } from '../../../entities/goal/model/goalSlice';
 import { createTimestamp } from '../../../shared/lib/date';
 import { createId } from '../../../shared/lib/id';
@@ -25,7 +25,7 @@ export const CreateGoalDialog = ({
   isOpen,
   onClose,
 }: CreateGoalDialogProps) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useLedgerDispatch();
   const [title, setTitle] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});

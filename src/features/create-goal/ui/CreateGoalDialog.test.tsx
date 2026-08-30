@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithStore } from '../../../app/test/renderWithStore';
+import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
 import { DeleteGoalButton } from '../../delete-goal/ui/DeleteGoalButton';
 import { EditGoalDialog } from '../../edit-goal/ui/EditGoalDialog';
 import { CreateGoalDialog } from './CreateGoalDialog';
@@ -16,7 +16,7 @@ const existingGoal = {
 describe('CreateGoalDialog', () => {
   it('creates a new goal with no transaction', async () => {
     const onClose = jest.fn();
-    const { store } = renderWithStore(
+    const { store } = renderWithLedger(
       <CreateGoalDialog isOpen onClose={onClose} />
     );
 
@@ -41,7 +41,7 @@ describe('CreateGoalDialog', () => {
     'keeps the dialog open when %p and %p are invalid',
     async (title, targetAmount, error) => {
       const onClose = jest.fn();
-      const { store } = renderWithStore(
+      const { store } = renderWithLedger(
         <CreateGoalDialog isOpen onClose={onClose} />
       );
 
@@ -59,7 +59,7 @@ describe('CreateGoalDialog', () => {
   );
 
   it('updates a goal only with a trimmed title and positive whole target amount', async () => {
-    const { store } = renderWithStore(
+    const { store } = renderWithLedger(
       <EditGoalDialog goal={existingGoal} isOpen onClose={jest.fn()} />,
       {
         goals: [existingGoal],
@@ -80,7 +80,7 @@ describe('CreateGoalDialog', () => {
 
   it('requires confirmation before removing a goal and its transactions', async () => {
     const onDeleted = jest.fn();
-    const { store } = renderWithStore(
+    const { store } = renderWithLedger(
       <DeleteGoalButton goalId="goal-1" onDeleted={onDeleted} />,
       {
         goals: [existingGoal],

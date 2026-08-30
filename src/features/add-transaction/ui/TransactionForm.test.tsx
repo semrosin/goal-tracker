@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithStore } from '../../../app/test/renderWithStore';
+import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
 import { TransactionForm } from './TransactionForm';
 import styles from './TransactionForm.module.scss';
 
@@ -14,7 +14,7 @@ const goal = {
 
 describe('TransactionForm', () => {
   it('visually marks only the selected operation and moves the mark when switching', async () => {
-    renderWithStore(<TransactionForm goalId="g1" />, {
+    renderWithLedger(<TransactionForm goalId="g1" />, {
       goals: [goal],
       transactions: [],
     });
@@ -37,7 +37,7 @@ describe('TransactionForm', () => {
   });
 
   it('adds a valid deposit and clears the amount field', async () => {
-    const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
+    const { store } = renderWithLedger(<TransactionForm goalId="g1" />, {
       goals: [goal],
       transactions: [],
     });
@@ -57,7 +57,7 @@ describe('TransactionForm', () => {
   });
 
   it('shows an inline error and does not dispatch an over-balance withdrawal', async () => {
-    const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
+    const { store } = renderWithLedger(<TransactionForm goalId="g1" />, {
       goals: [goal],
       transactions: [
         {
@@ -84,7 +84,7 @@ describe('TransactionForm', () => {
   });
 
   it('rejects a non-positive whole withdrawal without changing the ledger', async () => {
-    const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
+    const { store } = renderWithLedger(<TransactionForm goalId="g1" />, {
       goals: [goal],
       transactions: [
         {

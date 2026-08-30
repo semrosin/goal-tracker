@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { renderWithStore } from '../../../app/test/renderWithStore';
+import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
 import { TransactionsHistory } from './TransactionsHistory';
 
 const goal = {
@@ -24,7 +24,7 @@ describe('TransactionsHistory', () => {
       .spyOn(console, 'warn')
       .mockImplementation(() => undefined);
 
-    renderWithStore(<TransactionsHistory goalId="g1" />, {
+    renderWithLedger(<TransactionsHistory goalId="g1" />, {
       goals: [goal],
       transactions: [
         {
@@ -42,7 +42,7 @@ describe('TransactionsHistory', () => {
   });
 
   it('shows only goal transactions newest first with id as a deterministic tie-breaker', () => {
-    renderWithStore(<TransactionsHistory goalId="g1" />, {
+    renderWithLedger(<TransactionsHistory goalId="g1" />, {
       goals: [goal, otherGoal],
       transactions: [
         {
@@ -90,7 +90,7 @@ describe('TransactionsHistory', () => {
   });
 
   it('removes a transaction only after confirmation', async () => {
-    const { store } = renderWithStore(<TransactionsHistory goalId="g1" />, {
+    const { store } = renderWithLedger(<TransactionsHistory goalId="g1" />, {
       goals: [goal],
       transactions: [
         {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 
-import { useAppSelector } from '../../../app/store/hooks';
+import { useLedgerSelector } from '../../../entities/ledger';
 import { selectGoalById } from '../../../entities/goal/model/selectors';
 import { TransactionForm } from '../../../features/add-transaction/ui/TransactionForm';
 import { DeleteGoalButton } from '../../../features/delete-goal/ui/DeleteGoalButton';
@@ -15,7 +15,9 @@ export const GoalDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const goal = useAppSelector((state) => selectGoalById(state.goals, id ?? ''));
+  const goal = useLedgerSelector((state) =>
+    selectGoalById(state.goals, id ?? '')
+  );
 
   if (goal === undefined) {
     return (

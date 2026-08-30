@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import { useAppSelector } from '../../../app/store/hooks';
+import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateProgress } from '../../../entities/goal/model/selectors';
 import { calculateBalance } from '../../../entities/transaction/model/selectors';
 import { formatRubles } from '../../../shared/lib/money';
@@ -8,8 +8,8 @@ import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import styles from './GoalsList.module.scss';
 
 export const GoalsList = () => {
-  const goals = useAppSelector((state) => state.goals);
-  const transactions = useAppSelector((state) => state.transactions);
+  const goals = useLedgerSelector((state) => state.goals);
+  const transactions = useLedgerSelector((state) => state.transactions);
 
   return (
     <div className={styles.list}>

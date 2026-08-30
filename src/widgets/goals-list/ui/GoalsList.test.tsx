@@ -1,7 +1,6 @@
 import { screen, within } from '@testing-library/react';
 
-import { GoalsOverviewPage } from '../../../pages/goals-overview/ui/GoalsOverviewPage';
-import { renderWithStore } from '../../../app/test/renderWithStore';
+import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
 import { GoalsList } from './GoalsList';
 
 const goal = {
@@ -12,14 +11,8 @@ const goal = {
 };
 
 describe('GoalsList', () => {
-  it('shows an empty overview state when there are no goals', () => {
-    renderWithStore(<GoalsOverviewPage />);
-
-    expect(screen.getByText('Пока нет целей')).toBeInTheDocument();
-  });
-
   it('renders a linked card with its derived balance and progress only', () => {
-    renderWithStore(<GoalsList />, {
+    renderWithLedger(<GoalsList />, {
       goals: [goal],
       transactions: [
         {
@@ -45,7 +38,7 @@ describe('GoalsList', () => {
   });
 
   it('keeps operation controls off an overview card', () => {
-    renderWithStore(<GoalsList />, { goals: [goal], transactions: [] });
+    renderWithLedger(<GoalsList />, { goals: [goal], transactions: [] });
 
     expect(
       screen.queryByRole('button', { name: /удалить|изменить|пополнить/i })

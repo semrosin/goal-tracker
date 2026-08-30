@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useAppSelector } from '../../../app/store/hooks';
+import { useLedgerSelector } from '../../../entities/ledger';
 import { CreateGoalDialog } from '../../../features/create-goal/ui/CreateGoalDialog';
 import { Button } from '../../../shared/ui/Button/Button';
 import { GoalsList } from '../../../widgets/goals-list/ui/GoalsList';
@@ -8,7 +8,7 @@ import styles from './GoalsOverviewPage.module.scss';
 
 export const GoalsOverviewPage = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const hasGoals = useAppSelector((state) => state.goals.length > 0);
+  const hasGoals = useLedgerSelector((state) => state.goals.length > 0);
 
   return (
     <main className={styles.page}>

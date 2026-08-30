@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { useAppDispatch } from '../../../app/store/hooks';
+import { useLedgerDispatch } from '../../../entities/ledger';
 import { goalsActions } from '../../../entities/goal/model/goalSlice';
 import type { Goal } from '../../../entities/goal/model/types';
 import { isPositiveInteger } from '../../../shared/lib/validation';
@@ -26,7 +26,7 @@ export const EditGoalDialog = ({
   isOpen,
   onClose,
 }: EditGoalDialogProps) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useLedgerDispatch();
   const [title, setTitle] = useState(goal.title);
   const [targetAmount, setTargetAmount] = useState(String(goal.targetAmount));
   const [errors, setErrors] = useState<FormErrors>({});
