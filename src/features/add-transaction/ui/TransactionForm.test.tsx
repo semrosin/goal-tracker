@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 
 import { renderWithStore } from '../../../app/test/renderWithStore';
 import { TransactionForm } from './TransactionForm';
+import styles from './TransactionForm.module.scss';
 
 const goal = {
   id: 'g1',
@@ -12,6 +13,29 @@ const goal = {
 };
 
 describe('TransactionForm', () => {
+  it('visually marks only the selected operation and moves the mark when switching', async () => {
+    renderWithStore(<TransactionForm goalId="g1" />, {
+      goals: [goal],
+      transactions: [],
+    });
+
+    const deposit = screen.getByRole('button', {
+      name: '\u041f\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u044c',
+    });
+    const withdrawal = screen.getByRole('button', {
+      name: '\u0421\u043d\u044f\u0442\u044c',
+    });
+
+    expect(deposit).toHaveClass(styles.selected);
+    expect(withdrawal).not.toHaveClass(styles.selected);
+
+    await userEvent.click(withdrawal);
+
+    expect(deposit).not.toHaveClass(styles.selected);
+    expect(withdrawal).toHaveClass(styles.selected);
+    expect(withdrawal).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('adds a valid deposit and clears the amount field', async () => {
     const { store } = renderWithStore(<TransactionForm goalId="g1" />, {
       goals: [goal],

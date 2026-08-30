@@ -69,6 +69,7 @@ export const TransactionForm = ({ goalId }: TransactionFormProps) => {
         >
           <Button
             aria-pressed={type === 'deposit'}
+            className={type === 'deposit' ? styles.selected : undefined}
             onClick={() => selectType('deposit')}
             variant="secondary"
           >
@@ -76,6 +77,7 @@ export const TransactionForm = ({ goalId }: TransactionFormProps) => {
           </Button>
           <Button
             aria-pressed={type === 'withdrawal'}
+            className={type === 'withdrawal' ? styles.selected : undefined}
             onClick={() => selectType('withdrawal')}
             variant="secondary"
           >
