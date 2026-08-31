@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
+import { goalsActions } from '../../../entities/goal';
 import { useLedgerDispatch } from '../../../entities/ledger';
-import { goalsActions } from '../../../entities/goal/model/goalSlice';
 import { createTimestamp } from '../../../shared/lib/date';
 import { createId } from '../../../shared/lib/id';
 import { isPositiveInteger } from '../../../shared/lib/validation';

@@ -5,7 +5,7 @@ import {
   useLedgerDispatch,
   useLedgerSelector,
 } from '../../../entities/ledger';
-import { transactionsActions } from '../../../entities/transaction/model/transactionSlice';
+import { transactionsActions } from '../../../entities/transaction';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
 import styles from './DeleteTransactionButton.module.scss';

@@ -2,7 +2,7 @@ import {
   decodeLedgerState,
   serializeLedgerState,
   type LedgerState,
-} from '../../entities/ledger/model/ledger';
+} from '../../entities/ledger';
 import { readJson, writeJson } from '../../shared/lib/storage/safeStorage';
 
 export const STORAGE_KEY = 'goal-tracker-state';

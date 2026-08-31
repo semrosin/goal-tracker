@@ -1,8 +1,8 @@
 import { Link } from 'react-router';
 
+import { calculateProgress } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
-import { calculateProgress } from '../../../entities/goal/model/selectors';
-import { calculateBalance } from '../../../entities/transaction/model/selectors';
+import { calculateBalance } from '../../../entities/transaction';
 import { formatRubles } from '../../../shared/lib/money';
 import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import styles from './GoalsList.module.scss';

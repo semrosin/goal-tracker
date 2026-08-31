@@ -1,12 +1,16 @@
 import type { UnknownAction } from '@reduxjs/toolkit';
 
-import { goalsActions, goalsReducer } from '../../goal/model/goalSlice';
-import type { Goal, GoalUpdate } from '../../goal/model/types';
+import {
+  goalsActions,
+  goalsReducer,
+  type Goal,
+  type GoalUpdate,
+} from '../../goal';
 import {
   transactionsActions,
   transactionsReducer,
-} from '../../transaction/model/transactionSlice';
-import type { Transaction } from '../../transaction/model/types';
+  type Transaction,
+} from '../../transaction';
 import { isPositiveInteger } from '../../../shared/lib/validation';
 
 export type LedgerState = {

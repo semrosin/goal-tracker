@@ -2,9 +2,11 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 
 import { useLedgerDispatch, useLedgerSelector } from '../../../entities/ledger';
-import { calculateBalance } from '../../../entities/transaction/model/selectors';
-import { transactionsActions } from '../../../entities/transaction/model/transactionSlice';
-import type { TransactionType } from '../../../entities/transaction/model/types';
+import {
+  calculateBalance,
+  transactionsActions,
+  type TransactionType,
+} from '../../../entities/transaction';
 import { createTimestamp } from '../../../shared/lib/date';
 import { createId } from '../../../shared/lib/id';
 import { isPositiveInteger } from '../../../shared/lib/validation';

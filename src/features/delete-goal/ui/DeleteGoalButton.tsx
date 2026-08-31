@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
+import { goalsActions } from '../../../entities/goal';
 import { useLedgerDispatch } from '../../../entities/ledger';
-import { goalsActions } from '../../../entities/goal/model/goalSlice';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
 

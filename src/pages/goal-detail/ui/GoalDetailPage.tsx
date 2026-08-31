@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 
+import { selectGoalById } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
-import { selectGoalById } from '../../../entities/goal/model/selectors';
-import { TransactionForm } from '../../../features/add-transaction/ui/TransactionForm';
-import { DeleteGoalButton } from '../../../features/delete-goal/ui/DeleteGoalButton';
-import { EditGoalDialog } from '../../../features/edit-goal/ui/EditGoalDialog';
+import { TransactionForm } from '../../../features/add-transaction';
+import { DeleteGoalButton } from '../../../features/delete-goal';
+import { EditGoalDialog } from '../../../features/edit-goal';
 import { Button } from '../../../shared/ui/Button/Button';
-import { GoalSummary } from '../../../widgets/goal-details/ui/GoalSummary';
-import { TransactionsHistory } from '../../../widgets/goal-details/ui/TransactionsHistory';
+import {
+  GoalSummary,
+  TransactionsHistory,
+} from '../../../widgets/goal-details';
 import styles from './GoalDetailPage.module.scss';
 
 export const GoalDetailPage = () => {

@@ -1,9 +1,11 @@
 import { shallowEqual } from 'react-redux';
 
 import { useLedgerSelector } from '../../../entities/ledger';
-import { DeleteTransactionButton } from '../../../features/delete-transaction/ui/DeleteTransactionButton';
-import { selectTransactionsForGoal } from '../../../entities/transaction/model/selectors';
-import type { Transaction } from '../../../entities/transaction/model/types';
+import {
+  selectTransactionsForGoal,
+  type Transaction,
+} from '../../../entities/transaction';
+import { DeleteTransactionButton } from '../../../features/delete-transaction';
 import { formatDate } from '../../../shared/lib/date';
 import { formatRubles } from '../../../shared/lib/money';
 import styles from './TransactionsHistory.module.scss';

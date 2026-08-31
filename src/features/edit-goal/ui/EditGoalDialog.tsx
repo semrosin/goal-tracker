@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
+import { goalsActions, type Goal } from '../../../entities/goal';
 import { useLedgerDispatch } from '../../../entities/ledger';
-import { goalsActions } from '../../../entities/goal/model/goalSlice';
-import type { Goal } from '../../../entities/goal/model/types';
 import { isPositiveInteger } from '../../../shared/lib/validation';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';

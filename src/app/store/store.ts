@@ -4,7 +4,7 @@ import {
   decodeLedgerState,
   ledgerInitialState,
   type LedgerState,
-} from '../../entities/ledger/model/ledger';
+} from '../../entities/ledger';
 import { loadPersistedState, savePersistedState } from './persistence';
 import { rootReducer } from './rootReducer';
 

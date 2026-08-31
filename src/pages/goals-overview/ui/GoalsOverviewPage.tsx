@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { useLedgerSelector } from '../../../entities/ledger';
-import { CreateGoalDialog } from '../../../features/create-goal/ui/CreateGoalDialog';
+import { CreateGoalDialog } from '../../../features/create-goal';
 import { Button } from '../../../shared/ui/Button/Button';
-import { GoalsList } from '../../../widgets/goals-list/ui/GoalsList';
+import { GoalsList } from '../../../widgets/goals-list';
 import styles from './GoalsOverviewPage.module.scss';
 
 export const GoalsOverviewPage = () => {

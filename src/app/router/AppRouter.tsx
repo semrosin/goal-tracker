@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router';
 
-import { GoalDetailPage } from '../../pages/goal-detail/ui/GoalDetailPage';
-import { GoalsOverviewPage } from '../../pages/goals-overview/ui/GoalsOverviewPage';
+import { GoalDetailPage } from '../../pages/goal-detail';
+import { GoalsOverviewPage } from '../../pages/goals-overview';
 
 export const AppRouter = () => (
   <Routes>
