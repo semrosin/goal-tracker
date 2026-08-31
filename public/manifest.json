@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Трекер целей",
+  "name": "Трекер ваших финансовых целей",
+  "description": "Планируйте накопления и отслеживайте прогресс финансовых целей.",
   "icons": [
     {
       "src": "favicon.ico",

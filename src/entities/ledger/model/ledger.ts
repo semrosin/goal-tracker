@@ -105,7 +105,7 @@ export const hasNonNegativeBalancePrefixes = (
         ? transaction.amount
         : -transaction.amount);
 
-    if (next < 0) return false;
+    if (next < 0 || !Number.isSafeInteger(next)) return false;
 
     balances.set(transaction.goalId, next);
   }
