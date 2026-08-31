@@ -4,6 +4,7 @@ import { join } from 'path';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Dialog } from './Dialog';
+import styles from './Dialog.module.scss';
 
 describe('Dialog', () => {
   it('closes when Escape is pressed', () => {
@@ -41,6 +42,7 @@ describe('Dialog', () => {
     const closeButton = screen.getByRole('button', { name: 'Закрыть' });
 
     expect(closeButton).toHaveAccessibleName('Закрыть');
+    expect(closeButton).toHaveClass(styles.closeButton);
   });
 
   it('keeps the dedicated close target at least 44 by 44 pixels', () => {
