@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Dialog } from './Dialog';
@@ -37,7 +40,17 @@ describe('Dialog', () => {
 
     const closeButton = screen.getByRole('button', { name: 'Закрыть' });
 
-    expect(closeButton).toHaveClass('closeButton');
     expect(closeButton).toHaveAccessibleName('Закрыть');
+  });
+
+  it('keeps the dedicated close target at least 44 by 44 pixels', () => {
+    const source = readFileSync(join(__dirname, 'Dialog.module.scss'), 'utf8');
+    const closeButtonRules = source.match(
+      /\.closeButton\s*\{([\s\S]*?)\}/
+    )?.[1];
+
+    expect(closeButtonRules).toBeDefined();
+    expect(closeButtonRules).toMatch(/min-width\s*:\s*44px/);
+    expect(closeButtonRules).toMatch(/min-height\s*:\s*44px/);
   });
 });

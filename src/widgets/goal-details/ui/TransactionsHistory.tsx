@@ -59,7 +59,9 @@ export const TransactionsHistory = ({ goalId }: TransactionsHistoryProps) => {
                 <DeleteTransactionButton
                   ariaLabel={`Удалить ${
                     transactionDeleteLabels[transaction.type]
-                  } ${signedAmount} от ${formattedDate}`}
+                  } ${signedAmount} от ${formattedDate}, операция ${
+                    transaction.id
+                  }`}
                   transactionId={transaction.id}
                 />
               </li>

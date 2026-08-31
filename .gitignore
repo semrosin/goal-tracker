@@ -15,6 +15,7 @@
 # production
 /build
 /.worktrees/
+task-3-repair-report.md
 
 # misc
 .DS_Store

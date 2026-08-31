@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
@@ -18,6 +18,16 @@ const otherGoal = {
   targetAmount: 1_000,
   createdAt: '2026-01-01T00:00:00.000Z',
 };
+
+const deleteTransactionLabel = (
+  operation: 'пополнение' | 'снятие',
+  signedAmount: string,
+  createdAt: string,
+  transactionId: string
+) =>
+  `Удалить ${operation} ${signedAmount} от ${formatDate(
+    createdAt
+  )}, операция ${transactionId}`;
 
 describe('TransactionsHistory', () => {
   it('keeps its selected ledger stable for an unchanged store', () => {
@@ -106,9 +116,12 @@ describe('TransactionsHistory', () => {
 
     await userEvent.click(
       screen.getByRole('button', {
-        name: `Удалить пополнение +100 ₽ от ${formatDate(
-          '2026-01-01T00:00:00.000Z'
-        )}`,
+        name: deleteTransactionLabel(
+          'пополнение',
+          '+100 ₽',
+          '2026-01-01T00:00:00.000Z',
+          'deposit'
+        ),
       })
     );
 
@@ -153,9 +166,12 @@ describe('TransactionsHistory', () => {
 
     await userEvent.click(
       screen.getByRole('button', {
-        name: `Удалить пополнение +100 ₽ от ${formatDate(
-          '2026-01-01T00:00:00.000Z'
-        )}`,
+        name: deleteTransactionLabel(
+          'пополнение',
+          '+100 ₽',
+          '2026-01-01T00:00:00.000Z',
+          'd1'
+        ),
       })
     );
 
@@ -189,9 +205,12 @@ describe('TransactionsHistory', () => {
 
     await userEvent.click(
       screen.getByRole('button', {
-        name: `Удалить пополнение +100 ₽ от ${formatDate(
-          '2026-01-01T00:00:00.000Z'
-        )}`,
+        name: deleteTransactionLabel(
+          'пополнение',
+          '+100 ₽',
+          '2026-01-01T00:00:00.000Z',
+          'd1'
+        ),
       })
     );
     await userEvent.click(screen.getByRole('button', { name: 'Отмена' }));
@@ -233,9 +252,12 @@ describe('TransactionsHistory', () => {
 
     await userEvent.click(
       screen.getByRole('button', {
-        name: `Удалить пополнение +100 ₽ от ${formatDate(
-          '2026-01-01T00:00:00.000Z'
-        )}`,
+        name: deleteTransactionLabel(
+          'пополнение',
+          '+100 ₽',
+          '2026-01-01T00:00:00.000Z',
+          'd1'
+        ),
       })
     );
     await userEvent.click(
@@ -274,67 +296,144 @@ describe('TransactionsHistory', () => {
 
     expect(
       screen.getByRole('button', {
-        name: `Удалить пополнение +100 ₽ от ${formatDate(
-          '2026-01-01T00:00:00.000Z'
-        )}`,
+        name: deleteTransactionLabel(
+          'пополнение',
+          '+100 ₽',
+          '2026-01-01T00:00:00.000Z',
+          'd1'
+        ),
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', {
-        name: `Удалить снятие -50 ₽ от ${formatDate(
-          '2026-01-01T00:01:00.000Z'
-        )}`,
+        name: deleteTransactionLabel(
+          'снятие',
+          '-50 ₽',
+          '2026-01-01T00:01:00.000Z',
+          'w1'
+        ),
       })
     ).toBeInTheDocument();
   });
 
-  it('clears a blocked-deletion explanation after the dialog is closed and reopened', async () => {
+  it('keeps same-minute delete labels independently selectable', () => {
+    const firstTransaction = {
+      id: 'first',
+      goalId: 'g1',
+      type: 'deposit' as const,
+      amount: 100,
+      createdAt: '2026-01-01T00:00:00.000Z',
+    };
+    const secondTransaction = {
+      ...firstTransaction,
+      id: 'second',
+      createdAt: '2026-01-01T00:00:30.000Z',
+    };
+
     renderWithLedger(<TransactionsHistory goalId="g1" />, {
       goals: [goal],
-      transactions: [
-        {
-          id: 'd1',
-          goalId: 'g1',
-          type: 'deposit',
-          amount: 100,
-          createdAt: '2026-01-01T00:00:00.000Z',
-        },
-        {
-          id: 'w1',
-          goalId: 'g1',
-          type: 'withdrawal',
-          amount: 100,
-          createdAt: '2026-01-01T00:01:00.000Z',
-        },
-        {
-          id: 'd2',
-          goalId: 'g1',
-          type: 'deposit',
-          amount: 100,
-          createdAt: '2026-01-01T00:02:00.000Z',
-        },
-      ],
+      transactions: [firstTransaction, secondTransaction],
     });
 
-    const deleteButton = screen.getByRole('button', {
-      name: `Удалить пополнение +100 ₽ от ${formatDate(
-        '2026-01-01T00:00:00.000Z'
-      )}`,
-    });
-    await userEvent.click(deleteButton);
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Удалить', exact: true })
+    expect(formatDate(firstTransaction.createdAt)).toBe(
+      formatDate(secondTransaction.createdAt)
     );
-    expect(screen.getByRole('alert')).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Закрыть' }));
-    await userEvent.click(deleteButton);
+    const firstLabel = deleteTransactionLabel(
+      'пополнение',
+      '+100 ₽',
+      firstTransaction.createdAt,
+      firstTransaction.id
+    );
+    const secondLabel = deleteTransactionLabel(
+      'пополнение',
+      '+100 ₽',
+      secondTransaction.createdAt,
+      secondTransaction.id
+    );
 
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(firstLabel).not.toBe(secondLabel);
+    expect(
+      screen.getByRole('button', { name: firstLabel })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: secondLabel })
+    ).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Отмена' }));
-    await userEvent.click(deleteButton);
-
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    const rows = screen.getAllByRole('listitem');
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toHaveTextContent('+100');
+    expect(rows[1]).toHaveTextContent('+100');
+    expect(rows[0]).not.toHaveTextContent(firstTransaction.id);
+    expect(rows[1]).not.toHaveTextContent(secondTransaction.id);
   });
+
+  it.each(['Отмена', 'close button', 'Escape', 'backdrop'] as const)(
+    'clears a blocked-deletion explanation after closing with %s and reopening',
+    async (closeMechanism) => {
+      renderWithLedger(<TransactionsHistory goalId="g1" />, {
+        goals: [goal],
+        transactions: [
+          {
+            id: 'd1',
+            goalId: 'g1',
+            type: 'deposit',
+            amount: 100,
+            createdAt: '2026-01-01T00:00:00.000Z',
+          },
+          {
+            id: 'w1',
+            goalId: 'g1',
+            type: 'withdrawal',
+            amount: 100,
+            createdAt: '2026-01-01T00:01:00.000Z',
+          },
+          {
+            id: 'd2',
+            goalId: 'g1',
+            type: 'deposit',
+            amount: 100,
+            createdAt: '2026-01-01T00:02:00.000Z',
+          },
+        ],
+      });
+
+      const deleteButton = screen.getByRole('button', {
+        name: deleteTransactionLabel(
+          'пополнение',
+          '+100 ₽',
+          '2026-01-01T00:00:00.000Z',
+          'd1'
+        ),
+      });
+      await userEvent.click(deleteButton);
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Удалить', exact: true })
+      );
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+
+      const closeDialog = {
+        Отмена: () =>
+          userEvent.click(screen.getByRole('button', { name: 'Отмена' })),
+        'close button': () =>
+          userEvent.click(screen.getByRole('button', { name: 'Закрыть' })),
+        Escape: () => fireEvent.keyDown(document, { key: 'Escape' }),
+        backdrop: () => {
+          // The backdrop has no accessible role; use its real pointer target.
+          // eslint-disable-next-line testing-library/no-node-access
+          const backdrop = screen.getByRole('dialog').parentElement;
+          fireEvent.mouseDown(backdrop as HTMLElement);
+        },
+      }[closeMechanism];
+
+      await closeDialog();
+
+      expect(
+        screen.queryByRole('dialog', { name: 'Удалить операцию' })
+      ).not.toBeInTheDocument();
+      await userEvent.click(deleteButton);
+
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    }
+  );
 });
