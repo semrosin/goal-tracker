@@ -21,8 +21,24 @@ const focusableSelector = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
+const activeDialogIds: string[] = [];
+
+const registerDialog = (dialogId: string) => {
+  activeDialogIds.push(dialogId);
+
+  return {
+    isTopmost: () => activeDialogIds[activeDialogIds.length - 1] === dialogId,
+    unregister: () => {
+      const dialogIndex = activeDialogIds.lastIndexOf(dialogId);
+
+      if (dialogIndex !== -1) activeDialogIds.splice(dialogIndex, 1);
+    },
+  };
+};
+
 export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
   const titleId = useId();
+  const dialogId = useId();
   const dialogRef = useRef<HTMLElement>(null);
   const onCloseRef = useRef(onClose);
 
@@ -35,6 +51,7 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
 
     const opener = document.activeElement;
     const dialog = dialogRef.current;
+    const registration = registerDialog(dialogId);
     const closeButton = dialog?.querySelector<HTMLButtonElement>(
       '[aria-label="Закрыть"]'
     );
@@ -42,6 +59,8 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
     closeButton?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (!registration.isTopmost()) return;
+
       if (event.key === 'Escape') {
         onCloseRef.current();
         return;
@@ -84,10 +103,14 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
+      const wasTopmost = registration.isTopmost();
+      registration.unregister();
 
-      if (opener instanceof HTMLElement && opener.isConnected) opener.focus();
+      if (wasTopmost && opener instanceof HTMLElement && opener.isConnected) {
+        opener.focus();
+      }
     };
-  }, [isOpen]);
+  }, [dialogId, isOpen]);
 
   if (!isOpen) return null;
 
