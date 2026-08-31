@@ -95,6 +95,37 @@ const StackedDialogHarness = ({
   );
 };
 
+const InitiallyStackedDialogHarness = ({
+  onFirstClose,
+  onNestedClose,
+}: StackedDialogHarnessProps) => {
+  const [isFirstOpen, setIsFirstOpen] = useState(true);
+  const [isNestedOpen, setIsNestedOpen] = useState(true);
+
+  return (
+    <Dialog
+      isOpen={isFirstOpen}
+      title="Первый начальный диалог"
+      onClose={() => {
+        onFirstClose();
+        setIsFirstOpen(false);
+      }}
+    >
+      <button type="button">Первое начальное действие</button>
+      <Dialog
+        isOpen={isNestedOpen}
+        title="Вложенный начальный диалог"
+        onClose={() => {
+          onNestedClose();
+          setIsNestedOpen(false);
+        }}
+      >
+        <button type="button">Вложенное начальное действие</button>
+      </Dialog>
+    </Dialog>
+  );
+};
+
 const openDialog = () => {
   const opener = screen.getByRole('button', { name: 'Открыть диалог' });
   opener.focus();
@@ -237,6 +268,60 @@ describe('Dialog', () => {
         screen.queryByRole('dialog', { name: 'Первый диалог' })
       ).not.toBeInTheDocument();
       expect(firstOpener).toHaveFocus();
+    });
+
+    it('focuses and traps Tab in the nested dialog when both dialogs mount open', () => {
+      render(
+        <InitiallyStackedDialogHarness
+          onFirstClose={jest.fn()}
+          onNestedClose={jest.fn()}
+        />
+      );
+
+      const nestedDialog = screen.getByRole('dialog', {
+        name: 'Вложенный начальный диалог',
+      });
+      const nestedCloseButton = within(nestedDialog).getByRole('button', {
+        name: 'Закрыть',
+      });
+      const nestedAction = within(nestedDialog).getByRole('button', {
+        name: 'Вложенное начальное действие',
+      });
+      expect(nestedCloseButton).toHaveFocus();
+
+      nestedAction.focus();
+      fireEvent.keyDown(nestedAction, { key: 'Tab' });
+
+      expect(nestedCloseButton).toHaveFocus();
+    });
+
+    it('routes Escape only to the nested dialog when both dialogs mount open', () => {
+      const onFirstClose = jest.fn();
+      const onNestedClose = jest.fn();
+      render(
+        <InitiallyStackedDialogHarness
+          onFirstClose={onFirstClose}
+          onNestedClose={onNestedClose}
+        />
+      );
+
+      const nestedDialog = screen.getByRole('dialog', {
+        name: 'Вложенный начальный диалог',
+      });
+      const nestedAction = within(nestedDialog).getByRole('button', {
+        name: 'Вложенное начальное действие',
+      });
+      nestedAction.focus();
+      fireEvent.keyDown(document, { key: 'Escape' });
+
+      expect(onFirstClose).not.toHaveBeenCalled();
+      expect(onNestedClose).toHaveBeenCalledTimes(1);
+      expect(
+        screen.getByRole('dialog', { name: 'Первый начальный диалог' })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('dialog', { name: 'Вложенный начальный диалог' })
+      ).not.toBeInTheDocument();
     });
   });
 

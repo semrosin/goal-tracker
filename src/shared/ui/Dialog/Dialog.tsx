@@ -21,24 +21,48 @@ const focusableSelector = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(',');
 
-const activeDialogIds: string[] = [];
+type DialogRegistration = {
+  dialog: HTMLElement;
+};
 
-const registerDialog = (dialogId: string) => {
-  activeDialogIds.push(dialogId);
+const activeDialogs: DialogRegistration[] = [];
+
+const registerDialog = (dialog: HTMLElement) => {
+  const registration = { dialog };
+  const dialogIndex = activeDialogs.findIndex(({ dialog: activeDialog }) =>
+    Boolean(
+      dialog.compareDocumentPosition(activeDialog) &
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+  );
+
+  if (dialogIndex === -1) activeDialogs.push(registration);
+  else activeDialogs.splice(dialogIndex, 0, registration);
 
   return {
-    isTopmost: () => activeDialogIds[activeDialogIds.length - 1] === dialogId,
-    unregister: () => {
-      const dialogIndex = activeDialogIds.lastIndexOf(dialogId);
+    isTopmost: () => {
+      if (dialog.isConnected) {
+        const modalDialogs = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            '[role="dialog"][aria-modal="true"]'
+          )
+        );
 
-      if (dialogIndex !== -1) activeDialogIds.splice(dialogIndex, 1);
+        return modalDialogs[modalDialogs.length - 1] === dialog;
+      }
+
+      return activeDialogs[activeDialogs.length - 1] === registration;
+    },
+    unregister: () => {
+      const activeDialogIndex = activeDialogs.indexOf(registration);
+
+      if (activeDialogIndex !== -1) activeDialogs.splice(activeDialogIndex, 1);
     },
   };
 };
 
 export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
   const titleId = useId();
-  const dialogId = useId();
   const dialogRef = useRef<HTMLElement>(null);
   const onCloseRef = useRef(onClose);
 
@@ -51,17 +75,20 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
 
     const opener = document.activeElement;
     const dialog = dialogRef.current;
-    const registration = registerDialog(dialogId);
-    const closeButton = dialog?.querySelector<HTMLButtonElement>(
+    if (!dialog) return undefined;
+
+    const registration = registerDialog(dialog);
+    const closeButton = dialog.querySelector<HTMLButtonElement>(
       '[aria-label="Закрыть"]'
     );
 
-    closeButton?.focus();
+    if (registration.isTopmost()) closeButton?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!registration.isTopmost()) return;
 
       if (event.key === 'Escape') {
+        event.stopImmediatePropagation();
         onCloseRef.current();
         return;
       }
@@ -110,7 +137,7 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
         opener.focus();
       }
     };
-  }, [dialogId, isOpen]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
