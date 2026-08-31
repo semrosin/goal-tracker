@@ -74,6 +74,33 @@ test('falls back to an empty ledger for an invalid explicit preload', () => {
   expect(window.localStorage.getItem(STORAGE_KEY)).toBeNull();
 });
 
+test('falls back to an empty ledger when a persisted balance prefix overflows', () => {
+  window.localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({
+      goals: [goal],
+      transactions: [
+        {
+          id: 'maximum-safe-deposit',
+          goalId: 'g1',
+          type: 'deposit',
+          amount: Number.MAX_SAFE_INTEGER,
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+        {
+          id: 'overflowing-deposit',
+          goalId: 'g1',
+          type: 'deposit',
+          amount: 1,
+          createdAt: '2026-01-01T00:01:00.000Z',
+        },
+      ],
+    })
+  );
+
+  expect(createAppStore().getState()).toEqual({ goals: [], transactions: [] });
+});
+
 test('persists and reloads the original ledger after a rejected historical deletion', () => {
   const originalLedger: Transaction[] = [
     {
