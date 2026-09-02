@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { useState } from 'react';

@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -102,9 +104,7 @@ describe('CreateGoalDialog', () => {
       screen.getByRole('dialog', { name: 'Удалить цель' })
     ).toBeInTheDocument();
     expect(store.getState().goals).toHaveLength(1);
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Удалить', exact: true })
-    );
+    await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
 
     expect(store.getState().goals).toEqual([]);
     expect(store.getState().transactions).toEqual([]);

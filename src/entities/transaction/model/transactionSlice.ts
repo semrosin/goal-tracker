@@ -9,7 +9,7 @@ const transactionSlice = createSlice({
   initialState,
   reducers: {
     transactionCreated: (state, action: PayloadAction<Transaction>) => {
-      state.push(action.payload);
+      return [...state, action.payload];
     },
     transactionRemoved: (state, action: PayloadAction<string>) =>
       state.filter((transaction) => transaction.id !== action.payload),

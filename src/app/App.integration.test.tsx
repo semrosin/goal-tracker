@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import { render, screen, within } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router';

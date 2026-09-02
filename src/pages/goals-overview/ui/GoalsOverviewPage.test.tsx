@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import { screen } from '@testing-library/react';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';

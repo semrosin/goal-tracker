@@ -1,3 +1,5 @@
+/// <reference types="@testing-library/jest-dom" />
+
 import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -129,9 +131,7 @@ describe('TransactionsHistory', () => {
       screen.getByRole('dialog', { name: 'Удалить операцию' })
     ).toBeInTheDocument();
     expect(store.getState().transactions).toHaveLength(1);
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Удалить', exact: true })
-    );
+    await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
 
     expect(store.getState().transactions).toEqual([]);
   });
@@ -176,9 +176,7 @@ describe('TransactionsHistory', () => {
     );
 
     expect(store.getState().transactions).toHaveLength(3);
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Удалить', exact: true })
-    );
+    await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
 
     expect(
       store.getState().transactions.map((transaction) => transaction.id)
@@ -260,9 +258,7 @@ describe('TransactionsHistory', () => {
         ),
       })
     );
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Удалить', exact: true })
-    );
+    await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
 
     expect(
       screen.getByRole('dialog', { name: 'Удалить операцию' })
@@ -407,9 +403,7 @@ describe('TransactionsHistory', () => {
         ),
       });
       await userEvent.click(deleteButton);
-      await userEvent.click(
-        screen.getByRole('button', { name: 'Удалить', exact: true })
-      );
+      await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
       expect(screen.getByRole('alert')).toBeInTheDocument();
 
       const closeDialog = {
