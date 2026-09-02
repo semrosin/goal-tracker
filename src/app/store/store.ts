@@ -10,9 +10,9 @@ import { rootReducer } from './rootReducer';
 
 export const createAppStore = (preloadedState?: LedgerState) => {
   const canonicalPreloadedState =
-    preloadedState === undefined
-      ? loadPersistedState()
-      : (decodeLedgerState(preloadedState) ?? ledgerInitialState);
+    preloadedState
+      ? (decodeLedgerState(preloadedState) ?? ledgerInitialState)
+      : loadPersistedState();
 
   const appStore = configureStore({
     reducer: rootReducer,

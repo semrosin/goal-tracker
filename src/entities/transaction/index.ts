@@ -1,4 +1,4 @@
-export { calculateBalance, selectTransactionsForGoal } from './model/selectors';
+export { calculateBalance } from './model/selectors';
 export {
   transactionsActions,
   transactionsReducer,

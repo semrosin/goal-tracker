@@ -14,9 +14,3 @@ export const calculateBalance = (
           : -transaction.amount),
       0
     );
-
-export const selectTransactionsForGoal = (
-  transactions: Transaction[],
-  goalId: string
-): Transaction[] =>
-  transactions.filter((transaction) => transaction.goalId === goalId);

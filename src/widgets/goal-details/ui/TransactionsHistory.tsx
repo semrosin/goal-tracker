@@ -1,10 +1,7 @@
 import { shallowEqual } from 'react-redux';
 
 import { useLedgerSelector } from '../../../entities/ledger';
-import {
-  selectTransactionsForGoal,
-  type Transaction,
-} from '../../../entities/transaction';
+import { type Transaction } from '../../../entities/transaction';
 import { DeleteTransactionButton } from '../../../features/delete-transaction';
 import { formatDate } from '../../../shared/lib/date';
 import { formatRubles } from '../../../shared/lib/money';
@@ -26,7 +23,8 @@ const sortNewestFirst = (left: Transaction, right: Transaction): number =>
 export const TransactionsHistory = ({ goalId }: TransactionsHistoryProps) => {
   const transactions = useLedgerSelector(
     (state) =>
-      selectTransactionsForGoal(state.transactions, goalId)
+      state.transactions
+        .filter((transaction) => transaction.goalId === goalId)
         .slice()
         .sort(sortNewestFirst),
     shallowEqual

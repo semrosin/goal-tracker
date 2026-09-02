@@ -9,7 +9,7 @@ const goalSlice = createSlice({
   initialState,
   reducers: {
     goalCreated: (state, action: PayloadAction<Goal>) => {
-      state.push(action.payload);
+      state = [...state, action.payload];
     },
     goalUpdated: (state, action: PayloadAction<GoalUpdate>) => {
       const goal = state.find((item) => item.id === action.payload.id);
