@@ -135,8 +135,6 @@ const openDialog = () => {
 
   const closeButton = screen.getByRole('button', { name: 'Закрыть' });
 
-  expect(closeButton).toHaveFocus();
-
   return {
     backgroundControl: screen.getByRole('button', {
       name: 'Фоновое действие',
@@ -152,7 +150,9 @@ describe('Dialog', () => {
     it('moves focus from its opener to the close control when it opens', () => {
       render(<DialogHarness />);
 
-      openDialog();
+      const { closeButton } = openDialog();
+
+      expect(closeButton).toHaveFocus();
     });
 
     it('wraps Tab from the last dialog control to the first without reaching the background', () => {

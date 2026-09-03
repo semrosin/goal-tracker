@@ -414,7 +414,6 @@ describe('TransactionsHistory', () => {
         Escape: () => fireEvent.keyDown(document, { key: 'Escape' }),
         backdrop: () => {
           // The backdrop has no accessible role; use its real pointer target.
-          // eslint-disable-next-line testing-library/no-node-access
           const backdrop = screen.getByRole('dialog').parentElement;
           fireEvent.mouseDown(backdrop as HTMLElement);
         },
