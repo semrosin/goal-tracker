@@ -16,7 +16,7 @@
 }
 
 .button:focus-visible {
-  outline: 3px solid rgba(35, 100, 235, 0.4);
+  outline: 3px solid rgba(255, 90, 37, 0.45);
   outline-offset: 2px;
 }
 
@@ -26,12 +26,12 @@
 }
 
 .primary {
-  background: #2364eb;
+  background: #467ee5;
   color: #fff;
 }
 
 .primary:not(:disabled):hover {
-  background: #174bb8;
+  background: #3473c7;
 }
 
 .secondary {

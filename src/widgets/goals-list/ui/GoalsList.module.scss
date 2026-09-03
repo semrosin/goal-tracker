@@ -1,22 +1,27 @@
 .list {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #d8deea;
+  background: #202020;
+  border: 1px solid #363636;
   border-radius: 1rem;
-  color: #172033;
+  color: #f7f7f7;
   display: grid;
-  gap: 0.75rem;
-  padding: 1.25rem;
+  gap: 1rem;
+  min-height: 14rem;
+  padding: 1.75rem;
   text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
 }
 
 .card:hover {
-  border-color: #174bb8;
+  border-color: #00c0ff;
+  transform: translateY(-2px);
 }
 
 .card h2,
@@ -25,15 +30,33 @@
 }
 
 .card h2 {
-  font-size: 1.125rem;
+  font-size: 1.5rem;
 }
 
 .card p {
   font-variant-numeric: tabular-nums;
 }
 
+.card p:nth-of-type(1) {
+  align-self: end;
+  color: #00c0ff;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.card p:nth-of-type(2) {
+  color: #b7b7b7;
+  font-size: 0.875rem;
+}
+
 @media (max-width: 35rem) {
   .list {
     grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: 12rem;
+    padding: 1.25rem;
   }
 }

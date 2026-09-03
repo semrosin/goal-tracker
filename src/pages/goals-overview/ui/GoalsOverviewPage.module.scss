@@ -1,45 +1,138 @@
-.page {
-  margin: 0 auto;
-  max-width: 72rem;
-  padding: 2rem 1rem;
+.shell {
+  min-height: 100vh;
 }
 
-.header h1 {
-  color: #172033;
-  font-size: clamp(1.75rem, 5vw, 2.5rem);
-  line-height: 1.15;
-  margin: 0;
+.page {
+  margin: 0 auto;
+  max-width: 80rem;
+  padding: 2.5rem 1rem 4rem;
 }
 
 .header {
+  border-bottom: 1px solid #292929;
+  background: #121212;
+}
+
+.headerContent {
   align-items: center;
   display: flex;
-  gap: 1rem;
   justify-content: space-between;
+  margin: 0 auto;
+  max-width: 80rem;
+  min-height: 4.75rem;
+  padding: 0 1rem;
+}
+
+.logoSlot {
+  border: 3px solid #467ee5;
+  border-radius: 50%;
+  height: 2rem;
+  position: relative;
+  width: 2rem;
+}
+
+.logoSlot::after {
+  border: 2px solid #467ee5;
+  border-radius: inherit;
+  content: '';
+  inset: 0.3rem;
+  position: absolute;
+}
+
+.summary {
+  display: grid;
+  gap: 1rem;
+}
+
+.totalCard,
+.statCard {
+  border: 1px solid #353535;
+  border-radius: 1rem;
+  display: grid;
+  gap: 1rem;
+  min-height: 9.5rem;
+  padding: 1.25rem;
+}
+
+.totalCard {
+  background: linear-gradient(115deg, #554ee4, #467ee5);
+  border-color: #554ee4;
+}
+
+.statCard {
+  background: #202020;
+}
+
+.totalCard span,
+.statCard span {
+  color: #f2f2f2;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.totalCard strong,
+.statCard strong {
+  align-self: end;
+  color: #ffffff;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.statCard strong {
+  color: #00c0ff;
+}
+
+.statCard .completedCount {
+  color: #10b981;
 }
 
 .content {
-  margin-top: 1.5rem;
+  margin-top: 3.5rem;
+}
+
+.content h1 {
+  color: #f7f7f7;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
 }
 
 .emptyState {
-  color: #56627a;
+  color: #9e9e9e;
+  font-size: 1.125rem;
   margin: 0;
+  padding: clamp(5rem, 14vh, 10rem) 1rem 2rem;
+  text-align: center;
+}
+
+.createButton {
+  gap: 0.25rem;
 }
 
 @media (min-width: 48rem) {
   .page {
-    padding: 3rem 2rem;
+    padding: 3rem 2rem 5rem;
+  }
+
+  .headerContent {
+    padding: 0 2rem;
+  }
+
+  .summary {
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  }
+
+  .totalCard,
+  .statCard {
+    min-height: 10.5rem;
   }
 }
 
 @media (max-width: 35rem) {
-  .header {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
   .createButton {
-    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.875rem;
+    gap: 0.5rem;
   }
 }
