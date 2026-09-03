@@ -420,7 +420,8 @@ module.exports = {
   moduleNameMapper: {
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
     '^.+\\.(css|sass|scss)$': '<rootDir>/test/styleMock.cjs',
-    '^.+\\.(bmp|gif|jpe?g|png|svg|webp|avif|ico|woff2?|eot|ttf|otf)$': '<rootDir>/test/fileMock.cjs',
+    '^.+\\.(bmp|gif|jpe?g|png|svg|webp|avif|ico|woff2?|eot|ttf|otf)$':
+      '<rootDir>/test/fileMock.cjs',
   },
   resetMocks: true,
 };
@@ -672,17 +673,17 @@ If a verification step made no tracked change, do not create an empty commit.
 
 ### Spec coverage
 
-| Specification requirement | Implementing task |
-| --- | --- |
-| Completely remove `react-scripts`, `eject`, CRA ESLint inheritance, and unused `web-vitals` | Task 4 |
-| Separate common, development, and production webpack configs | Task 2 |
-| TS/TSX, global SCSS, CSS Modules, browser targets, assets, public files, and hashed production output | Task 2 |
-| HMR and deep-link fallback locally; deployment fallback documentation | Tasks 2 and 5 |
-| Direct Jest with jsdom, setup file, CSS identity mock, and aligned v30 runtime | Task 3 |
-| Direct TypeScript checks and ESLint configuration | Tasks 2 and 4 |
-| Preserve runtime route imports and package dependency hygiene | Task 2 and Task 4 |
-| Preserve application behavior during browser verification | Task 1 and Task 5 |
-| README commands and clean-install verification | Task 5 |
+| Specification requirement                                                                             | Implementing task |
+| ----------------------------------------------------------------------------------------------------- | ----------------- |
+| Completely remove `react-scripts`, `eject`, CRA ESLint inheritance, and unused `web-vitals`           | Task 4            |
+| Separate common, development, and production webpack configs                                          | Task 2            |
+| TS/TSX, global SCSS, CSS Modules, browser targets, assets, public files, and hashed production output | Task 2            |
+| HMR and deep-link fallback locally; deployment fallback documentation                                 | Tasks 2 and 5     |
+| Direct Jest with jsdom, setup file, CSS identity mock, and aligned v30 runtime                        | Task 3            |
+| Direct TypeScript checks and ESLint configuration                                                     | Tasks 2 and 4     |
+| Preserve runtime route imports and package dependency hygiene                                         | Task 2 and Task 4 |
+| Preserve application behavior during browser verification                                             | Task 1 and Task 5 |
+| README commands and clean-install verification                                                        | Task 5            |
 
 ### Placeholder scan
 
