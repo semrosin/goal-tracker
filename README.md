@@ -6,6 +6,8 @@ A pet project for tracking financial goals.
 
 Install dependencies and use the direct webpack/Jest toolchain:
 
+Node.js >=22.11.0 is required.
+
 ```text
 npm ci
 npm start
