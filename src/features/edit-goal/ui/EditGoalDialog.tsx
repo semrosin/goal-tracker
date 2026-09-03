@@ -33,8 +33,12 @@ export const EditGoalDialog = ({
   useEffect(() => {
     if (!isOpen) return;
 
+    // Reset the editable draft whenever this dialog opens for the supplied goal.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTitle(goal.title);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTargetAmount(String(goal.targetAmount));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setErrors({});
   }, [goal, isOpen]);
 

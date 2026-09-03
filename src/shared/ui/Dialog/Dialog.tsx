@@ -142,6 +142,8 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
   if (!isOpen) return null;
 
   return (
+    // The backdrop deliberately supports pointer-only dismissal; keyboard dismissal uses Escape.
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className={styles.backdrop}
       onMouseDown={(event) => {

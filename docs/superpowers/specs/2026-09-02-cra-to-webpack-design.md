@@ -111,7 +111,7 @@ direct Jest ownership:
   class names. Other style and static asset imports map to lightweight test
   mocks.
 - `npm test` runs the suite once for reliable CI behavior; `npm run
-  test:watch` provides interactive watch mode.
+test:watch` provides interactive watch mode.
 
 ### Linting and formatting
 
