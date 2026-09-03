@@ -11,14 +11,16 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-redux": "^9.3.0",
+    "react-router": "^7.18.3",
     "react-router-dom": "^7.18.3",
     "react-scripts": "5.0.1",
     "sass": "^1.103.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "webpack serve --config webpack/webpack.dev.cjs",
+    "build": "webpack --config webpack/webpack.prod.cjs",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -44,11 +46,32 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
     "@types/jest": "^30.0.0",
+    "@types/node": "^18.19.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
+    "autoprefixer": "^10.5.4",
+    "babel-loader": "^10.1.1",
+    "copy-webpack-plugin": "^14.0.0",
+    "css-loader": "^7.1.5",
+    "css-minimizer-webpack-plugin": "^8.0.0",
     "eslint": "^8.57.1",
+    "fork-ts-checker-webpack-plugin": "^9.1.0",
+    "html-webpack-plugin": "^5.6.8",
+    "mini-css-extract-plugin": "^2.10.2",
+    "postcss": "^8.5.26",
+    "postcss-loader": "^8.2.1",
     "prettier": "^3.9.6",
-    "typescript": "^4.9.5"
+    "sass-loader": "^17.0.1",
+    "style-loader": "^4.0.0",
+    "typescript": "^4.9.5",
+    "webpack": "^5.110.3",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.6",
+    "webpack-merge": "^6.0.1"
   }
 }
