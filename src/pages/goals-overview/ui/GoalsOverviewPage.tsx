@@ -57,8 +57,8 @@ export const GoalsOverviewPage = () => {
             <span>Активных целей</span>
             <strong>{activeGoals}</strong>
           </article>
-          <article aria-label="Закрытых целей" className={styles.statCard}>
-            <span>Закрытых целей</span>
+          <article aria-label="Выполненных целей" className={styles.statCard}>
+            <span>Выполненных целей</span>
             <strong className={styles.completedCount}>{completedGoals}</strong>
           </article>
         </section>

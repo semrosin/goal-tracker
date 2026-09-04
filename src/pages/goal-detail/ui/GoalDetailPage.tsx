@@ -42,7 +42,7 @@ export const GoalDetailPage = () => {
         <TransactionsHistory goalId={goal.id} />
         <div className={styles.actions}>
           <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
-            Изменить цель
+            Изменить
           </Button>
           <DeleteGoalButton goalId={goal.id} onDeleted={() => navigate('/')} />
         </div>

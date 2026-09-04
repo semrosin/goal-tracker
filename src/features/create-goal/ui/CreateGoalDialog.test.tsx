@@ -146,11 +146,9 @@ describe('CreateGoalDialog', () => {
       }
     );
 
-    await userEvent.click(screen.getByRole('button', { name: 'Удалить цель' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Удалить' }));
 
-    expect(
-      screen.getByRole('dialog', { name: 'Удалить цель' })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Удалить' })).toBeInTheDocument();
     expect(store.getState().goals).toHaveLength(1);
     await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
 

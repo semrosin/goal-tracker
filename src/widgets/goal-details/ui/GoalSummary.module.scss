@@ -1,18 +1,21 @@
 .summary {
-  background: #ffffff;
-  border: 1px solid #d9e1ef;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #141414;
+  border: 1px solid #353535;
   border-radius: 1rem;
-  padding: 1.25rem;
+  padding: 1.75rem;
 }
 .summary h2 {
-  color: #172033;
+  color: #f7f7f7;
   font-size: 1.25rem;
   margin: 0 0 1rem;
 }
 .description {
-  color: #5c6980;
+  color: #d3d8e0;
   line-height: 1.5;
-  margin: -0.5rem 0 1rem;
+  margin: 0.75rem 0 0.5rem;
   white-space: pre-wrap;
 }
 .amounts {
@@ -26,20 +29,30 @@
   flex-direction: column;
   gap: 0.25rem;
 }
+.amounts div:last-child {
+  align-items: flex-end;
+}
+.amounts div:last-child strong {
+  text-align: right;
+}
 .amounts span,
 .progressHeader span {
-  color: #5c6980;
+  color: #a7afbe;
   font-size: 0.875rem;
 }
 .amounts strong,
 .progressHeader strong {
-  color: #172033;
+  color: #f7f7f7;
   font-size: 1.125rem;
+}
+.amounts strong {
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .progress {
   display: grid;
   gap: 0.5rem;
-  margin-top: 1.25rem;
+  margin-top: 0.5rem;
 }
 .progressHeader {
   align-items: baseline;

@@ -1,11 +1,11 @@
 .panel {
-  background: #ffffff;
-  border: 1px solid #d9e1ef;
+  background: #141414;
+  border: 1px solid #353535;
   border-radius: 1rem;
   padding: 1.25rem;
 }
 .panel h2 {
-  color: #172033;
+  color: #f7f7f7;
   font-size: 1.25rem;
   margin: 0 0 1rem;
 }
@@ -28,4 +28,5 @@
 .selected:not(:disabled):hover {
   background: #174bb8;
   border-color: #174bb8;
+  color: #f3f6fc;
 }

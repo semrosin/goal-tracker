@@ -77,7 +77,7 @@ export const EditGoalDialog = ({
   };
 
   return (
-    <Dialog isOpen={isOpen} title="Изменить цель" onClose={onClose}>
+    <Dialog isOpen={isOpen} title="Изменить" onClose={onClose}>
       <form className={styles.form} noValidate onSubmit={handleSubmit}>
         <Field
           error={errors.title}

@@ -330,7 +330,7 @@ describe('Dialog', () => {
   it('closes when Escape is pressed', () => {
     const onClose = jest.fn();
     render(
-      <Dialog isOpen title="Удалить цель" onClose={onClose}>
+      <Dialog isOpen title="Удалить" onClose={onClose}>
         Это действие нельзя отменить.
       </Dialog>
     );
@@ -342,19 +342,20 @@ describe('Dialog', () => {
 
   it('provides a labelled modal dialog', () => {
     render(
-      <Dialog isOpen title="Удалить цель" onClose={jest.fn()}>
+      <Dialog isOpen title="Удалить" onClose={jest.fn()}>
         Это действие нельзя отменить.
       </Dialog>
     );
 
-    expect(
-      screen.getByRole('dialog', { name: 'Удалить цель' })
-    ).toHaveAttribute('aria-modal', 'true');
+    expect(screen.getByRole('dialog', { name: 'Удалить' })).toHaveAttribute(
+      'aria-modal',
+      'true'
+    );
   });
 
   it('keeps the accessible close name on its dedicated close target', () => {
     render(
-      <Dialog isOpen title="Удалить цель" onClose={jest.fn()}>
+      <Dialog isOpen title="Удалить" onClose={jest.fn()}>
         Это действие нельзя отменить.
       </Dialog>
     );

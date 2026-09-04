@@ -14,27 +14,31 @@ export const GoalSummary = ({ goal }: GoalSummaryProps) => {
   const progress = Math.round(calculateProgress(balance, goal.targetAmount));
   return (
     <section aria-labelledby="goal-summary-title" className={styles.summary}>
-      <h2 id="goal-summary-title">Состояние цели</h2>
-      {goal.description?.trim() === '' ||
-      goal.description === undefined ? null : (
-        <p className={styles.description}>{goal.description}</p>
-      )}
-      <div className={styles.amounts}>
-        <div>
-          <span>Накоплено</span>
-          <strong>{formatRubles(balance)}</strong>
-        </div>
-        <div>
-          <span>Цель</span>
-          <strong>{formatRubles(goal.targetAmount)}</strong>
-        </div>
+      <div className={styles.info}>
+        <h2 id="goal-summary-title">Состояние цели</h2>
+        {goal.description?.trim() === '' ||
+        goal.description === undefined ? null : (
+          <p className={styles.description}>{goal.description}</p>
+        )}
       </div>
-      <div className={styles.progress}>
-        <div className={styles.progressHeader}>
-          <span>Прогресс</span>
-          <strong>{progress}%</strong>
+      <div className={styles.state}>
+        <div className={styles.amounts}>
+          <div>
+            <span>Накоплено</span>
+            <strong>{formatRubles(balance)}</strong>
+          </div>
+          <div>
+            <span>Цель</span>
+            <strong>{formatRubles(goal.targetAmount)}</strong>
+          </div>
         </div>
-        <ProgressBar label={`Прогресс цели ${goal.title}`} value={progress} />
+        <div className={styles.progress}>
+          <div className={styles.progressHeader}>
+            <span>Прогресс</span>
+            <strong>{progress}%</strong>
+          </div>
+          <ProgressBar label={`Прогресс цели ${goal.title}`} value={progress} />
+        </div>
       </div>
     </section>
   );

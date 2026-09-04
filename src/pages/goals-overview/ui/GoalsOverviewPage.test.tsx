@@ -47,5 +47,5 @@ test('shows the savings summary above the goals list', () => {
 
   expect(screen.getByLabelText('Всего накоплено')).toHaveTextContent('800 ₽');
   expect(screen.getByLabelText('Активных целей')).toHaveTextContent('1');
-  expect(screen.getByLabelText('Закрытых целей')).toHaveTextContent('1');
+  expect(screen.getByLabelText('Выполненных целей')).toHaveTextContent('1');
 });

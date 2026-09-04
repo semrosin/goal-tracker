@@ -26,11 +26,11 @@ export const DeleteGoalButton = ({
   return (
     <>
       <Button onClick={() => setIsDialogOpen(true)} variant="danger">
-        Удалить цель
+        Удалить
       </Button>
       <Dialog
         isOpen={isDialogOpen}
-        title="Удалить цель"
+        title="Удалить"
         onClose={() => setIsDialogOpen(false)}
       >
         <p>Цель и все связанные операции будут удалены.</p>
