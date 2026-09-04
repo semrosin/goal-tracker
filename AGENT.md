@@ -75,7 +75,7 @@ type Transaction = {
 - Feature-Sliced Design (FSD)
 - React Router for the two MVP routes
 
-Use **Manrope** as the primary interface font, with a system sans-serif fallback.
+Use **Finlandica Text** as the primary interface font, with a system sans-serif fallback.
 
 ## FSD structure
 
