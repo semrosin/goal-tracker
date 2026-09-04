@@ -1,6 +1,6 @@
 /// <reference types="@testing-library/jest-dom" />
 
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
@@ -148,9 +148,12 @@ describe('CreateGoalDialog', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Удалить' }));
 
-    expect(screen.getByRole('dialog', { name: 'Удалить' })).toBeInTheDocument();
+    const dialog = screen.getByRole('dialog', { name: 'Удалить' });
+    expect(dialog).toBeInTheDocument();
     expect(store.getState().goals).toHaveLength(1);
-    await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
+    await userEvent.click(
+      within(dialog).getByRole('button', { name: /^Удалить$/ })
+    );
 
     expect(store.getState().goals).toEqual([]);
     expect(store.getState().transactions).toEqual([]);

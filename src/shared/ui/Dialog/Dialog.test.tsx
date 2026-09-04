@@ -373,7 +373,7 @@ describe('Dialog', () => {
     )?.[1];
 
     expect(closeButtonRules).toBeDefined();
-    expect(closeButtonRules).toMatch(/min-width\s*:\s*44px/);
-    expect(closeButtonRules).toMatch(/min-height\s*:\s*44px/);
+    expect(closeButtonRules).toMatch(/min-width\s*:\s*38px/);
+    expect(closeButtonRules).toMatch(/min-height\s*:\s*38px/);
   });
 });

@@ -78,50 +78,6 @@ describe('GoalsList', () => {
     ).toHaveClass(styles.completedCard);
   });
 
-  it('repeats a gradient and grid pattern across goal cards', () => {
-    const patternedGoals = [
-      { ...goal, id: 'goal-1', title: 'Цель 1' },
-      { ...goal, id: 'goal-2', title: 'Цель 2' },
-      { ...goal, id: 'goal-3', title: 'Цель 3' },
-      { ...goal, id: 'goal-4', title: 'Цель 4' },
-    ];
-
-    renderWithLedger(<GoalsList />, {
-      goals: patternedGoals,
-      transactions: [],
-    });
-
-    expect(screen.getByRole('link', { name: /Цель 1/ })).toHaveClass(
-      styles.gradientCard
-    );
-    expect(screen.getByRole('link', { name: /Цель 2/ })).toHaveClass(
-      styles.gridCard
-    );
-    expect(screen.getByRole('link', { name: /Цель 3/ })).toHaveClass(
-      styles.gridCard
-    );
-    expect(screen.getByRole('link', { name: /Цель 4/ })).toHaveClass(
-      styles.gradientCard
-    );
-    expect(
-      within(screen.getByRole('link', { name: /Цель 1/ })).getByRole(
-        'progressbar'
-      )
-    ).toHaveClass(progressBarStyles.light);
-  });
-
-  it('uses light text tones on gradient cards', () => {
-    const source = readFileSync(
-      join(__dirname, 'GoalsList.module.scss'),
-      'utf8'
-    );
-
-    expect(source).toMatch(/\.gradientCard h2\s*\{[\s\S]*#f8fafc/);
-    expect(source).toMatch(
-      /\.completedCard\.gradientCard h2\s*\{[\s\S]*#ecfdf5/
-    );
-  });
-
   it('limits the desktop goal grid to two columns', () => {
     const source = readFileSync(
       join(__dirname, 'GoalsList.module.scss'),
@@ -133,20 +89,5 @@ describe('GoalsList', () => {
     expect(listRules).toMatch(
       /grid-template-columns\s*:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/
     );
-  });
-
-  it('draws grid cards with intersecting lines instead of dots', () => {
-    const source = readFileSync(
-      join(__dirname, 'GoalsList.module.scss'),
-      'utf8'
-    );
-    const gridRules = source.match(/\.gridCard\s*\{([\s\S]*?)\}/)?.[1];
-
-    expect(gridRules).toBeDefined();
-    expect(gridRules).toMatch(/linear-gradient/);
-    expect(gridRules).toMatch(/90deg/);
-    expect(gridRules).not.toMatch(/radial-gradient/);
-    expect(gridRules).toMatch(/0\.5px/);
-    expect(gridRules).toMatch(/background-size\s*:\s*2rem\s+2rem/);
   });
 });

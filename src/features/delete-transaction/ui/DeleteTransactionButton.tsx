@@ -1,3 +1,4 @@
+import { Trash } from 'lucide-react';
 import { useState } from 'react';
 
 import {
@@ -49,9 +50,14 @@ export const DeleteTransactionButton = ({
 
   return (
     <>
-      <Button aria-label={ariaLabel} onClick={openDialog} variant="danger">
-        Удалить
-      </Button>
+      <button
+        aria-label={ariaLabel}
+        className={styles.iconButton}
+        onClick={openDialog}
+        type="button"
+      >
+        <Trash size={18} />
+      </button>
       <Dialog
         isOpen={isDialogOpen}
         title="Удалить операцию"

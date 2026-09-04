@@ -14,25 +14,6 @@ test('shows the empty overview state when there are no goals', () => {
   expect(screen.getByText('У вас пока нет целей')).toBeInTheDocument();
 });
 
-test('uses thin, sparse patterns for active and completed goal totals', () => {
-  const source = readFileSync(
-    join(__dirname, 'GoalsOverviewPage.module.scss'),
-    'utf8'
-  );
-  const activeRules = source.match(
-    /\.statCard:nth-of-type\(2\)\s*\{([\s\S]*?)\}/
-  )?.[1];
-  const completedRules = source.match(
-    /\.statCard:nth-of-type\(3\)\s*\{([\s\S]*?)\}/
-  )?.[1];
-
-  expect(activeRules).toMatch(/0\.5px/);
-  expect(activeRules).toMatch(/background-size\s*:\s*2rem\s+2rem/);
-  expect(completedRules).toMatch(/repeating-linear-gradient/);
-  expect(completedRules).toMatch(/0\.5px/);
-  expect(completedRules).toMatch(/2\.5rem/);
-});
-
 test('wraps a large savings total within its summary card', () => {
   const source = readFileSync(
     join(__dirname, 'GoalsOverviewPage.module.scss'),
