@@ -1,7 +1,6 @@
 import { useEffect, useId, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 
-import { Button } from '../Button/Button';
 import styles from './Dialog.module.scss';
 
 export type DialogProps = PropsWithChildren<{
@@ -162,14 +161,13 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
           <h2 className={styles.title} id={titleId}>
             {title}
           </h2>
-          <Button
+          <button
             aria-label="Закрыть"
             className={styles.closeButton}
             onClick={onClose}
-            variant="secondary"
           >
             ×
-          </Button>
+          </button>
         </div>
         <div className={styles.content}>{children}</div>
       </section>

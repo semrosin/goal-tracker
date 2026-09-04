@@ -8,7 +8,7 @@
   font-weight: 700;
   justify-content: center;
   min-height: 44px;
-  padding: 0.65rem 1rem;
+  padding: 0.75rem 1rem;
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
@@ -26,31 +26,34 @@
 }
 
 .primary {
-  background: #467ee5;
-  color: #fff;
+  background: #20253c;
+  color: #5c73e6;
 }
 
 .primary:not(:disabled):hover {
-  background: #3473c7;
+  background: rgba(92, 115, 230, 0.9);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .secondary {
-  background: #191f30;
-  color: #f3f6fc;
+  background: #151827;
+  border: 1px solid #1a2133;
+  color: #ced1d8;
 }
 
 .secondary:not(:disabled):hover {
-  background: #d0d5df;
+  background: rgba(255, 255, 255, 0.9);
   color: #1b2944;
 }
 
 .danger {
-  background: #c93636;
-  color: #fff;
+  background: rgba(201, 54, 54, 0.2);
+  color: rgba(201, 54, 54, 0.9);
 }
 
 .danger:not(:disabled):hover {
   background: #a92424;
+  color: #f0f0f0;
 }
 
 .fullWidth {

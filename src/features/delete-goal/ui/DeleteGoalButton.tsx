@@ -4,6 +4,7 @@ import { goalsActions } from '../../../entities/goal';
 import { useLedgerDispatch } from '../../../entities/ledger';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
+import styles from './DeleteGoalButton.module.scss';
 
 type DeleteGoalButtonProps = {
   goalId: string;
@@ -34,7 +35,7 @@ export const DeleteGoalButton = ({
         onClose={() => setIsDialogOpen(false)}
       >
         <p>Цель и все связанные операции будут удалены.</p>
-        <div>
+        <div className={styles.actions}>
           <Button onClick={() => setIsDialogOpen(false)} variant="secondary">
             Отмена
           </Button>

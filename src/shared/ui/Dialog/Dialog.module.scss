@@ -39,6 +39,14 @@
   min-height: 38px;
   min-width: 38px;
   padding: 0.1rem 0.55rem;
+  background: none;
+  border: none;
+}
+
+.closeButton:hover {
+  background: #353535;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .content {

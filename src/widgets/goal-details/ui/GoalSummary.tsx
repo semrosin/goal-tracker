@@ -5,15 +5,23 @@ import { formatRubles } from '../../../shared/lib/money';
 import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import styles from './GoalSummary.module.scss';
 
-type GoalSummaryProps = { goal: Goal };
+type GoalSummaryProps = { goal: Goal; isCompleted?: boolean };
 
-export const GoalSummary = ({ goal }: GoalSummaryProps) => {
+export const GoalSummary = ({
+  goal,
+  isCompleted = false,
+}: GoalSummaryProps) => {
   const balance = useLedgerSelector((state) =>
     calculateBalance(goal.id, state.transactions)
   );
   const progress = Math.round(calculateProgress(balance, goal.targetAmount));
   return (
-    <section aria-labelledby="goal-summary-title" className={styles.summary}>
+    <section
+      aria-labelledby="goal-summary-title"
+      className={`${styles.summary} ${
+        isCompleted ? styles.completedSurface : styles.activeSurface
+      }`}
+    >
       <div className={styles.info}>
         <h2 id="goal-summary-title">Описание</h2>
         {goal.description?.trim() === '' ||

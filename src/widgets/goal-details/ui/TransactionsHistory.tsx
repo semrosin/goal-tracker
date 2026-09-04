@@ -7,7 +7,7 @@ import { formatDate } from '../../../shared/lib/date';
 import { formatRubles } from '../../../shared/lib/money';
 import styles from './TransactionsHistory.module.scss';
 
-type TransactionsHistoryProps = { goalId: string };
+type TransactionsHistoryProps = { goalId: string; isCompleted?: boolean };
 const transactionLabels: Record<Transaction['type'], string> = {
   deposit: 'Пополнение',
   withdrawal: 'Снятие',
@@ -20,7 +20,10 @@ const sortNewestFirst = (left: Transaction, right: Transaction): number =>
   right.createdAt.localeCompare(left.createdAt) ||
   right.id.localeCompare(left.id);
 
-export const TransactionsHistory = ({ goalId }: TransactionsHistoryProps) => {
+export const TransactionsHistory = ({
+  goalId,
+  isCompleted = false,
+}: TransactionsHistoryProps) => {
   const transactions = useLedgerSelector(
     (state) =>
       state.transactions
@@ -32,7 +35,9 @@ export const TransactionsHistory = ({ goalId }: TransactionsHistoryProps) => {
   return (
     <section
       aria-labelledby="transactions-history-title"
-      className={styles.panel}
+      className={`${styles.panel} ${
+        isCompleted ? styles.completedSurface : styles.activeSurface
+      }`}
     >
       <h2 id="transactions-history-title">История операций</h2>
       {transactions.length === 0 ? (

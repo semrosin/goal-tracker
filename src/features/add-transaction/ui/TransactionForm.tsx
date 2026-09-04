@@ -14,12 +14,15 @@ import { Button } from '../../../shared/ui/Button/Button';
 import { Field } from '../../../shared/ui/Field/Field';
 import styles from './TransactionForm.module.scss';
 
-type TransactionFormProps = { goalId: string };
+type TransactionFormProps = { goalId: string; isCompleted?: boolean };
 
 const invalidAmountMessage = 'Укажите положительную целую сумму';
 const overBalanceMessage = 'Нельзя снять больше, чем накоплено';
 
-export const TransactionForm = ({ goalId }: TransactionFormProps) => {
+export const TransactionForm = ({
+  goalId,
+  isCompleted = false,
+}: TransactionFormProps) => {
   const dispatch = useLedgerDispatch();
   const balance = useLedgerSelector((state) =>
     calculateBalance(goalId, state.transactions)
@@ -61,7 +64,12 @@ export const TransactionForm = ({ goalId }: TransactionFormProps) => {
   };
 
   return (
-    <section aria-labelledby="transaction-form-title" className={styles.panel}>
+    <section
+      aria-labelledby="transaction-form-title"
+      className={`${styles.panel} ${
+        isCompleted ? styles.completedSurface : styles.activeSurface
+      }`}
+    >
       <h2 id="transaction-form-title">Добавить операцию</h2>
       <form className={styles.form} noValidate onSubmit={handleSubmit}>
         <div

@@ -1,8 +1,10 @@
+import { ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 
 import { selectGoalById } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
+import { calculateBalance } from '../../../entities/transaction';
 import { TransactionForm } from '../../../features/add-transaction';
 import { DeleteGoalButton } from '../../../features/delete-goal';
 import { EditGoalDialog } from '../../../features/edit-goal';
@@ -20,26 +22,33 @@ export const GoalDetailPage = () => {
   const goal = useLedgerSelector((state) =>
     selectGoalById(state.goals, id ?? '')
   );
+  const balance = useLedgerSelector((state) =>
+    calculateBalance(id ?? '', state.transactions)
+  );
 
   if (goal === undefined) {
     return (
       <main className={styles.page}>
         <h1>Цель не найдена</h1>
-        <Link to="/">К списку целей</Link>
+        <Link to="/">
+          <ChevronLeft size={16} />К списку целей
+        </Link>
       </main>
     );
   }
 
+  const isCompleted = balance >= goal.targetAmount;
+
   return (
     <main className={styles.page}>
       <Link className={styles.backLink} to="/">
-        К списку целей
+        <ChevronLeft size={16} />К списку целей
       </Link>
       <h1>{goal.title}</h1>
       <div className={styles.layout}>
-        <GoalSummary goal={goal} />
-        <TransactionForm goalId={goal.id} />
-        <TransactionsHistory goalId={goal.id} />
+        <GoalSummary goal={goal} isCompleted={isCompleted} />
+        <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
+        <TransactionsHistory goalId={goal.id} isCompleted={isCompleted} />
         <div className={styles.actions}>
           <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
             Изменить
