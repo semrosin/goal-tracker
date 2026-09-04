@@ -13,16 +13,29 @@ export const GoalsList = () => {
 
   return (
     <div className={styles.list}>
-      {goals.map((goal) => {
+      {goals.map((goal, index) => {
         const balance = calculateBalance(goal.id, transactions);
         const progress = calculateProgress(balance, goal.targetAmount);
+        const isCompleted = balance >= goal.targetAmount;
+        const isGradient = index % 3 === 0;
+        const visualStyle = isGradient ? styles.gradientCard : styles.gridCard;
 
         return (
-          <Link key={goal.id} className={styles.card} to={`/goals/${goal.id}`}>
-            <h2>{goal.title}</h2>
+          <Link
+            key={goal.id}
+            className={`${styles.card} ${visualStyle} ${isCompleted ? styles.completedCard : ''}`}
+            to={`/goals/${goal.id}`}
+          >
+            <div className={styles.cardHeader}>
+              <h2>{goal.title}</h2>
+              {isCompleted ? (
+                <span className={styles.status}>Выполнено</span>
+              ) : null}
+            </div>
             <p>{progress.toFixed(0)}%</p>
             <ProgressBar
               label={`Прогресс цели ${goal.title}`}
+              tone={isGradient ? 'light' : isCompleted ? 'success' : 'default'}
               value={progress}
             />
             <p>

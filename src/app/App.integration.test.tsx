@@ -52,7 +52,7 @@ describe('goal routes', () => {
     expect(
       screen.getByRole('heading', { name: 'Новый автомобиль' })
     ).toBeInTheDocument();
-    const summary = screen.getByRole('region', { name: 'Состояние цели' });
+    const summary = screen.getByRole('region', { name: 'Описание' });
     expect(within(summary).getByText(balancePattern)).toBeInTheDocument();
 
     view.unmount();

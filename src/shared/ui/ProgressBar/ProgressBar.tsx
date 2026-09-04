@@ -3,6 +3,7 @@ import styles from './ProgressBar.module.scss';
 export type ProgressBarProps = {
   value: number;
   label?: string;
+  tone?: 'default' | 'success' | 'light';
 };
 
 const clampProgress = (value: number): number => {
@@ -12,6 +13,7 @@ const clampProgress = (value: number): number => {
 
 export const ProgressBar = ({
   label = 'Прогресс цели',
+  tone = 'default',
   value,
 }: ProgressBarProps) => {
   const progress = clampProgress(value);
@@ -22,7 +24,7 @@ export const ProgressBar = ({
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={progress}
-      className={styles.track}
+      className={`${styles.track} ${tone === 'default' ? '' : styles[tone]}`}
       role="progressbar"
     >
       <div className={styles.value} style={{ width: `${progress}%` }} />
