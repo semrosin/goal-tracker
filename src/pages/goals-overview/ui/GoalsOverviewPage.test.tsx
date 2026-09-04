@@ -1,5 +1,8 @@
 /// <reference types="@testing-library/jest-dom" />
 
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { screen } from '@testing-library/react';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
@@ -9,6 +12,21 @@ test('shows the empty overview state when there are no goals', () => {
   renderWithLedger(<GoalsOverviewPage />);
 
   expect(screen.getByText('У вас пока нет целей')).toBeInTheDocument();
+});
+
+test('wraps a large savings total within its summary card', () => {
+  const source = readFileSync(
+    join(__dirname, 'GoalsOverviewPage.module.scss'),
+    'utf8'
+  );
+  const totalRules = source.match(
+    /\.totalCard strong\s*\{([\s\S]*?)\}/
+  )?.[1];
+
+  expect(totalRules).toBeDefined();
+  expect(totalRules).toMatch(/min-width\s*:\s*0/);
+  expect(totalRules).toMatch(/max-width\s*:\s*100%/);
+  expect(totalRules).toMatch(/overflow-wrap\s*:\s*anywhere/);
 });
 
 test('shows the savings summary above the goals list', () => {

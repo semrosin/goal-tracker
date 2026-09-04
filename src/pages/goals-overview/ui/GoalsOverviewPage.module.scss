@@ -64,6 +64,12 @@
   line-height: 1;
 }
 
+.totalCard strong {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .statCard strong {
   color: #65b3fc;
 }

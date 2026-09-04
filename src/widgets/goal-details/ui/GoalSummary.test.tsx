@@ -45,3 +45,11 @@ test('wraps a long amount within its grid cell', () => {
   expect(amountRules).toMatch(/max-width\s*:\s*100%/);
   expect(amountRules).toMatch(/overflow-wrap\s*:\s*anywhere/);
 });
+
+test('allows amount cells to shrink within the summary grid', () => {
+  const source = readFileSync(join(__dirname, 'GoalSummary.module.scss'), 'utf8');
+  const amountCellRules = source.match(/\.amounts div\s*\{([\s\S]*?)\}/)?.[1];
+
+  expect(amountCellRules).toBeDefined();
+  expect(amountCellRules).toMatch(/min-width\s*:\s*0/);
+});
