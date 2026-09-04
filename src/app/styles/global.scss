@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Finlandica+Text:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap');
+
+:root {
+  background: #101010;
+  color: #f7f7f7;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #101010;
+  color: #f7f7f7;
+  margin: 0;
+  font-family: 'Finlandica Text', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-family: 'Dela Gothic One', sans-serif;
+}

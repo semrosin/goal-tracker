@@ -1,0 +1,38 @@
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.label {
+  color: #f7f7f7;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-left: 0.25rem;
+}
+
+.input {
+  background: #1b1b1b;
+  border: 1px solid #414141;
+  border-radius: 10px;
+  color: #f7f7f7;
+  font: inherit;
+  min-height: 44px;
+  padding: 0.65rem 0.75rem;
+  width: 100%;
+}
+
+.input:focus {
+  border-color: #2364eb;
+  box-shadow: 0 0 0 3px rgba(35, 100, 235, 0.16);
+  outline: none;
+}
+
+.input[aria-invalid='true'] {
+  border-color: #c93636;
+}
+
+.error {
+  color: #a92424;
+  font-size: 0.85rem;
+  margin: 0;
+}

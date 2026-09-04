@@ -1,0 +1,153 @@
+.shell {
+  min-height: 100vh;
+}
+
+.page {
+  margin: 0 auto;
+  max-width: 80rem;
+  padding: 2.5rem 1rem 4rem;
+}
+
+.header {
+  border-bottom: 1px solid #292929;
+  background: #121212;
+}
+
+.headerContent {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 80rem;
+  min-height: 4.75rem;
+  padding: 0 1rem;
+}
+
+.summary {
+  display: grid;
+  gap: 1rem;
+}
+
+.totalCard,
+.statCard {
+  border: 1px solid #353535;
+  border-radius: 1rem;
+  display: grid;
+  gap: 1rem;
+  min-height: 9.5rem;
+  padding: 1.5rem;
+}
+
+.totalCard {
+  background: linear-gradient(115deg, #554ee4, #467ee5);
+  border-color: #554ee4;
+}
+
+.statCard {
+  background: #202020;
+}
+
+.summary > .statCard:nth-of-type(2) {
+  background-color: #202020;
+  background-image:
+    linear-gradient(rgba(112, 139, 165, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(112, 139, 165, 0.08) 1px, transparent 1px);
+  background-size: 2.5rem 2.5rem;
+  box-shadow: inset 0 0 16px 16px rgba(0, 0, 0, 0.151);
+}
+
+.summary > .statCard:nth-of-type(3) {
+  background-color: #202020;
+  background-image: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.08) 2%,
+    /* the color stripe begins */ transparent 2%,
+    /* after it is transparency */ transparent 50%,
+    /* the transparent gap until the next stripe */ rgba(16, 185, 129, 0.08) 50%,
+    /* the second colored stripe */ rgba(16, 185, 129, 0.08) 52%,
+    /* it ends here */ transparent 52% /* the rest is transparent */
+  );
+  background-size: 2.5rem 2.5rem;
+  box-shadow: inset 0 0 16px 16px rgba(0, 0, 0, 0.151);
+}
+
+.totalCard span,
+.statCard span {
+  color: #f2f2f2;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.totalCard strong,
+.statCard strong {
+  align-self: end;
+  color: #ffffff;
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.totalCard strong {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.statCard strong {
+  color: #5c73e6;
+}
+
+.statCard .completedCount {
+  color: #10b981;
+}
+
+.content {
+  margin-top: 3.5rem;
+}
+
+.content h1 {
+  color: #f7f7f7;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.15;
+  margin: 0 0 1.5rem;
+}
+
+.emptyState {
+  color: #9e9e9e;
+  font-size: 1.125rem;
+  margin: 0;
+  padding: clamp(3rem, 10vh, 6rem) 1rem 2rem;
+  text-align: center;
+}
+
+.createButton {
+  gap: 0.25rem;
+}
+
+@media (min-width: 48rem) {
+  .page {
+    padding: 3rem 2rem 5rem;
+  }
+
+  .headerContent {
+    padding: 0 2rem;
+  }
+
+  .summary {
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  }
+
+  .totalCard,
+  .statCard {
+    min-height: 10.5rem;
+  }
+}
+
+@media (max-width: 35rem) {
+  .createButton {
+    min-height: 2.75rem;
+    padding: 0.5rem 0.875rem;
+    gap: 0.5rem;
+  }
+}

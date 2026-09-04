@@ -1,0 +1,42 @@
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.descriptionField {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.descriptionField label {
+  color: #f7f7f7;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-left: 0.25rem;
+}
+
+.descriptionField textarea {
+  background: #1b1b1b;
+  border: 1px solid #414141;
+  border-radius: 10px;
+  color: #f7f7f7;
+  font: inherit;
+  min-height: 9rem;
+  padding: 0.65rem 0.75rem;
+  resize: vertical;
+  width: 100%;
+}
+
+.descriptionField textarea:focus {
+  border-color: #2364eb;
+  box-shadow: 0 0 0 3px rgba(35, 100, 235, 0.16);
+  outline: none;
+}
+
+.descriptionInput::placeholder {
+  font-size: 0.875rem;
+}
+
+.submitButton {
+  margin-top: 0.5rem;
+}
