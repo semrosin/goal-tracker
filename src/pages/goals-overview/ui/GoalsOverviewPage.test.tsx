@@ -8,7 +8,7 @@ import { GoalsOverviewPage } from './GoalsOverviewPage';
 test('shows the empty overview state when there are no goals', () => {
   renderWithLedger(<GoalsOverviewPage />);
 
-  expect(screen.getByText('Пока нет целей')).toBeInTheDocument();
+  expect(screen.getByText('У вас пока нет целей')).toBeInTheDocument();
 });
 
 test('shows the savings summary above the goals list', () => {

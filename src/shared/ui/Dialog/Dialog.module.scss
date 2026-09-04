@@ -10,13 +10,13 @@
 }
 
 .dialog {
-  background: #fff;
+  background: #101010;
   border-radius: 16px;
   box-shadow: 0 20px 48px rgba(17, 29, 51, 0.24);
   max-height: calc(100vh - 2rem);
   max-width: 32rem;
   overflow: auto;
-  padding: 1.25rem;
+  padding: 2.25rem 2rem;
   width: 100%;
 }
 
@@ -28,20 +28,20 @@
 }
 
 .title {
-  color: #172033;
-  font-size: 1.25rem;
-  margin: 0;
+  color: #fff;
+  font-size: 1.65rem;
+  margin: 0 0 0.675rem 0;
 }
 
 .closeButton {
   flex: 0 0 auto;
   font-size: 1.35rem;
-  min-height: 44px;
-  min-width: 44px;
+  min-height: 38px;
+  min-width: 38px;
   padding: 0.1rem 0.55rem;
 }
 
 .content {
-  color: #394863;
+  color: #f7f7f7;
   margin-top: 1rem;
 }

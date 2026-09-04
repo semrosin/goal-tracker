@@ -44,9 +44,19 @@ const decodeGoal = (value: unknown): Goal | undefined => {
     return undefined;
   }
 
+  if (
+    candidate.description !== undefined &&
+    typeof candidate.description !== 'string'
+  ) {
+    return undefined;
+  }
+
   return {
     id: candidate.id,
     title: candidate.title,
+    ...(candidate.description === undefined
+      ? {}
+      : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
     createdAt: candidate.createdAt,
   };
@@ -65,9 +75,19 @@ const decodeGoalUpdate = (value: unknown): GoalUpdate | undefined => {
     return undefined;
   }
 
+  if (
+    candidate.description !== undefined &&
+    typeof candidate.description !== 'string'
+  ) {
+    return undefined;
+  }
+
   return {
     id: candidate.id,
     title: candidate.title,
+    ...(candidate.description === undefined
+      ? {}
+      : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
   };
 };
@@ -158,6 +178,9 @@ export const serializeLedgerState = (state: LedgerState): LedgerState => ({
   goals: state.goals.map((goal) => ({
     id: goal.id,
     title: goal.title,
+    ...(goal.description === undefined
+      ? {}
+      : { description: goal.description }),
     targetAmount: goal.targetAmount,
     createdAt: goal.createdAt,
   })),

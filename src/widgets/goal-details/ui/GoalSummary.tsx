@@ -15,6 +15,10 @@ export const GoalSummary = ({ goal }: GoalSummaryProps) => {
   return (
     <section aria-labelledby="goal-summary-title" className={styles.summary}>
       <h2 id="goal-summary-title">Состояние цели</h2>
+      {goal.description?.trim() === '' ||
+      goal.description === undefined ? null : (
+        <p className={styles.description}>{goal.description}</p>
+      )}
       <div className={styles.amounts}>
         <div>
           <span>Накоплено</span>

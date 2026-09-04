@@ -27,6 +27,7 @@ export const CreateGoalDialog = ({
 }: CreateGoalDialogProps) => {
   const dispatch = useLedgerDispatch();
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -36,10 +37,10 @@ export const CreateGoalDialog = ({
     const normalizedTitle = title.trim();
     const amount = Number(targetAmount);
     const nextErrors: FormErrors = {
-      title: normalizedTitle.length === 0 ? 'Введите название цели' : undefined,
+      title: normalizedTitle.length === 0 ? 'Укажите название цели' : undefined,
       targetAmount: isPositiveInteger(amount)
         ? undefined
-        : 'Укажите положительную целую сумму',
+        : 'Сумма должна быть положительным целым числом',
     };
 
     if (
@@ -54,11 +55,13 @@ export const CreateGoalDialog = ({
       goalsActions.goalCreated({
         id: createId('goal'),
         title: normalizedTitle,
+        description: description.trim(),
         targetAmount: amount,
         createdAt: createTimestamp(),
       })
     );
     setTitle('');
+    setDescription('');
     setTargetAmount('');
     setErrors({});
     onClose();
@@ -76,10 +79,21 @@ export const CreateGoalDialog = ({
         <Field
           error={errors.targetAmount}
           inputMode="numeric"
-          label="Целевая сумма"
+          label="Сумма"
           onChange={(event) => setTargetAmount(event.target.value)}
           value={targetAmount}
         />
+        <div className={styles.descriptionField}>
+          <label htmlFor="goal-description">Описание</label>
+          <textarea
+            className={styles.descriptionInput}
+            id="goal-description"
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Напишите, зачем вам эта цель и о чём вы мечтаете"
+            rows={3}
+            value={description}
+          />
+        </div>
         <Button className={styles.submitButton} fullWidth type="submit">
           Создать
         </Button>

@@ -9,6 +9,12 @@
   font-size: 1.25rem;
   margin: 0 0 1rem;
 }
+.description {
+  color: #5c6980;
+  line-height: 1.5;
+  margin: -0.5rem 0 1rem;
+  white-space: pre-wrap;
+}
 .amounts {
   display: grid;
   gap: 0.75rem;

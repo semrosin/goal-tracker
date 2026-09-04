@@ -538,7 +538,7 @@ it('creates a new goal with no transaction', async () => {
     <CreateGoalDialog isOpen onClose={jest.fn()} />
   );
   await userEvent.type(screen.getByLabelText('Название'), 'Отпуск');
-  await userEvent.type(screen.getByLabelText('Целевая сумма'), '100000');
+  await userEvent.type(screen.getByLabelText('Сумма'), '100000');
   await userEvent.click(screen.getByRole('button', { name: 'Создать' }));
   expect(store.getState().goals).toHaveLength(1);
   expect(store.getState().transactions).toEqual([]);

@@ -7,6 +7,7 @@ import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLed
 import { DeleteGoalButton } from '../../delete-goal/ui/DeleteGoalButton';
 import { EditGoalDialog } from '../../edit-goal/ui/EditGoalDialog';
 import { CreateGoalDialog } from './CreateGoalDialog';
+import styles from './CreateGoalDialog.module.scss';
 
 const existingGoal = {
   id: 'goal-1',
@@ -23,7 +24,7 @@ describe('CreateGoalDialog', () => {
     );
 
     await userEvent.type(screen.getByLabelText('Название'), '  Отпуск  ');
-    await userEvent.type(screen.getByLabelText('Целевая сумма'), '100000');
+    await userEvent.type(screen.getByLabelText('Сумма'), '100000');
     await userEvent.click(screen.getByRole('button', { name: 'Создать' }));
 
     expect(store.getState().goals).toHaveLength(1);
@@ -35,10 +36,32 @@ describe('CreateGoalDialog', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  it('saves an optional description for a new goal', async () => {
+    const { store } = renderWithLedger(
+      <CreateGoalDialog isOpen onClose={jest.fn()} />
+    );
+
+    await userEvent.type(screen.getByLabelText('Название'), 'Отпуск');
+    const description = screen.getByLabelText('Описание');
+
+    expect(description).toHaveClass(styles.descriptionInput);
+    expect(description).toHaveAttribute(
+      'placeholder',
+      'Напишите, зачем вам эта цель и о чём вы мечтаете'
+    );
+    await userEvent.type(description, 'Хочу увидеть море и отдохнуть.');
+    await userEvent.type(screen.getByLabelText('Сумма'), '100000');
+    await userEvent.click(screen.getByRole('button', { name: 'Создать' }));
+
+    expect(store.getState().goals).toMatchObject([
+      { description: 'Хочу увидеть море и отдохнуть.' },
+    ]);
+  });
+
   it.each([
-    [' ', '100000', 'Введите название цели'],
-    ['Отпуск', '0', 'Укажите положительную целую сумму'],
-    ['Отпуск', '1000.5', 'Укажите положительную целую сумму'],
+    [' ', '100000', 'Укажите название цели'],
+    ['Отпуск', '0', 'Сумма должна быть положительным целым числом'],
+    ['Отпуск', '1000.5', 'Сумма должна быть положительным целым числом'],
   ])(
     'keeps the dialog open when %p and %p are invalid',
     async (title, targetAmount, error) => {
@@ -48,10 +71,7 @@ describe('CreateGoalDialog', () => {
       );
 
       await userEvent.type(screen.getByLabelText('Название'), title);
-      await userEvent.type(
-        screen.getByLabelText('Целевая сумма'),
-        targetAmount
-      );
+      await userEvent.type(screen.getByLabelText('Сумма'), targetAmount);
       await userEvent.click(screen.getByRole('button', { name: 'Создать' }));
 
       expect(screen.getByRole('alert')).toHaveTextContent(error);
@@ -71,12 +91,40 @@ describe('CreateGoalDialog', () => {
 
     await userEvent.clear(screen.getByLabelText('Название'));
     await userEvent.type(screen.getByLabelText('Название'), '  Поездка  ');
-    await userEvent.clear(screen.getByLabelText('Целевая сумма'));
-    await userEvent.type(screen.getByLabelText('Целевая сумма'), '120000');
+    await userEvent.clear(screen.getByLabelText('Сумма'));
+    await userEvent.type(screen.getByLabelText('Сумма'), '120000');
     await userEvent.click(screen.getByRole('button', { name: 'Сохранить' }));
 
     expect(store.getState().goals).toEqual([
-      { ...existingGoal, title: 'Поездка', targetAmount: 120_000 },
+      {
+        ...existingGoal,
+        title: 'Поездка',
+        description: '',
+        targetAmount: 120_000,
+      },
+    ]);
+  });
+
+  it('updates a goal description', async () => {
+    const goalWithDescription = {
+      ...existingGoal,
+      description: 'Накопить на долгожданный отпуск.',
+    };
+    const { store } = renderWithLedger(
+      <EditGoalDialog goal={goalWithDescription} isOpen onClose={jest.fn()} />,
+      {
+        goals: [goalWithDescription],
+        transactions: [],
+      }
+    );
+
+    const description = screen.getByLabelText('Описание');
+    await userEvent.clear(description);
+    await userEvent.type(description, 'Хочу увидеть океан.');
+    await userEvent.click(screen.getByRole('button', { name: 'Сохранить' }));
+
+    expect(store.getState().goals).toMatchObject([
+      { description: 'Хочу увидеть океан.' },
     ]);
   });
 

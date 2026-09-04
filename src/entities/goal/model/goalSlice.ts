@@ -15,6 +15,9 @@ const goalSlice = createSlice({
       const goal = state.find((item) => item.id === action.payload.id);
       if (goal !== undefined) {
         goal.title = action.payload.title;
+        if (action.payload.description !== undefined) {
+          goal.description = action.payload.description;
+        }
         goal.targetAmount = action.payload.targetAmount;
       }
     },

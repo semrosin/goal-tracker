@@ -6,6 +6,7 @@ import {
   decodeLedgerState,
   hasNonNegativeBalancePrefixes,
   ledgerReducer,
+  serializeLedgerState,
   type LedgerState,
 } from './ledger';
 
@@ -178,4 +179,18 @@ test('rejects a persisted snapshot whose running prefix exceeds the safe range',
       ],
     })
   ).toBeUndefined();
+});
+
+test('preserves a goal description in a persisted snapshot', () => {
+  const state: LedgerState = {
+    goals: [
+      {
+        ...goal,
+        description: 'Хочу увидеть океан.',
+      },
+    ],
+    transactions: [],
+  };
+
+  expect(decodeLedgerState(serializeLedgerState(state))).toEqual(state);
 });

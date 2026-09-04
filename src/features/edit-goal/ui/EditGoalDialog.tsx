@@ -27,6 +27,7 @@ export const EditGoalDialog = ({
 }: EditGoalDialogProps) => {
   const dispatch = useLedgerDispatch();
   const [title, setTitle] = useState(goal.title);
+  const [description, setDescription] = useState(goal.description ?? '');
   const [targetAmount, setTargetAmount] = useState(String(goal.targetAmount));
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -36,6 +37,8 @@ export const EditGoalDialog = ({
     // Reset the editable draft whenever this dialog opens for the supplied goal.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTitle(goal.title);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDescription(goal.description ?? '');
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTargetAmount(String(goal.targetAmount));
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -66,6 +69,7 @@ export const EditGoalDialog = ({
       goalsActions.goalUpdated({
         id: goal.id,
         title: normalizedTitle,
+        description: description.trim(),
         targetAmount: amount,
       })
     );
@@ -81,10 +85,21 @@ export const EditGoalDialog = ({
           onChange={(event) => setTitle(event.target.value)}
           value={title}
         />
+        <div className={styles.descriptionField}>
+          <label htmlFor="goal-description">Описание</label>
+          <textarea
+            className={styles.descriptionInput}
+            id="goal-description"
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Напишите, зачем вам эта цель и о чём вы мечтаете"
+            rows={3}
+            value={description}
+          />
+        </div>
         <Field
           error={errors.targetAmount}
           inputMode="numeric"
-          label="Целевая сумма"
+          label="Сумма"
           onChange={(event) => setTargetAmount(event.target.value)}
           value={targetAmount}
         />

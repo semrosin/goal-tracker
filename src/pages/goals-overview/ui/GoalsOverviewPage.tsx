@@ -30,7 +30,14 @@ export const GoalsOverviewPage = () => {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
-          <div aria-label="Логотип" className={styles.logoSlot} role="img" />
+          <img
+            aria-label="Логотип"
+            className={styles.logoSlot}
+            src="/logo.svg"
+            alt="Логотип"
+            width={48}
+            height={48}
+          />
           <Button
             className={styles.createButton}
             onClick={() => setIsCreateDialogOpen(true)}
@@ -60,7 +67,7 @@ export const GoalsOverviewPage = () => {
           {goals.length > 0 ? (
             <GoalsList />
           ) : (
-            <p className={styles.emptyState}>Пока нет целей</p>
+            <p className={styles.emptyState}>У вас пока нет целей</p>
           )}
         </section>
       </main>
