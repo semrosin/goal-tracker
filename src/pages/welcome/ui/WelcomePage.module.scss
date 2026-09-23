@@ -1,0 +1,168 @@
+.shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 72% 48%,
+      rgba(85, 78, 228, 0.16),
+      transparent 34rem
+    ),
+    #101010;
+}
+
+.header {
+  align-items: center;
+  border-bottom: 1px solid #292929;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 80rem;
+  min-height: 5.25rem;
+  padding: 0 1.5rem;
+}
+
+.brand {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.headerActions {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.main {
+  align-items: center;
+  display: grid;
+  gap: clamp(3rem, 8vw, 8rem);
+  margin: 0 auto;
+  max-width: 80rem;
+  min-height: calc(100vh - 5.25rem);
+  padding: 4rem 1.5rem 6rem;
+}
+
+.content {
+  max-width: 39rem;
+}
+
+.content h1 {
+  font-size: clamp(2.3rem, 5vw, 4.6rem);
+  line-height: 1.08;
+  margin: 0;
+}
+
+.lead {
+  color: #c9cbd3;
+  font-size: clamp(1.08rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  margin: 1.75rem 0 2rem;
+}
+
+.actions {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.actions p {
+  color: #b2b5c1;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.demoButton {
+  gap: 0.65rem;
+  padding: 0.85rem 1.15rem;
+}
+
+.preview {
+  background: linear-gradient(160deg, #25284a, #1a1c29 70%);
+  border: 1px solid #565c8b;
+  border-radius: 1.5rem;
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.28);
+  max-width: 30rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  width: 100%;
+}
+
+.previewTop,
+.previewNumbers,
+.previewFooter {
+  align-items: center;
+  display: flex;
+}
+
+.previewTop {
+  color: #cdd1ed;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.previewIcon {
+  align-items: center;
+  background: rgba(112, 133, 255, 0.2);
+  border-radius: 0.75rem;
+  color: #aebdff;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+}
+
+.preview h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  margin: 2.5rem 0 1.5rem;
+}
+
+.previewNumbers {
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.15rem;
+}
+
+.previewNumbers strong {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.previewNumbers span {
+  color: #cdd1ed;
+}
+
+.previewFooter {
+  color: #d5e9e4;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 56rem) {
+  .main {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+}
+
+@media (max-width: 35rem) {
+  .header {
+    padding: 0 1rem;
+  }
+
+  .brand {
+    font-size: 0.85rem;
+  }
+
+  .headerActions {
+    gap: 0.4rem;
+  }
+
+  .main {
+    padding: 3rem 1rem 4rem;
+  }
+}

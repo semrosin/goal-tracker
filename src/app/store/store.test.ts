@@ -3,7 +3,9 @@ import type { Goal } from '../../entities/goal/model/types';
 import { transactionsActions } from '../../entities/transaction/model/transactionSlice';
 import type { Transaction } from '../../entities/transaction/model/types';
 import { STORAGE_KEY } from './persistence';
-import { createAppStore } from './store';
+import { createAppStore, createDemoStore } from './store';
+import { DEMO_STORAGE_KEY } from './persistence';
+import { ledgerReplaced } from './rootReducer';
 
 const goal: Goal = {
   id: 'g1',
@@ -143,4 +145,66 @@ test('persists and reloads the original ledger after a rejected historical delet
     goals: [goal],
     transactions: originalLedger,
   });
+});
+
+test('cloud store never reads or writes the local ledger', () => {
+  window.localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({
+      goals: [goal],
+      transactions: [],
+    })
+  );
+
+  const cloudStore = createAppStore(undefined, { persist: false });
+  expect(cloudStore.getState()).toEqual({ goals: [], transactions: [] });
+  cloudStore.dispatch(goalsActions.goalCreated({ ...goal, id: 'cloud' }));
+  expect(
+    JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? 'null')
+  ).toEqual({
+    goals: [goal],
+    transactions: [],
+  });
+});
+
+test('demo starts from existing legacy goals without rewriting them', () => {
+  const legacyState = { goals: [goal], transactions: [] };
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(legacyState));
+
+  const demoStore = createDemoStore();
+  expect(demoStore.getState()).toEqual(legacyState);
+  expect(window.localStorage.getItem(STORAGE_KEY)).toBe(
+    JSON.stringify(legacyState)
+  );
+  expect(
+    JSON.parse(window.localStorage.getItem(DEMO_STORAGE_KEY) ?? 'null')
+  ).toEqual(legacyState);
+});
+
+test('demo seeds examples only when neither local store has data', () => {
+  const demoStore = createDemoStore();
+  expect(demoStore.getState().goals.length).toBeGreaterThan(0);
+  expect(demoStore.getState().transactions.length).toBeGreaterThan(0);
+  expect(window.localStorage.getItem(STORAGE_KEY)).toBeNull();
+  expect(
+    JSON.parse(window.localStorage.getItem(DEMO_STORAGE_KEY) ?? 'null')
+  ).toEqual(demoStore.getState());
+});
+
+test('a fresh English demo starts with English example goals', () => {
+  const demoStore = createDemoStore('en');
+  expect(demoStore.getState().goals[0].title).toBe('Emergency fund');
+  expect(demoStore.getState().goals[0].targetMonth).toMatch(/^\d{4}-\d{2}$/);
+});
+
+test('replaces cloud snapshot after a server fetch without persisting it', () => {
+  const cloudStore = createAppStore(undefined, { persist: false });
+  cloudStore.dispatch(ledgerReplaced({ goals: [goal], transactions: [] }));
+
+  expect(cloudStore.getState()).toEqual({ goals: [goal], transactions: [] });
+  expect(window.localStorage.getItem(STORAGE_KEY)).toBeNull();
+  expect(window.localStorage.getItem(DEMO_STORAGE_KEY)).toBeNull();
+
+  cloudStore.dispatch(ledgerReplaced({ goals: [], transactions: [] }));
+  expect(cloudStore.getState()).toEqual({ goals: [], transactions: [] });
 });

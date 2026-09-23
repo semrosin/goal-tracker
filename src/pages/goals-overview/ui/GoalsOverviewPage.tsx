@@ -5,11 +5,13 @@ import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { CreateGoalDialog } from '../../../features/create-goal';
 import { formatRubles } from '../../../shared/lib/money';
+import { useI18n } from '../../../shared/lib/i18n';
 import { Button } from '../../../shared/ui/Button/Button';
 import { GoalsList } from '../../../widgets/goals-list';
 import styles from './GoalsOverviewPage.module.scss';
 
 export const GoalsOverviewPage = () => {
+  const { locale, t } = useI18n();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const goals = useLedgerSelector((state) => state.goals);
   const transactions = useLedgerSelector((state) => state.transactions);
@@ -31,10 +33,9 @@ export const GoalsOverviewPage = () => {
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <img
-            aria-label="Логотип"
             className={styles.logoSlot}
             src="/logo.svg"
-            alt="Логотип"
+            alt={t('overview.logo')}
             width={48}
             height={48}
           />
@@ -43,31 +44,43 @@ export const GoalsOverviewPage = () => {
             onClick={() => setIsCreateDialogOpen(true)}
           >
             <Plus size={18} />
-            <span>Новая цель</span>
+            <span>{t('overview.create')}</span>
           </Button>
         </div>
       </header>
       <main className={styles.page}>
-        <section aria-label="Сводка накоплений" className={styles.summary}>
-          <article aria-label="Всего накоплено" className={styles.totalCard}>
-            <span>Всего накоплено</span>
-            <strong>{formatRubles(totalSavings)}</strong>
+        <section aria-label={t('overview.summary')} className={styles.summary}>
+          <article
+            aria-label={t('overview.total')}
+            className={styles.totalCard}
+          >
+            <span>{t('overview.total')}</span>
+            <strong>{formatRubles(totalSavings, locale)}</strong>
           </article>
-          <article aria-label="Активных целей" className={styles.statCard}>
-            <span>Активных целей</span>
+          <article
+            aria-label={t('overview.active')}
+            className={styles.statCard}
+          >
+            <span>{t('overview.active')}</span>
             <strong>{activeGoals}</strong>
           </article>
-          <article aria-label="Выполненных целей" className={styles.statCard}>
-            <span>Выполненных целей</span>
+          <article
+            aria-label={t('overview.completed')}
+            className={styles.statCard}
+          >
+            <span>{t('overview.completed')}</span>
             <strong className={styles.completedCount}>{completedGoals}</strong>
           </article>
         </section>
-        <section aria-label="Список целей" className={styles.content}>
-          <h1>Мои цели</h1>
+        <section aria-label={t('overview.goalList')} className={styles.content}>
+          <h1>{t('overview.title')}</h1>
           {goals.length > 0 ? (
             <GoalsList />
           ) : (
-            <p className={styles.emptyState}>У вас пока нет целей</p>
+            <div className={styles.emptyState}>
+              <p>{t('overview.empty')}</p>
+              <p>{t('overview.emptyHint')}</p>
+            </div>
           )}
         </section>
       </main>

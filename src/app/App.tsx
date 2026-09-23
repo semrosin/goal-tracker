@@ -1,15 +1,17 @@
-import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
 
+import { LocaleProvider } from '../shared/lib/i18n';
 import { AppRouter } from './router/AppRouter';
-import { store } from './store/store';
+import { ApplicationProvider } from './session/ApplicationProvider';
 
 const App = () => (
-  <Provider store={store}>
+  <LocaleProvider>
     <BrowserRouter>
-      <AppRouter />
+      <ApplicationProvider>
+        <AppRouter />
+      </ApplicationProvider>
     </BrowserRouter>
-  </Provider>
+  </LocaleProvider>
 );
 
 export default App;

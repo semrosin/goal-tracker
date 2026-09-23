@@ -1,9 +1,9 @@
 {
-  "short_name": "Трекер целей",
-  "name": "Трекер ваших финансовых целей",
-  "description": "Планируйте накопления и отслеживайте прогресс финансовых целей.",
+  "short_name": "Goal Tracker",
+  "name": "Goal Tracker",
+  "description": "Plan and track your savings goals.",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#101010"
 }

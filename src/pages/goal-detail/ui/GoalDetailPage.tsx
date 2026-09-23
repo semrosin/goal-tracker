@@ -9,6 +9,7 @@ import { TransactionForm } from '../../../features/add-transaction';
 import { DeleteGoalButton } from '../../../features/delete-goal';
 import { EditGoalDialog } from '../../../features/edit-goal';
 import { Button } from '../../../shared/ui/Button/Button';
+import { useI18n } from '../../../shared/lib/i18n';
 import {
   GoalSummary,
   TransactionsHistory,
@@ -16,6 +17,7 @@ import {
 import styles from './GoalDetailPage.module.scss';
 
 export const GoalDetailPage = () => {
+  const { t } = useI18n();
   const { id } = useParams();
   const navigate = useNavigate();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -29,9 +31,10 @@ export const GoalDetailPage = () => {
   if (goal === undefined) {
     return (
       <main className={styles.page}>
-        <h1>Цель не найдена</h1>
-        <Link to="/">
-          <ChevronLeft size={16} />К списку целей
+        <h1>{t('detail.notFound')}</h1>
+        <Link to="/app">
+          <ChevronLeft size={16} />
+          {t('detail.back')}
         </Link>
       </main>
     );
@@ -41,8 +44,9 @@ export const GoalDetailPage = () => {
 
   return (
     <main className={styles.page}>
-      <Link className={styles.backLink} to="/">
-        <ChevronLeft size={16} />К списку целей
+      <Link className={styles.backLink} to="/app">
+        <ChevronLeft size={16} />
+        {t('detail.back')}
       </Link>
       <h1>{goal.title}</h1>
       <div className={styles.layout}>
@@ -51,9 +55,12 @@ export const GoalDetailPage = () => {
         <TransactionsHistory goalId={goal.id} isCompleted={isCompleted} />
         <div className={styles.actions}>
           <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
-            Изменить
+            {t('detail.edit')}
           </Button>
-          <DeleteGoalButton goalId={goal.id} onDeleted={() => navigate('/')} />
+          <DeleteGoalButton
+            goalId={goal.id}
+            onDeleted={() => navigate('/app')}
+          />
         </div>
       </div>
       <EditGoalDialog
