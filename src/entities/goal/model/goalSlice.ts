@@ -19,6 +19,11 @@ const goalSlice = createSlice({
           goal.description = action.payload.description;
         }
         goal.targetAmount = action.payload.targetAmount;
+        if (action.payload.targetMonth === undefined) {
+          delete goal.targetMonth;
+        } else {
+          goal.targetMonth = action.payload.targetMonth;
+        }
       }
     },
     goalRemoved: (state, action: PayloadAction<string>) =>

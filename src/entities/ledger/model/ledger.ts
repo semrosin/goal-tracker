@@ -3,6 +3,7 @@ import type { UnknownAction } from '@reduxjs/toolkit';
 import {
   goalsActions,
   goalsReducer,
+  isValidTargetMonth,
   type Goal,
   type GoalUpdate,
 } from '../../goal';
@@ -51,6 +52,13 @@ const decodeGoal = (value: unknown): Goal | undefined => {
     return undefined;
   }
 
+  if (
+    candidate.targetMonth !== undefined &&
+    !isValidTargetMonth(candidate.targetMonth)
+  ) {
+    return undefined;
+  }
+
   return {
     id: candidate.id,
     title: candidate.title,
@@ -58,6 +66,9 @@ const decodeGoal = (value: unknown): Goal | undefined => {
       ? {}
       : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
+    ...(candidate.targetMonth === undefined
+      ? {}
+      : { targetMonth: candidate.targetMonth }),
     createdAt: candidate.createdAt,
   };
 };
@@ -82,6 +93,13 @@ const decodeGoalUpdate = (value: unknown): GoalUpdate | undefined => {
     return undefined;
   }
 
+  if (
+    candidate.targetMonth !== undefined &&
+    !isValidTargetMonth(candidate.targetMonth)
+  ) {
+    return undefined;
+  }
+
   return {
     id: candidate.id,
     title: candidate.title,
@@ -89,6 +107,9 @@ const decodeGoalUpdate = (value: unknown): GoalUpdate | undefined => {
       ? {}
       : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
+    ...(candidate.targetMonth === undefined
+      ? {}
+      : { targetMonth: candidate.targetMonth }),
   };
 };
 
@@ -182,6 +203,9 @@ export const serializeLedgerState = (state: LedgerState): LedgerState => ({
       ? {}
       : { description: goal.description }),
     targetAmount: goal.targetAmount,
+    ...(goal.targetMonth === undefined
+      ? {}
+      : { targetMonth: goal.targetMonth }),
     createdAt: goal.createdAt,
   })),
   transactions: state.transactions.map((transaction) => ({
