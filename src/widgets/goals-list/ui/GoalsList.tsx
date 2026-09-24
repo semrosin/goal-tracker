@@ -4,10 +4,12 @@ import { calculateProgress } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { formatRubles } from '../../../shared/lib/money';
+import { useI18n } from '../../../shared/lib/i18n';
 import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import styles from './GoalsList.module.scss';
 
 export const GoalsList = () => {
+  const { locale, t } = useI18n();
   const goals = useLedgerSelector((state) => state.goals);
   const transactions = useLedgerSelector((state) => state.transactions);
 
@@ -27,17 +29,18 @@ export const GoalsList = () => {
             <div className={styles.cardHeader}>
               <h2>{goal.title}</h2>
               {isCompleted ? (
-                <span className={styles.status}>Выполнено</span>
+                <span className={styles.status}>{t('list.completed')}</span>
               ) : null}
             </div>
             <p>{progress.toFixed(0)}%</p>
             <ProgressBar
-              label={`Прогресс цели ${goal.title}`}
+              label={t('goal.progressLabel', { title: goal.title })}
               tone={isCompleted ? 'light' : 'default'}
               value={progress}
             />
             <p>
-              {formatRubles(balance)} / {formatRubles(goal.targetAmount)}
+              {formatRubles(balance, locale)} /{' '}
+              {formatRubles(goal.targetAmount, locale)}
             </p>
           </Link>
         );

@@ -1,0 +1,58 @@
+.toolbar {
+  background: #1d1d29;
+  border-bottom: 1px solid #3b3c50;
+  padding: 0.5rem 1rem;
+}
+
+.toolbarContent {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 80rem;
+}
+
+.modeLabel {
+  color: #e1e3ef;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+.toolbarActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.toolbarActions button {
+  min-height: 2.25rem;
+  padding: 0.35rem 0.7rem;
+}
+.toolbarError {
+  margin: 0.5rem auto 0;
+  max-width: 80rem;
+  color: #ffb4b4;
+}
+.statusPage {
+  max-width: 42rem;
+  margin: clamp(4rem, 12vh, 8rem) auto;
+  padding: 1.5rem;
+  text-align: center;
+}
+.statusPage h1 {
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+.statusPage p {
+  color: #d6d8e5;
+}
+.syncError {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #422c24;
+  color: #ffe1d4;
+}

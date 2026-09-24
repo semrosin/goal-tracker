@@ -3,11 +3,11 @@ import { useState } from 'react';
 
 import {
   hasNonNegativeBalancePrefixes,
-  useLedgerDispatch,
+  useLedgerCommands,
   useLedgerSelector,
 } from '../../../entities/ledger';
-import { transactionsActions } from '../../../entities/transaction';
 import { Button } from '../../../shared/ui/Button/Button';
+import { useI18n } from '../../../shared/lib/i18n';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
 import styles from './DeleteTransactionButton.module.scss';
 
@@ -20,22 +20,27 @@ export const DeleteTransactionButton = ({
   ariaLabel,
   transactionId,
 }: DeleteTransactionButtonProps) => {
-  const dispatch = useLedgerDispatch();
+  const { t } = useI18n();
+  const commands = useLedgerCommands();
   const transactions = useLedgerSelector((state) => state.transactions);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeletionBlocked, setIsDeletionBlocked] = useState(false);
+  const [serverError, setServerError] = useState<string>();
+  const [deleting, setDeleting] = useState(false);
 
   const closeDialog = () => {
     setIsDialogOpen(false);
     setIsDeletionBlocked(false);
+    setServerError(undefined);
   };
 
   const openDialog = () => {
     setIsDeletionBlocked(false);
+    setServerError(undefined);
     setIsDialogOpen(true);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const remainingTransactions = transactions.filter(
       (transaction) => transaction.id !== transactionId
     );
@@ -44,8 +49,17 @@ export const DeleteTransactionButton = ({
       return;
     }
 
-    dispatch(transactionsActions.transactionRemoved(transactionId));
-    closeDialog();
+    setDeleting(true);
+    try {
+      await commands.deleteTransaction(transactionId);
+      closeDialog();
+    } catch (caught) {
+      setServerError(
+        caught instanceof Error ? caught.message : t('delete.transactionError')
+      );
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
@@ -60,21 +74,30 @@ export const DeleteTransactionButton = ({
       </button>
       <Dialog
         isOpen={isDialogOpen}
-        title="Удалить операцию"
+        title={t('delete.transactionTitle')}
         onClose={closeDialog}
       >
-        <p>Операция будет удалена без возможности восстановления.</p>
+        <p>{t('delete.transactionDescription')}</p>
         {isDeletionBlocked && (
           <p className={styles.error} role="alert">
-            Нельзя удалить операцию: это приведёт к отрицательному балансу
+            {t('delete.transactionBlocked')}
+          </p>
+        )}
+        {serverError && (
+          <p className={styles.error} role="alert">
+            {serverError}
           </p>
         )}
         <div className={styles.actions}>
           <Button onClick={closeDialog} variant="secondary">
-            Отмена
+            {t('delete.cancel')}
           </Button>
-          <Button onClick={handleConfirm} variant="danger">
-            Удалить
+          <Button
+            disabled={deleting || commands.busy}
+            onClick={() => void handleConfirm()}
+            variant="danger"
+          >
+            {deleting ? t('delete.deleting') : t('delete.action')}
           </Button>
         </div>
       </Dialog>

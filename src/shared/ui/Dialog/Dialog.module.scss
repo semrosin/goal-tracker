@@ -41,6 +41,12 @@
   padding: 0.1rem 0.55rem;
   background: none;
   border: none;
+  color: #f7f7f7;
+}
+
+.closeButton:focus-visible {
+  outline: 3px solid #c4cdff;
+  outline-offset: 2px;
 }
 
 .closeButton:hover {

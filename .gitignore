@@ -6,6 +6,7 @@
 
 # dependencies
 /node_modules
+/.npm-cache
 /.pnp
 .pnp.js
 
@@ -22,6 +23,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.env
+.env.*
+!.env.example
 
 npm-debug.log*
 yarn-debug.log*

@@ -1,0 +1,71 @@
+.plan {
+  border-top: 1px solid #414141;
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+.heading {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.heading h3 {
+  color: #f7f7f7;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.status {
+  background: #243047;
+  border: 1px solid #506481;
+  border-radius: 999px;
+  color: #e4ecff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+}
+
+.overdue {
+  background: #452525;
+  border-color: #a95858;
+  color: #ffe0e0;
+}
+
+.completed {
+  background: #173b32;
+  border-color: #408f76;
+  color: #d5ffed;
+}
+
+.without-deadline {
+  background: #303030;
+  border-color: #696969;
+  color: #e0e0e0;
+}
+
+.target,
+.note,
+.forecast {
+  color: #c8d1de;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.contribution {
+  color: #f7f7f7;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.calculator {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}

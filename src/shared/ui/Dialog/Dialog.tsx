@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef } from 'react';
 import type { PropsWithChildren } from 'react';
 
+import { useI18n } from '../../lib/i18n';
 import styles from './Dialog.module.scss';
 
 export type DialogProps = PropsWithChildren<{
@@ -61,8 +62,10 @@ const registerDialog = (dialog: HTMLElement) => {
 };
 
 export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
+  const { t } = useI18n();
   const titleId = useId();
   const dialogRef = useRef<HTMLElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const onCloseRef = useRef(onClose);
 
   useEffect(() => {
@@ -77,11 +80,7 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
     if (!dialog) return undefined;
 
     const registration = registerDialog(dialog);
-    const closeButton = dialog.querySelector<HTMLButtonElement>(
-      '[aria-label="Закрыть"]'
-    );
-
-    if (registration.isTopmost()) closeButton?.focus();
+    if (registration.isTopmost()) closeButtonRef.current?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!registration.isTopmost()) return;
@@ -162,9 +161,10 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
             {title}
           </h2>
           <button
-            aria-label="Закрыть"
+            aria-label={t('dialog.close')}
             className={styles.closeButton}
             onClick={onClose}
+            ref={closeButtonRef}
           >
             ×
           </button>

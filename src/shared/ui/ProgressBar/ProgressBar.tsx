@@ -1,3 +1,4 @@
+import { useI18n } from '../../lib/i18n';
 import styles from './ProgressBar.module.scss';
 
 export type ProgressBarProps = {
@@ -12,15 +13,16 @@ const clampProgress = (value: number): number => {
 };
 
 export const ProgressBar = ({
-  label = 'Прогресс цели',
+  label,
   tone = 'default',
   value,
 }: ProgressBarProps) => {
+  const { t } = useI18n();
   const progress = clampProgress(value);
 
   return (
     <div
-      aria-label={label}
+      aria-label={label ?? t('progress.default')}
       aria-valuemax={100}
       aria-valuemin={0}
       aria-valuenow={progress}

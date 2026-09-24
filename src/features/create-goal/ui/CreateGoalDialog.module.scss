@@ -3,6 +3,10 @@
   gap: 1rem;
 }
 
+.form input[type='month'] {
+  color-scheme: dark;
+}
+
 .descriptionField {
   display: grid;
   gap: 0.4rem;
@@ -39,4 +43,10 @@
 
 .submitButton {
   margin-top: 0.5rem;
+}
+
+.submitError {
+  color: #ffb3b3;
+  font-size: 0.875rem;
+  margin: 0;
 }

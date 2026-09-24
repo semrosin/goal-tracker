@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { screen, within } from '@testing-library/react';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
-import progressBarStyles from '../../../shared/ui/ProgressBar/ProgressBar.module.scss';
+import { LocaleProvider } from '../../../shared/lib/i18n';
 import { GoalsList } from './GoalsList';
 import styles from './GoalsList.module.scss';
 
@@ -76,6 +76,36 @@ describe('GoalsList', () => {
     expect(
       screen.getByRole('link', { name: /Закрытая цель Выполнено/ })
     ).toHaveClass(styles.completedCard);
+  });
+
+  it('renders status, progress label, and ruble grouping in English', () => {
+    localStorage.setItem('goal-tracker-locale', 'en');
+    renderWithLedger(
+      <LocaleProvider>
+        <GoalsList />
+      </LocaleProvider>,
+      {
+        goals: [{ ...goal, targetAmount: 100_000 }],
+        transactions: [
+          {
+            id: 'transaction-en',
+            goalId: goal.id,
+            type: 'deposit',
+            amount: 100_000,
+            createdAt: goal.createdAt,
+          },
+        ],
+      }
+    );
+
+    expect(screen.getByText('Completed')).toBeInTheDocument();
+    expect(
+      screen.getByRole('progressbar', { name: 'Progress toward Отпуск' })
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Отпуск/ })).toHaveTextContent(
+      /100,000 ₽/
+    );
+    localStorage.removeItem('goal-tracker-locale');
   });
 
   it('limits the desktop goal grid to two columns', () => {

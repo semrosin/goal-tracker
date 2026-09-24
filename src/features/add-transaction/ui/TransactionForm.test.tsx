@@ -1,9 +1,13 @@
 /// <reference types="@testing-library/jest-dom" />
 
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
+import {
+  LedgerCommandsProvider,
+  type LedgerCommands,
+} from '../../../entities/ledger';
 import { TransactionForm } from './TransactionForm';
 import styles from './TransactionForm.module.scss';
 
@@ -45,9 +49,11 @@ describe('TransactionForm', () => {
     });
 
     await userEvent.type(screen.getByLabelText('Сумма'), '500');
-    await userEvent.click(
-      screen.getByRole('button', { name: 'Добавить операцию' })
-    );
+    await act(async () => {
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Добавить операцию' })
+      );
+    });
 
     expect(store.getState().transactions).toHaveLength(1);
     expect(store.getState().transactions[0]).toMatchObject({
@@ -55,7 +61,7 @@ describe('TransactionForm', () => {
       type: 'deposit',
       amount: 500,
     });
-    expect(screen.getByLabelText('Сумма')).toHaveValue('');
+    await waitFor(() => expect(screen.getByLabelText('Сумма')).toHaveValue(''));
   });
 
   it('shows an inline error and does not dispatch an over-balance withdrawal', async () => {
@@ -109,5 +115,40 @@ describe('TransactionForm', () => {
       'Укажите положительную целую сумму'
     );
     expect(store.getState().transactions).toHaveLength(1);
+  });
+
+  it('keeps the amount and shows a server failure for a cloud transaction', async () => {
+    const createTransaction = jest
+      .fn()
+      .mockRejectedValue(new Error('Сервер отклонил операцию'));
+    const commands: LedgerCommands = {
+      createGoal: jest.fn(),
+      updateGoal: jest.fn(),
+      deleteGoal: jest.fn(),
+      createTransaction,
+      deleteTransaction: jest.fn(),
+      busy: false,
+      clearError: jest.fn(),
+    };
+    const { store } = renderWithLedger(
+      <LedgerCommandsProvider value={commands}>
+        <TransactionForm goalId="g1" />
+      </LedgerCommandsProvider>,
+      { goals: [goal], transactions: [] }
+    );
+
+    await userEvent.type(screen.getByLabelText('Сумма'), '500');
+    await act(async () => {
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Добавить операцию' })
+      );
+    });
+
+    await waitFor(() => expect(createTransaction).toHaveBeenCalledTimes(1));
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Сервер отклонил операцию'
+    );
+    expect(screen.getByLabelText('Сумма')).toHaveValue('500');
+    expect(store.getState().transactions).toEqual([]);
   });
 });

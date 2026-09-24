@@ -1,10 +1,14 @@
 const path = require('node:path');
+const fs = require('node:fs');
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const rootDirectory = path.resolve(__dirname, '..');
+const localEnvFile = path.join(rootDirectory, '.env');
+if (fs.existsSync(localEnvFile)) process.loadEnvFile(localEnvFile);
 
 const createScssRule = ({ test, modules, isProduction, sourceMap }) => ({
   test,
@@ -68,6 +72,14 @@ module.exports = ({ isProduction = false, sourceMap = false } = {}) => ({
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.SUPABASE_URL': JSON.stringify(
+        process.env.SUPABASE_URL || ''
+      ),
+      'process.env.SUPABASE_PUBLISHABLE_KEY': JSON.stringify(
+        process.env.SUPABASE_PUBLISHABLE_KEY || ''
+      ),
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(rootDirectory, 'public/index.html'),
     }),

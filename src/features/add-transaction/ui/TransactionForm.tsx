@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { useLedgerDispatch, useLedgerSelector } from '../../../entities/ledger';
+import { useLedgerCommands, useLedgerSelector } from '../../../entities/ledger';
 import {
   calculateBalance,
-  transactionsActions,
   type TransactionType,
 } from '../../../entities/transaction';
 import { createTimestamp } from '../../../shared/lib/date';
 import { createId } from '../../../shared/lib/id';
+import { useI18n } from '../../../shared/lib/i18n';
 import { isPositiveInteger } from '../../../shared/lib/validation';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Field } from '../../../shared/ui/Field/Field';
@@ -16,51 +16,58 @@ import styles from './TransactionForm.module.scss';
 
 type TransactionFormProps = { goalId: string; isCompleted?: boolean };
 
-const invalidAmountMessage = 'Укажите положительную целую сумму';
-const overBalanceMessage = 'Нельзя снять больше, чем накоплено';
-
 export const TransactionForm = ({
   goalId,
   isCompleted = false,
 }: TransactionFormProps) => {
-  const dispatch = useLedgerDispatch();
+  const { t } = useI18n();
+  const commands = useLedgerCommands();
   const balance = useLedgerSelector((state) =>
     calculateBalance(goalId, state.transactions)
   );
   const [type, setType] = useState<TransactionType>('deposit');
   const [amount, setAmount] = useState('');
   const [error, setError] = useState<string>();
+  const [submitting, setSubmitting] = useState(false);
 
   const selectType = (nextType: TransactionType) => {
     setType(nextType);
     setError(undefined);
+    commands.clearError();
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const numericAmount = Number(amount);
 
     if (!isPositiveInteger(numericAmount)) {
-      setError(invalidAmountMessage);
+      setError(t('transaction.invalidAmount'));
       return;
     }
 
     if (type === 'withdrawal' && numericAmount > balance) {
-      setError(overBalanceMessage);
+      setError(t('transaction.overBalance'));
       return;
     }
 
-    dispatch(
-      transactionsActions.transactionCreated({
+    setSubmitting(true);
+    try {
+      await commands.createTransaction({
         id: createId('transaction'),
         goalId,
         type,
         amount: numericAmount,
         createdAt: createTimestamp(),
-      })
-    );
-    setAmount('');
-    setError(undefined);
+      });
+      setAmount('');
+      setError(undefined);
+    } catch (caught) {
+      setError(
+        caught instanceof Error ? caught.message : t('transaction.addError')
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -70,10 +77,14 @@ export const TransactionForm = ({
         isCompleted ? styles.completedSurface : styles.activeSurface
       }`}
     >
-      <h2 id="transaction-form-title">Добавить операцию</h2>
-      <form className={styles.form} noValidate onSubmit={handleSubmit}>
+      <h2 id="transaction-form-title">{t('transaction.title')}</h2>
+      <form
+        className={styles.form}
+        noValidate
+        onSubmit={(event) => void handleSubmit(event)}
+      >
         <div
-          aria-label="Тип операции"
+          aria-label={t('transaction.type')}
           className={styles.typePicker}
           role="group"
         >
@@ -83,7 +94,7 @@ export const TransactionForm = ({
             onClick={() => selectType('deposit')}
             variant="secondary"
           >
-            Пополнить
+            {t('transaction.depositAction')}
           </Button>
           <Button
             aria-pressed={type === 'withdrawal'}
@@ -91,17 +102,19 @@ export const TransactionForm = ({
             onClick={() => selectType('withdrawal')}
             variant="secondary"
           >
-            Снять
+            {t('transaction.withdrawAction')}
           </Button>
         </div>
         <Field
           error={error}
           inputMode="numeric"
-          label="Сумма"
+          label={t('transaction.amount')}
           onChange={(event) => setAmount(event.target.value)}
           value={amount}
         />
-        <Button type="submit">Добавить операцию</Button>
+        <Button disabled={submitting || commands.busy} type="submit">
+          {submitting ? t('transaction.adding') : t('transaction.add')}
+        </Button>
       </form>
     </section>
   );

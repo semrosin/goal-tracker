@@ -1,9 +1,13 @@
 /// <reference types="@testing-library/jest-dom" />
 
-import { fireEvent, screen, within } from '@testing-library/react';
+import { act, fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
+import {
+  LedgerCommandsProvider,
+  type LedgerCommands,
+} from '../../../entities/ledger';
 import { formatDate } from '../../../shared/lib/date';
 import { TransactionsHistory } from './TransactionsHistory';
 
@@ -54,7 +58,7 @@ describe('TransactionsHistory', () => {
     warning.mockRestore();
   });
 
-  it('shows only goal transactions newest first with id as a deterministic tie-breaker', () => {
+  it('shows only goal transactions in reverse ledger order', () => {
     renderWithLedger(<TransactionsHistory goalId="g1" />, {
       goals: [goal, otherGoal],
       transactions: [
@@ -102,6 +106,29 @@ describe('TransactionsHistory', () => {
     expect(within(rows[1]).getByText('Снятие')).toBeInTheDocument();
   });
 
+  it('shows append order even when server timestamps are skewed', () => {
+    renderWithLedger(<TransactionsHistory goalId="g1" />, {
+      goals: [goal],
+      transactions: [
+        {
+          id: 'first',
+          goalId: 'g1',
+          type: 'deposit',
+          amount: 100,
+          createdAt: '2026-01-03T00:00:00.000Z',
+        },
+        {
+          id: 'second',
+          goalId: 'g1',
+          type: 'deposit',
+          amount: 50,
+          createdAt: '2026-01-02T00:00:00.000Z',
+        },
+      ],
+    });
+    expect(screen.getAllByRole('listitem')[0]).toHaveTextContent('+50');
+  });
+
   it('removes a transaction only after confirmation', async () => {
     const { store } = renderWithLedger(<TransactionsHistory goalId="g1" />, {
       goals: [goal],
@@ -134,6 +161,48 @@ describe('TransactionsHistory', () => {
     await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
 
     expect(store.getState().transactions).toEqual([]);
+  });
+
+  it('keeps the dialog open and shows a server deletion error', async () => {
+    const commands: LedgerCommands = {
+      createGoal: jest.fn(),
+      updateGoal: jest.fn(),
+      deleteGoal: jest.fn(),
+      createTransaction: jest.fn(),
+      deleteTransaction: jest
+        .fn()
+        .mockRejectedValue(new Error('Удаление отклонено')),
+      busy: false,
+      clearError: jest.fn(),
+    };
+    renderWithLedger(
+      <LedgerCommandsProvider value={commands}>
+        <TransactionsHistory goalId="g1" />
+      </LedgerCommandsProvider>,
+      {
+        goals: [goal],
+        transactions: [
+          {
+            id: 'deposit',
+            goalId: 'g1',
+            type: 'deposit',
+            amount: 100,
+            createdAt: '2026-01-01T00:00:00.000Z',
+          },
+        ],
+      }
+    );
+
+    await userEvent.click(
+      screen.getByRole('button', { name: /Удалить пополнение/ })
+    );
+    await act(async () => {
+      await userEvent.click(screen.getByRole('button', { name: /^Удалить$/ }));
+    });
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Удаление отклонено'
+    );
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it('removes the allowed oldest deposit from [d1, d2, w1] only after confirmation', async () => {

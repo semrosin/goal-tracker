@@ -6,12 +6,28 @@ import { join } from 'node:path';
 import { screen } from '@testing-library/react';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
+import { LocaleProvider } from '../../../shared/lib/i18n';
 import { GoalsOverviewPage } from './GoalsOverviewPage';
 
 test('shows the empty overview state when there are no goals', () => {
   renderWithLedger(<GoalsOverviewPage />);
 
   expect(screen.getByText('У вас пока нет целей')).toBeInTheDocument();
+});
+
+test('shows an actionable empty state and English overview copy', () => {
+  localStorage.setItem('goal-tracker-locale', 'en');
+  renderWithLedger(
+    <LocaleProvider>
+      <GoalsOverviewPage />
+    </LocaleProvider>
+  );
+
+  expect(screen.getByRole('heading', { name: 'My goals' })).toBeInTheDocument();
+  expect(screen.getByText('No goals yet')).toBeInTheDocument();
+  expect(screen.getByText(/Create your first goal/)).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'New goal' })).toBeInTheDocument();
+  localStorage.removeItem('goal-tracker-locale');
 });
 
 test('wraps a large savings total within its summary card', () => {

@@ -84,18 +84,18 @@ describe('goal routes', () => {
       ],
       surfaceClass: 'completedSurface',
     },
-  ])('applies the $name visual treatment to every goal-detail section', ({
-    transactions: preloadedTransactions,
-    surfaceClass,
-  }) => {
-    renderRoute('/goals/g1', preloadedTransactions);
+  ])(
+    'applies the $name visual treatment to every goal-detail section',
+    ({ transactions: preloadedTransactions, surfaceClass }) => {
+      renderRoute('/goals/g1', preloadedTransactions);
 
-    [
-      '\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435',
-      '\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u044e',
-      '\u0418\u0441\u0442\u043e\u0440\u0438\u044f \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0439',
-    ].forEach((name) => {
-      expect(screen.getByRole('region', { name })).toHaveClass(surfaceClass);
-    });
-  });
+      [
+        '\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435',
+        '\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u044e',
+        '\u0418\u0441\u0442\u043e\u0440\u0438\u044f \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0439',
+      ].forEach((name) => {
+        expect(screen.getByRole('region', { name })).toHaveClass(surfaceClass);
+      });
+    }
+  );
 });
