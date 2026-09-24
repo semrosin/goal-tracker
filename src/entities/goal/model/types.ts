@@ -3,10 +3,11 @@ export type Goal = {
   title: string;
   description?: string;
   targetAmount: number;
+  targetMonth?: string;
   createdAt: string;
 };
 
 export type GoalUpdate = Pick<
   Goal,
-  'id' | 'title' | 'targetAmount' | 'description'
+  'id' | 'title' | 'targetAmount' | 'description' | 'targetMonth'
 >;

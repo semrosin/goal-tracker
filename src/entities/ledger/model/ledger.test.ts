@@ -194,3 +194,58 @@ test('preserves a goal description in a persisted snapshot', () => {
 
   expect(decodeLedgerState(serializeLedgerState(state))).toEqual(state);
 });
+
+test('preserves an optional target month in a persisted snapshot', () => {
+  const state: LedgerState = {
+    goals: [{ ...goal, targetMonth: '2027-02' }],
+    transactions: [],
+  };
+
+  expect(decodeLedgerState(serializeLedgerState(state))).toEqual(state);
+});
+
+test.each(['2026-00', '2026-13', '2026-9', '2026-09-01'])(
+  'rejects a persisted goal with invalid target month %s',
+  (targetMonth) => {
+    expect(
+      decodeLedgerState({
+        goals: [{ ...goal, targetMonth }],
+        transactions: [],
+      })
+    ).toBeUndefined();
+  }
+);
+
+test('rejects an invalid target month in a dispatched update', () => {
+  const state: LedgerState = { goals: [goal], transactions: [] };
+
+  expect(
+    ledgerReducer(
+      state,
+      goalsActions.goalUpdated({
+        id: 'g1',
+        title: 'Trip',
+        targetAmount: 2_000,
+        targetMonth: '2026-13',
+      })
+    )
+  ).toBe(state);
+});
+
+test('clears a target month when an update omits it', () => {
+  const state: LedgerState = {
+    goals: [{ ...goal, targetMonth: '2027-02' }],
+    transactions: [],
+  };
+
+  expect(
+    ledgerReducer(
+      state,
+      goalsActions.goalUpdated({
+        id: 'g1',
+        title: 'Trip',
+        targetAmount: 2_000,
+      })
+    ).goals
+  ).toEqual([{ ...goal, title: 'Trip', targetAmount: 2_000 }]);
+});
