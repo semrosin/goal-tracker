@@ -2,6 +2,7 @@ import { ArrowRight, ChartNoAxesCombined, ShieldCheck } from 'lucide-react';
 
 import { useI18n } from '../../../shared/lib/i18n';
 import { formatRubles } from '../../../shared/lib/money';
+import { publicAsset } from '../../../shared/lib/publicPath';
 import { Button } from '../../../shared/ui/Button/Button';
 import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSwitcher';
 import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
@@ -19,7 +20,7 @@ export const WelcomePage = ({ onOpenDemo, onSignIn }: WelcomePageProps) => {
     <div className={styles.shell}>
       <header className={styles.header}>
         <div className={styles.brand}>
-          <img src="/logo.svg" alt="" width={40} height={40} />
+          <img src={publicAsset('logo.svg')} alt="" width={40} height={40} />
           <span>Goal Tracker</span>
         </div>
         <div className={styles.headerActions}>
