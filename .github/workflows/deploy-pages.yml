@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Declare the deployment environment so the build can read variables and
+    # secrets stored on the github-pages environment as well.
+    environment: github-pages
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,9 +28,9 @@ jobs:
           cache: npm
       - run: npm ci
 
-      # Project pages are served from /<repository>/. Set the repository
-      # variable PAGES_PUBLIC_PATH (for example "/") to override this when a
-      # custom domain is attached to the site.
+      # Project pages are served from /<repository>/. Set PAGES_PUBLIC_PATH
+      # (for example "/") as a repository variable or on the github-pages
+      # environment to override this when a custom domain is attached.
       - name: Compute the site base path
         run: |
           if [ -n "${{ vars.PAGES_PUBLIC_PATH }}" ]; then
@@ -37,7 +40,8 @@ jobs:
           fi
 
       # The Supabase URL and publishable key are public values that end up in
-      # the browser bundle. Keep them as repository variables (or secrets).
+      # the browser bundle. Set them as repository variables, as secrets, or
+      # on the github-pages environment.
       - name: Build
         env:
           SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
