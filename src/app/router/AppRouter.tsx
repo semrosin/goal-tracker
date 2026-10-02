@@ -20,13 +20,9 @@ import styles from './AppRouter.module.scss';
 
 const WelcomeRoute = () => {
   const navigate = useNavigate();
-  const { chooseDemo } = useSession();
   return (
     <WelcomePage
-      onOpenDemo={() => {
-        chooseDemo();
-        navigate('/app');
-      }}
+      onSignUp={() => navigate('/auth/sign-up')}
       onSignIn={() => navigate('/auth/sign-in')}
     />
   );
