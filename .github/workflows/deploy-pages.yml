@@ -1,0 +1,68 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+
+      # Project pages are served from /<repository>/. Set the repository
+      # variable PAGES_PUBLIC_PATH (for example "/") to override this when a
+      # custom domain is attached to the site.
+      - name: Compute the site base path
+        run: |
+          if [ -n "${{ vars.PAGES_PUBLIC_PATH }}" ]; then
+            echo "PUBLIC_PATH=${{ vars.PAGES_PUBLIC_PATH }}" >> "$GITHUB_ENV"
+          else
+            echo "PUBLIC_PATH=/${{ github.event.repository.name }}/" >> "$GITHUB_ENV"
+          fi
+
+      # The Supabase URL and publishable key are public values that end up in
+      # the browser bundle. Keep them as repository variables (or secrets).
+      - name: Build
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL || secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY || secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: npm run build
+
+      # GitHub Pages has no SPA rewrites, so deep links such as
+      # /auth/callback are served from 404.html with the same bundle.
+      # .nojekyll keeps GitHub from filtering files that start with "_".
+      - name: Prepare the SPA fallback
+        run: |
+          cp build/index.html build/404.html
+          touch build/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
