@@ -17,28 +17,43 @@
 }
 
 .dotField {
-  background-image: radial-gradient(
-    circle,
-    rgba(145, 163, 255, 0.14) 1.5px,
-    transparent 1.6px
-  );
-  background-size: 26px 26px;
   inset: 0;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
   position: absolute;
 }
 
+/* Dots live in two soft side stripes instead of covering the whole page. */
+.dotField::before,
 .dotField::after {
   background-image: radial-gradient(
     circle,
-    rgba(101, 179, 252, 0.11) 2.4px,
-    transparent 2.5px
+    rgba(145, 163, 255, 0.17) 1.5px,
+    transparent 1.6px
   );
-  background-position: 13px 13px;
-  background-size: 78px 78px;
+  background-size: 24px 24px;
   content: '';
-  inset: 0;
+  inset-block: 0;
   position: absolute;
+  width: clamp(3rem, 8vw, 8rem);
+}
+
+.dotField::before {
+  left: 0;
+  mask-image: linear-gradient(
+    to right,
+    #000 0%,
+    rgba(0, 0, 0, 0.5) 55%,
+    transparent 100%
+  );
+}
+
+.dotField::after {
+  mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    rgba(0, 0, 0, 0.5) 55%,
+    transparent 100%
+  );
+  right: 0;
 }
 
 .backdropCards {
@@ -463,6 +478,26 @@
   gap: 0.9rem;
   margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
   max-width: 46rem;
+  position: relative;
+}
+
+/* A small, faint dot patch sits behind each section heading. */
+.sectionHeader::before {
+  background-image: radial-gradient(
+    circle,
+    rgba(145, 163, 255, 0.12) 1px,
+    transparent 1.1px
+  );
+  background-size: 18px 18px;
+  content: '';
+  height: 7rem;
+  left: -1.1rem;
+  mask-image: radial-gradient(115% 90% at 0% 30%, #000 0%, transparent 72%);
+  pointer-events: none;
+  position: absolute;
+  top: -1.4rem;
+  width: min(24rem, 72%);
+  z-index: -1;
 }
 
 .sectionHeader h2 {
@@ -578,10 +613,10 @@
   background-color: #191a22;
   background-image: radial-gradient(
     circle,
-    rgba(145, 163, 255, 0.13) 1.5px,
-    transparent 1.6px
+    rgba(145, 163, 255, 0.09) 1.4px,
+    transparent 1.5px
   );
-  background-size: 26px 26px;
+  background-size: 22px 22px;
   border: 1px solid #31344a;
   border-radius: 1.5rem;
   display: grid;
