@@ -53,12 +53,12 @@
   --card-rotate: 0deg;
   background: linear-gradient(
     160deg,
-    rgba(48, 57, 102, 0.26),
-    rgba(22, 24, 34, 0.34) 72%
+    rgba(48, 57, 102, 0.16),
+    rgba(22, 24, 34, 0.21) 72%
   );
-  border: 1px solid rgba(145, 163, 255, 0.13);
+  border: 1px solid rgba(145, 163, 255, 0.09);
   border-radius: 1.25rem;
-  box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.14);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -119,8 +119,8 @@
   --card-width: 12rem;
   --card-height: 15rem;
   --card-rotate: -7deg;
-  --card-opacity: 0.4;
-  --card-opacity-to: 0.55;
+  --card-opacity: 0.25;
+  --card-opacity-to: 0.34;
   --card-rotate-to: 3deg;
   --card-scale-to: 1.05;
   --card-drift-x: 2rem;
@@ -135,8 +135,8 @@
   --card-width: 17rem;
   --card-height: 10rem;
   --card-rotate: 4deg;
-  --card-opacity: 0.36;
-  --card-opacity-to: 0.5;
+  --card-opacity: 0.23;
+  --card-opacity-to: 0.32;
   --card-rotate-to: -3deg;
   --card-scale-to: 0.94;
   --card-drift-x: -4rem;
@@ -150,8 +150,8 @@
   --card-left: 4%;
   --card-width: 10rem;
   --card-height: 10rem;
-  --card-opacity: 0.34;
-  --card-opacity-to: 0.48;
+  --card-opacity: 0.21;
+  --card-opacity-to: 0.3;
   --card-scale-to: 1.15;
   --card-drift-x: 5rem;
   --card-drift-y: -10rem;
@@ -165,8 +165,8 @@
   --card-width: 16rem;
   --card-height: 7rem;
   --card-rotate: -3deg;
-  --card-opacity: 0.34;
-  --card-opacity-to: 0.46;
+  --card-opacity: 0.21;
+  --card-opacity-to: 0.3;
   --card-rotate-to: 2deg;
   --card-drift-x: -3rem;
   --card-drift-y: -14rem;
@@ -180,8 +180,8 @@
   --card-width: 9rem;
   --card-height: 9rem;
   --card-rotate: 10deg;
-  --card-opacity: 0.28;
-  --card-opacity-to: 0.42;
+  --card-opacity: 0.17;
+  --card-opacity-to: 0.26;
   --card-rotate-to: 20deg;
   --card-scale-to: 1.1;
   --card-drift-x: -2rem;
@@ -195,8 +195,8 @@
   --card-left: 24%;
   --card-width: 6.5rem;
   --card-height: 6.5rem;
-  --card-opacity: 0.26;
-  --card-opacity-to: 0.38;
+  --card-opacity: 0.16;
+  --card-opacity-to: 0.24;
   --card-scale-to: 1.25;
   --card-drift-x: 3rem;
   --card-drift-y: -16rem;
@@ -208,8 +208,8 @@
   --card-width: 8rem;
   --card-height: 8rem;
   --card-rotate: 45deg;
-  --card-opacity: 0.24;
-  --card-opacity-to: 0.36;
+  --card-opacity: 0.15;
+  --card-opacity-to: 0.23;
   --card-rotate-to: 60deg;
   --card-drift-x: -2rem;
   --card-drift-y: 18rem;
@@ -220,8 +220,8 @@
   --card-left: 38%;
   --card-width: 15rem;
   --card-height: 4.25rem;
-  --card-opacity: 0.32;
-  --card-opacity-to: 0.2;
+  --card-opacity: 0.19;
+  --card-opacity-to: 0.12;
   --card-drift-x: 2rem;
   --card-drift-y: -12rem;
   --card-fill-from: 0.5;
