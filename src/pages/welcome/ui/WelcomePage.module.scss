@@ -409,6 +409,13 @@
   max-width: 46rem;
 }
 
+/* The Russian headline needs a wider column to stay within three lines. */
+@media (min-width: 64rem) {
+  .heroContent {
+    max-width: 58rem;
+  }
+}
+
 .heroContent h1 {
   font-size: clamp(2.4rem, 5.4vw, 4.4rem);
   line-height: 1.07;
