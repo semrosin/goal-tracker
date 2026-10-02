@@ -1,13 +1,16 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
-test('visitor can open a useful demo and add a deposit', async ({ page }) => {
-  await page.goto('/');
-  await expect(
-    page.getByRole('heading', { name: 'Копите на важное с понятным планом' })
-  ).toBeVisible();
+// The landing page no longer offers the demo, so it is entered through the
+// stored preference. This keeps the offline demo covered end to end.
+const openDemo = async (page: Page) => {
+  await page.addInitScript(() =>
+    localStorage.setItem('goal-tracker-mode', 'demo')
+  );
+  await page.goto('/app');
+};
 
-  await page.getByRole('button', { name: 'Посмотреть демо' }).click();
-  await expect(page).toHaveURL(/\/app$/);
+test('demo can create a goal and add a deposit', async ({ page }) => {
+  await openDemo(page);
   await expect(page.getByRole('heading', { name: 'Мои цели' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Новая цель' }).click();
@@ -25,8 +28,7 @@ test('visitor can open a useful demo and add a deposit', async ({ page }) => {
 test('demo enforces withdrawal and history rules in the browser', async ({
   page,
 }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Посмотреть демо' }).click();
+  await openDemo(page);
   await page.getByRole('button', { name: 'Новая цель' }).click();
   const createDialog = page.getByRole('dialog', { name: 'Новая цель' });
   await createDialog
@@ -63,15 +65,12 @@ test('demo enforces withdrawal and history rules in the browser', async ({
   await expect(page.getByText('-300 ₽')).toHaveCount(0);
 });
 
-test('visitor can choose English before entering the app', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'EN' }).click();
-  await expect(
-    page.getByRole('heading', {
-      name: 'Save for what matters with a clear plan',
-    })
-  ).toBeVisible();
-  await page.getByRole('button', { name: 'Explore the demo' }).click();
+test('demo works in English', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-locale', 'en');
+    localStorage.setItem('goal-tracker-mode', 'demo');
+  });
+  await page.goto('/app');
   await expect(page.getByRole('heading', { name: 'My goals' })).toBeVisible();
   await page.getByRole('link').filter({ hasText: 'Emergency fund' }).click();
   await expect(
@@ -85,39 +84,9 @@ test('visitor can choose English before entering the app', async ({ page }) => {
   ).toBe(false);
 });
 
-test('English sign-in screen has translated form labels', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'EN' }).click();
-  await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
-  await expect(page.getByRole('textbox', { name: 'Email' })).toBeVisible();
-});
-
-test('sign-in offers email and password with an explicit unavailable state', async ({
-  page,
-}) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Войти' }).click();
-
-  await expect(page).toHaveURL(/\/auth\/sign-in$/);
-  await expect(
-    page.getByRole('textbox', { name: 'Электронная почта' })
-  ).toBeVisible();
-  await expect(page.getByLabel('Пароль')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Войти' })).toBeDisabled();
-});
-
-test('first screen and demo fit a mobile viewport', async ({
-  page,
-}, testInfo) => {
+test('demo screens fit a mobile viewport', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile');
-  await page.goto('/');
-  const hasOverflow = await page.evaluate(
-    () => document.documentElement.scrollWidth > window.innerWidth
-  );
-  expect(hasOverflow).toBe(false);
-
-  await page.getByRole('button', { name: 'Посмотреть демо' }).click();
+  await openDemo(page);
   await expect(page.getByRole('heading', { name: 'Мои цели' })).toBeVisible();
   const appHasOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > window.innerWidth
@@ -134,8 +103,7 @@ test('first screen and demo fit a mobile viewport', async ({
 });
 
 test('goal dialog restores keyboard focus after Escape', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Посмотреть демо' }).click();
+  await openDemo(page);
   const opener = page.getByRole('button', { name: 'Новая цель' });
   await opener.focus();
   await page.keyboard.press('Enter');

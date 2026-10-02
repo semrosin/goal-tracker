@@ -29,7 +29,12 @@ try {
       fullPage: true,
     });
 
-    await page.getByRole('button', { name: 'Посмотреть демо' }).click();
+    // The demo is no longer linked from the landing page; open it through the
+    // stored preference instead.
+    await page.addInitScript(() =>
+      localStorage.setItem('goal-tracker-mode', 'demo')
+    );
+    await page.goto(`${baseUrl}/app`);
     await page.getByRole('heading', { name: 'Мои цели' }).waitFor();
     await page.screenshot({
       path: resolve(output, `${name}-overview.png`),
