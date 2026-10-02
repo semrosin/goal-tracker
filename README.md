@@ -2,7 +2,7 @@
 
 [Русская версия](README.ru.md)
 
-A bilingual savings goal tracker built with React and TypeScript. Visitors can try a seeded demo without an account, or use an email account to sync goals and transactions through Supabase. All amounts are whole rubles.
+A bilingual savings goal tracker built with React and TypeScript. Create an email account to sync goals and transactions through Supabase. All amounts are whole rubles.
 
 ## Screenshots
 
@@ -17,7 +17,7 @@ A bilingual savings goal tracker built with React and TypeScript. Visitors can t
 - Multiple goals with deposits, withdrawals, progress, and ordered transaction history.
 - An optional target month and required contribution: `ceil(remaining / months including the current and target months)`.
 - A what-if calculator forecasts the completion month for a chosen monthly contribution. Completed and overdue goals have distinct states.
-- A local demo with example goals. Existing local goals stay in browser storage and are never uploaded automatically.
+- An offline demo with example goals remains for browsers that stored the preference earlier; its data stays in browser storage and is never uploaded automatically.
 - Supabase Auth for email/password registration, confirmation, sign-in, and password recovery. Postgres is the source of truth for an account.
 - Russian and English UI with a saved language choice.
 
@@ -38,7 +38,7 @@ npm ci
 npm start
 ```
 
-Open `http://localhost:3000`. The demo works without environment values. For cloud accounts, copy `.env.example` to `.env`, then set `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` for a Supabase project with the migration applied. Webpack reads `.env` at startup. These values are public browser configuration; **never use a service-role or secret key here**.
+Open `http://localhost:3000`. The app boots without environment values; for cloud accounts, copy `.env.example` to `.env`, then set `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` for a Supabase project with the migration applied. Webpack reads `.env` at startup. These values are public browser configuration; **never use a service-role or secret key here**.
 
 ```sh
 npm run lint
