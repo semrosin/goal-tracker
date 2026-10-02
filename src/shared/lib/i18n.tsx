@@ -13,6 +13,41 @@ const messages = {
     'welcome.lead':
       'Записывайте пополнения и снятия, следите за прогрессом и узнавайте, сколько откладывать каждый месяц.',
     'welcome.signIn': 'Войти',
+    'welcome.heroHint': 'Бесплатно. Регистрация занимает минуту.',
+    'welcome.featuresTitle': 'Всё для ваших накоплений',
+    'welcome.featuresLead':
+      'Goal Tracker показывает картину целиком: сколько уже отложено, сколько осталось и что делать дальше.',
+    'welcome.featureGoals': 'Цели с прогрессом',
+    'welcome.featureGoalsText':
+      'Задайте сумму и описание — прогресс-бар покажет, сколько уже накоплено.',
+    'welcome.featureHistory': 'Пополнения и снятия',
+    'welcome.featureHistoryText':
+      'Каждая операция сохраняется в истории с устойчивым порядком.',
+    'welcome.featurePlan': 'План на месяц',
+    'welcome.featurePlanText':
+      'Укажите месяц достижения и узнайте, сколько откладывать ежемесячно.',
+    'welcome.featureForecast': 'Прогноз «что если»',
+    'welcome.featureForecastText':
+      'Проверьте, когда цель закроется, если откладывать больше или меньше.',
+    'welcome.featureSync': 'Синхронизация в облаке',
+    'welcome.featureSyncText':
+      'Войдите с любого устройства — цели и операции загрузятся из аккаунта.',
+    'welcome.featurePrivacy': 'Доступ только у вас',
+    'welcome.featurePrivacyText':
+      'Правила доступа на уровне базы данных не дают читать чужие цели и операции.',
+    'welcome.stepsTitle': 'Как начать',
+    'welcome.stepCreate': 'Создайте аккаунт',
+    'welcome.stepCreateText': 'Регистрация по email занимает минуту.',
+    'welcome.stepGoal': 'Заведите цель',
+    'welcome.stepGoalText':
+      'Укажите сумму, а описание и срок добавьте по желанию.',
+    'welcome.stepTrack': 'Отмечайте операции',
+    'welcome.stepTrackText':
+      'Пополняйте и снимайте — прогресс и прогноз обновятся сразу.',
+    'welcome.ctaTitle': 'Начните копить с понятным планом',
+    'welcome.ctaLead': 'Создайте аккаунт и добавьте первую цель за пару минут.',
+    'welcome.ctaAction': 'Начать бесплатно',
+    'welcome.footer': 'Goal Tracker — трекер целей накоплений.',
     'language.label': 'Язык',
     'overview.logo': 'Логотип Goal Tracker',
     'overview.create': 'Новая цель',
@@ -173,6 +208,42 @@ const messages = {
     'welcome.lead':
       'Record deposits and withdrawals, track progress, and see how much to save each month.',
     'welcome.signIn': 'Sign in',
+    'welcome.heroHint': 'Free. Signing up takes a minute.',
+    'welcome.featuresTitle': 'Everything for your savings',
+    'welcome.featuresLead':
+      'Goal Tracker shows the whole picture: how much is set aside, what is left, and what to do next.',
+    'welcome.featureGoals': 'Goals with progress',
+    'welcome.featureGoalsText':
+      'Set an amount and a description — the progress bar shows how far you are.',
+    'welcome.featureHistory': 'Deposits and withdrawals',
+    'welcome.featureHistoryText':
+      'Every transaction stays in the history in a stable order.',
+    'welcome.featurePlan': 'Monthly plan',
+    'welcome.featurePlanText':
+      'Pick a target month and see how much to set aside every month.',
+    'welcome.featureForecast': 'What-if forecast',
+    'welcome.featureForecastText':
+      'Check when the goal completes if you save more or less.',
+    'welcome.featureSync': 'Cloud sync',
+    'welcome.featureSyncText':
+      'Sign in on any device — goals and transactions load from your account.',
+    'welcome.featurePrivacy': 'Only you have access',
+    'welcome.featurePrivacyText':
+      'Database-level access rules keep other accounts from reading your goals and transactions.',
+    'welcome.stepsTitle': 'How to start',
+    'welcome.stepCreate': 'Create an account',
+    'welcome.stepCreateText': 'Email sign-up takes a minute.',
+    'welcome.stepGoal': 'Add a goal',
+    'welcome.stepGoalText':
+      'Enter an amount; the description and deadline are optional.',
+    'welcome.stepTrack': 'Log transactions',
+    'welcome.stepTrackText':
+      'Deposit and withdraw — progress and forecast update instantly.',
+    'welcome.ctaTitle': 'Start saving with a clear plan',
+    'welcome.ctaLead':
+      'Create an account and add your first goal in a couple of minutes.',
+    'welcome.ctaAction': 'Get started free',
+    'welcome.footer': 'Goal Tracker — a savings goals tracker.',
     'language.label': 'Language',
     'overview.logo': 'Goal Tracker logo',
     'overview.create': 'New goal',
