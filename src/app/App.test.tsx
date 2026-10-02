@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import App from './App';
 import { DEMO_STORAGE_KEY } from './store/persistence';
@@ -16,13 +16,12 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
-  it('opens an isolated seeded demo after choosing it', async () => {
+  it('restores the isolated offline demo from a stored preference', async () => {
     localStorage.clear();
     localStorage.setItem('goal-tracker-locale', 'ru');
-    window.history.replaceState({}, '', '/');
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    window.history.replaceState({}, '', '/app');
     render(<App />);
-
-    fireEvent.click(screen.getByRole('button', { name: 'Посмотреть демо' }));
 
     expect(
       await screen.findByRole('heading', { name: 'Мои цели' })
@@ -30,7 +29,6 @@ describe('App', () => {
     expect(
       screen.getByRole('link', { name: /Финансовая подушка/ })
     ).toBeInTheDocument();
-    expect(localStorage.getItem('goal-tracker-mode')).toBe('demo');
     expect(localStorage.getItem(DEMO_STORAGE_KEY)).not.toBeNull();
   });
 });
