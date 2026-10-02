@@ -27,9 +27,25 @@ describe('WelcomePage', () => {
     const onSignIn = jest.fn();
 
     render(<WelcomePage onSignIn={onSignIn} onSignUp={() => undefined} />);
-    fireEvent.click(screen.getByRole('button', { name: /войти/i }));
+    fireEvent.click(screen.getAllByRole('button', { name: /войти/i })[0]);
 
     expect(onSignIn).toHaveBeenCalledTimes(1);
+  });
+
+  it('explains what the service can do', () => {
+    render(
+      <WelcomePage onSignIn={() => undefined} onSignUp={() => undefined} />
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'Всё для ваших накоплений' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Цели с прогрессом' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Как начать' })
+    ).toBeInTheDocument();
   });
 
   it('shows English copy after switching language', () => {
