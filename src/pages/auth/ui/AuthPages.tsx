@@ -82,7 +82,7 @@ export const SignInPage = () => {
     >
       {!session.configured && (
         <p className={styles.notice} role="alert">
-          {t('auth.unavailableDemo')}
+          {t('auth.unavailable')}
         </p>
       )}
       {session.mode === 'expired' && (
