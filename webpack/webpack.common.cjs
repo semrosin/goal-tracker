@@ -10,6 +10,15 @@ const rootDirectory = path.resolve(__dirname, '..');
 const localEnvFile = path.join(rootDirectory, '.env');
 if (fs.existsSync(localEnvFile)) process.loadEnvFile(localEnvFile);
 
+// GitHub Pages project sites live under /<repository>/ instead of /. The
+// deployment sets PUBLIC_PATH; local builds default to the domain root.
+const normalizePublicPath = (value) => {
+  if (value === undefined || value === '' || value === '/') return '/';
+  return `/${value.replace(/^\/+|\/+$/g, '')}/`;
+};
+
+const publicPath = normalizePublicPath(process.env.PUBLIC_PATH);
+
 const createScssRule = ({ test, modules, isProduction, sourceMap }) => ({
   test,
   ...(modules ? {} : { exclude: /\.module\.s[ac]ss$/i }),
@@ -41,7 +50,7 @@ module.exports = ({ isProduction = false, sourceMap = false } = {}) => ({
   resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js'] },
   output: {
     path: path.resolve(rootDirectory, 'build'),
-    publicPath: '/',
+    publicPath,
   },
   module: {
     rules: [
@@ -73,6 +82,7 @@ module.exports = ({ isProduction = false, sourceMap = false } = {}) => ({
   },
   plugins: [
     new webpack.DefinePlugin({
+      'process.env.PUBLIC_PATH': JSON.stringify(publicPath),
       'process.env.SUPABASE_URL': JSON.stringify(
         process.env.SUPABASE_URL || ''
       ),
