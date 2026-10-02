@@ -4,26 +4,29 @@ import { LocaleProvider } from '../../../shared/lib/i18n';
 import { WelcomePage } from './WelcomePage';
 
 describe('WelcomePage', () => {
-  it('lets a first-time visitor choose demo without signing in', () => {
-    const onOpenDemo = jest.fn();
+  it('offers sign-up as the primary action without a demo', () => {
+    const onSignUp = jest.fn();
     const onSignIn = jest.fn();
 
-    render(<WelcomePage onOpenDemo={onOpenDemo} onSignIn={onSignIn} />);
+    render(<WelcomePage onSignIn={onSignIn} onSignUp={onSignUp} />);
 
     expect(
       screen.getByRole('heading', { name: /копите на важное/i })
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /демо/i })
+    ).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /посмотреть демо/i }));
+    fireEvent.click(screen.getByRole('button', { name: /создать аккаунт/i }));
 
-    expect(onOpenDemo).toHaveBeenCalledTimes(1);
+    expect(onSignUp).toHaveBeenCalledTimes(1);
     expect(onSignIn).not.toHaveBeenCalled();
   });
 
   it('offers a separate sign-in action', () => {
     const onSignIn = jest.fn();
 
-    render(<WelcomePage onOpenDemo={() => undefined} onSignIn={onSignIn} />);
+    render(<WelcomePage onSignIn={onSignIn} onSignUp={() => undefined} />);
     fireEvent.click(screen.getByRole('button', { name: /войти/i }));
 
     expect(onSignIn).toHaveBeenCalledTimes(1);
@@ -33,7 +36,7 @@ describe('WelcomePage', () => {
     localStorage.setItem('goal-tracker-locale', 'ru');
     render(
       <LocaleProvider>
-        <WelcomePage onOpenDemo={() => undefined} onSignIn={() => undefined} />
+        <WelcomePage onSignIn={() => undefined} onSignUp={() => undefined} />
       </LocaleProvider>
     );
 

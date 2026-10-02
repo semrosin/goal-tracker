@@ -29,13 +29,12 @@ describe('AppRouter', () => {
     ).toHaveAttribute('href', '/app');
   });
 
-  it('opens demo only after the welcome action', () => {
-    const chooseDemo = jest.fn();
+  it('opens the sign-up page from the welcome action', () => {
     const session: SessionContextValue = {
       mode: 'guest',
       configured: false,
       ledgerStatus: 'idle',
-      chooseDemo,
+      chooseDemo: jest.fn(),
       resetDemo: jest.fn(),
       refresh: jest.fn(),
       signUp: jest.fn(),
@@ -57,7 +56,9 @@ describe('AppRouter', () => {
     expect(
       screen.getByRole('heading', { name: /копите/i })
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /посмотреть демо/i }));
-    expect(chooseDemo).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: /создать аккаунт/i }));
+    expect(
+      screen.getByRole('heading', { name: /создать аккаунт/i })
+    ).toBeInTheDocument();
   });
 });
