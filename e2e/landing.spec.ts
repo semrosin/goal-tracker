@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-test('landing opens the sign-up form', async ({ page }) => {
+test('landing explains the service and opens the sign-up form', async ({
+  page,
+}) => {
   await page.goto('/');
   await expect(
     page.getByRole('heading', { name: 'Копите на важное с понятным планом' })
@@ -8,6 +10,10 @@ test('landing opens the sign-up form', async ({ page }) => {
   await expect(
     page.getByRole('button', { name: 'Посмотреть демо' })
   ).toHaveCount(0);
+  await expect(
+    page.getByRole('heading', { name: 'Всё для ваших накоплений' })
+  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Как начать' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Создать аккаунт' }).click();
   await expect(page).toHaveURL(/\/auth\/sign-up$/);
@@ -23,6 +29,9 @@ test('landing switches to English', async ({ page }) => {
     page.getByRole('heading', {
       name: 'Save for what matters with a clear plan',
     })
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'Everything for your savings' })
   ).toBeVisible();
 
   await page.getByRole('button', { name: 'Sign in' }).first().click();
