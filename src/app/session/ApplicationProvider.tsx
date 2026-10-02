@@ -26,6 +26,7 @@ import { goalsActions } from '../../entities/goal';
 import { transactionsActions } from '../../entities/transaction';
 import { cloudErrorKey } from '../../shared/lib/cloudError';
 import { useI18n } from '../../shared/lib/i18n';
+import { publicAsset } from '../../shared/lib/publicPath';
 import { getDemoSeed } from '../store/demoSeed';
 import { DEMO_STORAGE_KEY, savePersistedState } from '../store/persistence';
 import { ledgerReplaced } from '../store/rootReducer';
@@ -141,7 +142,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (
-        window.location.pathname === '/auth/callback' &&
+        window.location.pathname === publicAsset('auth/callback') &&
         !authLinkError &&
         readPreference() === 'demo'
       ) {
@@ -245,7 +246,9 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
       const { data, error } = await authClient.auth.signUp({
         email: newEmail,
         password,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        options: {
+          emailRedirectTo: `${window.location.origin}${publicAsset('auth/callback')}`,
+        },
       });
       if (error !== null) throw error;
       if (data.session !== null) {
@@ -279,7 +282,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
       const { error } = await authClient.auth.resetPasswordForEmail(
         resetEmail,
         {
-          redirectTo: `${window.location.origin}/auth/reset-password`,
+          redirectTo: `${window.location.origin}${publicAsset('auth/reset-password')}`,
         }
       );
       if (error !== null) throw error;
