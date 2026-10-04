@@ -25,16 +25,24 @@ jobs:
           cache: npm
       - run: npm ci
 
-      # Project pages are served from /<repository>/. Set the repository
-      # variable PAGES_PUBLIC_PATH (for example "/") to override this when a
-      # custom domain is attached to the site.
+      # Read the Pages configuration so the app is built for the exact base
+      # path GitHub serves it from. base_path is "/<repository>" for project
+      # sites and "" when a custom domain serves the site from the root, so
+      # both cases work without any extra setup.
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      # Set the repository variable PAGES_PUBLIC_PATH (for example "/") to
+      # override the detected base path.
       - name: Compute the site base path
         run: |
           if [ -n "${{ vars.PAGES_PUBLIC_PATH }}" ]; then
-            echo "PUBLIC_PATH=${{ vars.PAGES_PUBLIC_PATH }}" >> "$GITHUB_ENV"
+            base_path="${{ vars.PAGES_PUBLIC_PATH }}"
           else
-            echo "PUBLIC_PATH=/${{ github.event.repository.name }}/" >> "$GITHUB_ENV"
+            base_path="${{ steps.pages.outputs.base_path }}"
           fi
+          echo "PUBLIC_PATH=${base_path}/" >> "$GITHUB_ENV"
 
       # The Supabase URL and publishable key are public values that end up in
       # the browser bundle. Keep them as repository variables (or secrets).
@@ -52,7 +60,6 @@ jobs:
           cp build/index.html build/404.html
           touch build/.nojekyll
 
-      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build
