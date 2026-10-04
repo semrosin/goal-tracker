@@ -42,7 +42,18 @@ jobs:
           else
             base_path="${{ steps.pages.outputs.base_path }}"
           fi
-          echo "PUBLIC_PATH=${base_path}/" >> "$GITHUB_ENV"
+          # Collapse leading/trailing slashes so the result is always "/" or
+          # "/<base>/". Blindly appending "/" turned an override of "/" into
+          # "//", which emitted protocol-relative asset URLs (//static/js/...)
+          # that browsers try to load from a host called "static".
+          base_path="$(printf '%s' "$base_path" | sed -e 's#^/*##' -e 's#/*$##')"
+          if [ -z "$base_path" ]; then
+            public_path="/"
+          else
+            public_path="/${base_path}/"
+          fi
+          echo "PUBLIC_PATH=${public_path}" >> "$GITHUB_ENV"
+          echo "Site base path: ${public_path}"
 
       # The Supabase URL and publishable key are public values that end up in
       # the browser bundle. Keep them as repository variables (or secrets).

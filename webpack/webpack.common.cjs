@@ -12,9 +12,12 @@ if (fs.existsSync(localEnvFile)) process.loadEnvFile(localEnvFile);
 
 // GitHub Pages project sites live under /<repository>/ instead of /. The
 // deployment sets PUBLIC_PATH; local builds default to the domain root.
+// Collapse stray slashes as well: a value like "//" would otherwise emit
+// protocol-relative asset URLs (//static/js/...) that browsers resolve
+// against hosts literally named "static" / "manifest.json".
 const normalizePublicPath = (value) => {
-  if (value === undefined || value === '' || value === '/') return '/';
-  return `/${value.replace(/^\/+|\/+$/g, '')}/`;
+  const trimmed = (value ?? '').replace(/^\/+|\/+$/g, '');
+  return trimmed === '' ? '/' : `/${trimmed}/`;
 };
 
 const publicPath = normalizePublicPath(process.env.PUBLIC_PATH);
