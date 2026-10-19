@@ -1,0 +1,39 @@
+@mixin tokens {
+  // Controls every dashed border on the landing and authentication pages.
+  --dash-length: 16px;
+  --dash-gap: 16px;
+  --dash-color: rgba(255, 255, 255, 0.12);
+  --dot-color: rgba(145, 163, 255, 0.085);
+  --panel-background: #131313;
+  --panel-border: #303030;
+
+  // The feature grid meets the inner edges of the two decorative rails.
+  --rail-width: clamp(2rem, 7vw, 8.5rem);
+  --rail-inset: max(1.5rem, calc((100vw - 94rem) / 2));
+  --content-inset: calc(var(--rail-inset) + var(--rail-width));
+  --content-width: calc(100% - (2 * var(--content-inset)));
+
+  @media (max-width: 48rem) {
+    --rail-inset: 0.75rem;
+    --rail-width: 1.5rem;
+  }
+}
+
+@mixin horizontal-borders {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--dash-color) 0 var(--dash-length),
+      transparent var(--dash-length) calc(var(--dash-length) + var(--dash-gap))
+    ),
+    repeating-linear-gradient(
+      to right,
+      var(--dash-color) 0 var(--dash-length),
+      transparent var(--dash-length) calc(var(--dash-length) + var(--dash-gap))
+    );
+  background-position:
+    left top,
+    left bottom;
+  background-repeat: repeat-x;
+  background-size: calc(var(--dash-length) + var(--dash-gap)) 1px;
+}

@@ -1,6 +1,4 @@
 .backdrop {
-  --rail-width: clamp(2rem, 7vw, 8.5rem);
-  --rail-inset: max(1.5rem, calc((100vw - 94rem) / 2));
   inset: 0;
   overflow: clip;
   pointer-events: none;
@@ -10,12 +8,27 @@
 
 .backdrop::before,
 .backdrop::after {
-  background-image: radial-gradient(
-    circle,
-    rgba(145, 163, 255, 0.19) 1px,
-    transparent 1.2px
-  );
-  background-size: 12px 12px;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      var(--dash-color) 0 var(--dash-length),
+      transparent var(--dash-length) calc(var(--dash-length) + var(--dash-gap))
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--dash-color) 0 var(--dash-length),
+      transparent var(--dash-length) calc(var(--dash-length) + var(--dash-gap))
+    ),
+    radial-gradient(circle, var(--dot-color) 1px, transparent 1.2px);
+  background-position:
+    left top,
+    right top,
+    center top;
+  background-repeat: repeat-y, repeat-y, repeat;
+  background-size:
+    1px calc(var(--dash-length) + var(--dash-gap)),
+    1px calc(var(--dash-length) + var(--dash-gap)),
+    12px 12px;
   content: '';
   inset-block: 4.5rem 0;
   position: absolute;
@@ -31,8 +44,6 @@
 
 @media (max-width: 48rem) {
   .backdrop {
-    --rail-inset: 0.75rem;
-    --rail-width: 1.5rem;
-    opacity: 0.5;
+    opacity: 0.7;
   }
 }
