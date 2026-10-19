@@ -1,4 +1,7 @@
+@use '../../../shared/ui/DotBackdrop/publicSurface' as surface;
+
 .shell {
+  @include surface.tokens;
   --page-gutter: clamp(0.9rem, 2.5vw, 1.75rem);
   --page-width: min(100% - (2 * var(--page-gutter)), 74rem);
   isolation: isolate;
@@ -54,7 +57,7 @@
   min-height: calc(100svh - 4.5rem);
   padding: clamp(3rem, 9vh, 6rem) 0;
   text-align: center;
-  width: var(--page-width);
+  width: var(--content-width);
 }
 
 .heroContent {
@@ -110,7 +113,7 @@
 .section {
   margin: 0 auto;
   padding: clamp(2.25rem, 6vw, 4.5rem) 0;
-  width: var(--page-width);
+  width: var(--content-width);
 }
 
 .sectionHeader {
@@ -119,24 +122,6 @@
   margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
   max-width: 46rem;
   position: relative;
-}
-
-/* A small, faint dot patch sits behind each section heading. */
-.sectionHeader::before {
-  background-image: radial-gradient(
-    circle,
-    rgba(145, 163, 255, 0.12) 1px,
-    transparent 1.1px
-  );
-  background-size: 18px 18px;
-  content: '';
-  height: 7rem;
-  left: -1.1rem;
-  pointer-events: none;
-  position: absolute;
-  top: -1.4rem;
-  width: min(24rem, 72%);
-  z-index: -1;
 }
 
 .sectionHeader h2 {
@@ -155,8 +140,10 @@
 }
 
 .features {
+  border-left: 1px solid var(--panel-border);
+  border-top: 1px solid var(--panel-border);
   display: grid;
-  gap: 1rem;
+  gap: 0;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   list-style: none;
   margin: 0;
@@ -164,35 +151,52 @@
 }
 
 .featureCard {
-  background-color: #1c1c1c;
-  background-image:
-    linear-gradient(rgba(112, 139, 165, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(112, 139, 165, 0.07) 1px, transparent 1px);
-  background-size: 2.25rem 2.25rem;
-  border: 1px solid #303030;
-  border-radius: 1rem;
+  align-content: start;
+  background: var(--panel-background);
+  border-bottom: 1px solid var(--panel-border);
+  border-right: 1px solid var(--panel-border);
+  border-radius: 0;
   display: grid;
   gap: 0.85rem;
-  padding: 1.5rem;
-  transition:
-    border-color 160ms ease,
-    transform 160ms ease;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  position: relative;
 }
 
-.featureCard:hover {
-  border-color: #65b3fc;
-  transform: translateY(-2px);
+.cornerMarks {
+  inset: -1px -1px 0 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.cornerMarks span {
+  background: var(--panel-background);
+  border: 1px solid var(--panel-border);
+  height: 10px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, -50%);
+  width: 10px;
+}
+
+.cornerMarks span:nth-child(2),
+.cornerMarks span:nth-child(4) {
+  left: 100%;
+}
+
+.cornerMarks span:nth-child(3),
+.cornerMarks span:nth-child(4) {
+  top: 100%;
 }
 
 .featureIcon {
   align-items: center;
-  background: rgba(112, 133, 255, 0.16);
-  border-radius: 0.75rem;
-  color: #aebdff;
+  color: #d8d9e1;
   display: inline-flex;
-  height: 2.75rem;
+  height: 1.5rem;
   justify-content: center;
-  width: 2.75rem;
+  width: 1.5rem;
 }
 
 .featureCard h3 {
@@ -207,9 +211,15 @@
   margin: 0;
 }
 
+.stepsBand {
+  @include surface.horizontal-borders;
+  background-color: var(--panel-background);
+  margin-block: clamp(2rem, 4vw, 4rem);
+}
+
 .steps {
   display: grid;
-  gap: 1rem;
+  gap: clamp(1.5rem, 4vw, 4rem);
   grid-template-columns: repeat(3, minmax(0, 1fr));
   list-style: none;
   margin: 0;
@@ -217,23 +227,16 @@
 }
 
 .step {
-  border-top: 1px solid #2b2d36;
+  align-content: start;
   display: grid;
   gap: 0.6rem;
-  padding: 1.35rem 0 0;
 }
 
 .stepNumber {
-  align-items: center;
-  background: rgba(112, 133, 255, 0.16);
-  border-radius: 999px;
-  color: #aebdff;
-  display: inline-flex;
+  color: #9c9fac;
   font-family: 'Unbounded', sans-serif;
-  font-size: 0.85rem;
-  height: 2rem;
-  justify-content: center;
-  width: 2rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
 
 .step h3 {
@@ -249,13 +252,6 @@
 }
 
 .ctaPanel {
-  background-color: transparent;
-  background-image: radial-gradient(
-    circle,
-    rgba(145, 163, 255, 0.09) 1.4px,
-    transparent 1.5px
-  );
-  background-size: 22px 22px;
   border: 0;
   border-radius: 0;
   display: grid;
@@ -322,36 +318,11 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .featureCard {
-    transition: none;
-  }
-}
-
 .heroCta {
   margin-top: clamp(3rem, 7vh, 4.5rem);
   padding: 1.75rem clamp(1rem, 4vw, 3rem);
   position: relative;
   width: min(100%, 34rem);
-}
-.heroCta::before {
-  background-image: radial-gradient(
-    circle,
-    rgba(145, 163, 255, 0.17) 1px,
-    transparent 1.2px
-  );
-  background-size: 12px 12px;
-  content: '';
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
-  z-index: -1;
-}
-@media (min-width: 48rem) {
-  .hero,
-  .section {
-    width: min(100% - (2 * clamp(7rem, 11vw, 12rem)), 74rem);
-  }
 }
 @media (max-width: 25rem) {
   .brand {

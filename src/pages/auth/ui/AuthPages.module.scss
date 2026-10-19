@@ -1,4 +1,7 @@
+@use '../../../shared/ui/DotBackdrop/publicSurface' as surface;
+
 .shell {
+  @include surface.tokens;
   isolation: isolate;
   position: relative;
   min-height: 100vh;
@@ -54,20 +57,6 @@
   border-radius: 1.5rem;
   background: #1e1e28;
   box-shadow: 0 30px 80px #0006;
-}
-
-.card::before {
-  background-image: radial-gradient(
-    circle,
-    rgba(145, 163, 255, 0.17) 1px,
-    transparent 1.2px
-  );
-  background-size: 12px 12px;
-  content: '';
-  inset: -2rem -1rem;
-  pointer-events: none;
-  position: absolute;
-  z-index: -1;
 }
 
 .eyebrow {

@@ -116,6 +116,12 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
           <ul className={styles.features}>
             {features.map((feature) => (
               <li className={styles.featureCard} key={feature.title}>
+                <span aria-hidden="true" className={styles.cornerMarks}>
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </span>
                 <span className={styles.featureIcon}>{feature.icon}</span>
                 <h3>{feature.title}</h3>
                 <p>{feature.text}</p>
@@ -124,21 +130,23 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
           </ul>
         </section>
 
-        <section aria-labelledby="welcome-steps" className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 id="welcome-steps">{t('welcome.stepsTitle')}</h2>
+        <section aria-labelledby="welcome-steps" className={styles.stepsBand}>
+          <div className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <h2 id="welcome-steps">{t('welcome.stepsTitle')}</h2>
+            </div>
+            <ol className={styles.steps}>
+              {steps.map((step, index) => (
+                <li className={styles.step} key={step.title}>
+                  <span aria-hidden="true" className={styles.stepNumber}>
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </li>
+              ))}
+            </ol>
           </div>
-          <ol className={styles.steps}>
-            {steps.map((step, index) => (
-              <li className={styles.step} key={step.title}>
-                <span aria-hidden="true" className={styles.stepNumber}>
-                  {index + 1}
-                </span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </li>
-            ))}
-          </ol>
         </section>
 
         <section className={styles.section}>
