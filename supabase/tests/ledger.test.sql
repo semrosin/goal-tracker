@@ -142,7 +142,7 @@ select throws_ok(
   'other user cannot delete a transaction'
 );
 select throws_ok(
-  $$select app_private.update_goal('a-goal', 'Stolen', 1, null, null)$$,
+  $$select app_private.update_goal('a-goal', 'Stolen', 1, null, null, null)$$,
   '42501', null,
   'private update implementation checks ownership independently'
 );
