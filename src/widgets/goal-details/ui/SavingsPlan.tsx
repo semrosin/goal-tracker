@@ -7,7 +7,7 @@ import {
   type Goal,
   type GoalPlan,
 } from '../../../entities/goal';
-import { formatRubles } from '../../../shared/lib/money';
+import { formatMoney } from '../../../shared/lib/money';
 import { useI18n, type Locale } from '../../../shared/lib/i18n';
 import { Field } from '../../../shared/ui/Field/Field';
 import styles from './SavingsPlan.module.scss';
@@ -71,7 +71,11 @@ export const SavingsPlan = ({ goal, balance }: SavingsPlanProps) => {
       {plan.status === 'active' ? (
         <p className={styles.contribution}>
           {t('plan.monthlyContribution', {
-            amount: formatRubles(plan.monthlyContribution, locale),
+            amount: formatMoney(
+              plan.monthlyContribution,
+              goal.currency,
+              locale
+            ),
           })}
         </p>
       ) : null}

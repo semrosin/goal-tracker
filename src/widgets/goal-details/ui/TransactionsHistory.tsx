@@ -4,7 +4,7 @@ import { useLedgerSelector } from '../../../entities/ledger';
 import { DeleteTransactionButton } from '../../../features/delete-transaction';
 import { formatDate } from '../../../shared/lib/date';
 import { useI18n } from '../../../shared/lib/i18n';
-import { formatRubles } from '../../../shared/lib/money';
+import { formatMoney } from '../../../shared/lib/money';
 import styles from './TransactionsHistory.module.scss';
 
 type TransactionsHistoryProps = { goalId: string; isCompleted?: boolean };
@@ -13,6 +13,9 @@ export const TransactionsHistory = ({
   isCompleted = false,
 }: TransactionsHistoryProps) => {
   const { locale, t } = useI18n();
+  const currency = useLedgerSelector(
+    (state) => state.goals.find((goal) => goal.id === goalId)?.currency
+  );
   const transactions = useLedgerSelector(
     (state) =>
       state.transactions
@@ -36,8 +39,9 @@ export const TransactionsHistory = ({
           {transactions.map((transaction) => {
             const isDeposit = transaction.type === 'deposit';
             const formattedDate = formatDate(transaction.createdAt, locale);
-            const signedAmount = `${isDeposit ? '+' : '-'}${formatRubles(
+            const signedAmount = `${isDeposit ? '+' : '-'}${formatMoney(
               transaction.amount,
+              currency,
               locale
             )}`;
             return (

@@ -1,4 +1,10 @@
-import { formatRubles } from './money';
+import { formatMoney, formatRubles } from './money';
+
+test('formats dollars independently from the interface language', () => {
+  expect(formatMoney(123456, 'USD', 'en')).toBe('$123,456');
+  expect(formatMoney(123456, 'USD', 'ru')).toContain('$');
+  expect(formatMoney(123456, undefined, 'en')).toBe('123,456 ₽');
+});
 
 describe('formatRubles', () => {
   it('formats an integer as a Russian-ruble amount', () => {

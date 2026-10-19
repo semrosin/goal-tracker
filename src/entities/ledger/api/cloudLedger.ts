@@ -22,6 +22,7 @@ export const mapCloudLedger = (
       title: row.title,
       ...(row.description === null ? {} : { description: row.description }),
       targetAmount: row.target_amount,
+      ...(row.currency === undefined ? {} : { currency: row.currency }),
       ...(row.target_month === null
         ? {}
         : {
@@ -76,6 +77,7 @@ export const createCloudLedgerRepository = (client: SupabaseClient) => ({
       p_title: goal.title,
       p_description: goal.description ?? null,
       p_target_amount: goal.targetAmount,
+      p_currency: goal.currency ?? 'RUB',
       p_target_month: goal.targetMonth ?? null,
     });
     assertNoError(error);
@@ -86,6 +88,7 @@ export const createCloudLedgerRepository = (client: SupabaseClient) => ({
       p_title: goal.title,
       p_description: goal.description ?? null,
       p_target_amount: goal.targetAmount,
+      p_currency: goal.currency ?? 'RUB',
       p_target_month: goal.targetMonth ?? null,
     });
     assertNoError(error);

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { calculateProgress } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
-import { formatRubles } from '../../../shared/lib/money';
+import { formatMoney } from '../../../shared/lib/money';
 import { useI18n } from '../../../shared/lib/i18n';
 import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import styles from './GoalsList.module.scss';
@@ -39,8 +39,8 @@ export const GoalsList = () => {
               value={progress}
             />
             <p>
-              {formatRubles(balance, locale)} /{' '}
-              {formatRubles(goal.targetAmount, locale)}
+              {formatMoney(balance, goal.currency, locale)} /{' '}
+              {formatMoney(goal.targetAmount, goal.currency, locale)}
             </p>
           </Link>
         );

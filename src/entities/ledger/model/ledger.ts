@@ -53,6 +53,13 @@ const decodeGoal = (value: unknown): Goal | undefined => {
   }
 
   if (
+    candidate.currency !== undefined &&
+    candidate.currency !== 'RUB' &&
+    candidate.currency !== 'USD'
+  )
+    return undefined;
+
+  if (
     candidate.targetMonth !== undefined &&
     !isValidTargetMonth(candidate.targetMonth)
   ) {
@@ -66,6 +73,9 @@ const decodeGoal = (value: unknown): Goal | undefined => {
       ? {}
       : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
+    ...(candidate.currency === undefined
+      ? {}
+      : { currency: candidate.currency }),
     ...(candidate.targetMonth === undefined
       ? {}
       : { targetMonth: candidate.targetMonth }),
@@ -77,6 +87,12 @@ const decodeGoalUpdate = (value: unknown): GoalUpdate | undefined => {
   if (typeof value !== 'object' || value === null) return undefined;
 
   const candidate = value as Record<string, unknown>;
+  if (
+    candidate.currency !== undefined &&
+    candidate.currency !== 'RUB' &&
+    candidate.currency !== 'USD'
+  )
+    return undefined;
   if (
     !isNonEmptyString(candidate.id) ||
     !isNonEmptyString(candidate.title) ||
@@ -107,6 +123,9 @@ const decodeGoalUpdate = (value: unknown): GoalUpdate | undefined => {
       ? {}
       : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
+    ...(candidate.currency === undefined
+      ? {}
+      : { currency: candidate.currency }),
     ...(candidate.targetMonth === undefined
       ? {}
       : { targetMonth: candidate.targetMonth }),
@@ -203,6 +222,7 @@ export const serializeLedgerState = (state: LedgerState): LedgerState => ({
       ? {}
       : { description: goal.description }),
     targetAmount: goal.targetAmount,
+    ...(goal.currency === undefined ? {} : { currency: goal.currency }),
     ...(goal.targetMonth === undefined
       ? {}
       : { targetMonth: goal.targetMonth }),

@@ -1,7 +1,7 @@
 import { calculateProgress, type Goal } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
-import { formatRubles } from '../../../shared/lib/money';
+import { formatMoney } from '../../../shared/lib/money';
 import { useI18n } from '../../../shared/lib/i18n';
 import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import { SavingsPlan } from './SavingsPlan';
@@ -38,11 +38,13 @@ export const GoalSummary = ({
         <div className={styles.amounts}>
           <div>
             <span>{t('goal.saved')}</span>
-            <strong>{formatRubles(balance, locale)}</strong>
+            <strong>{formatMoney(balance, goal.currency, locale)}</strong>
           </div>
           <div>
             <span>{t('goal.target')}</span>
-            <strong>{formatRubles(goal.targetAmount, locale)}</strong>
+            <strong>
+              {formatMoney(goal.targetAmount, goal.currency, locale)}
+            </strong>
           </div>
         </div>
         <div className={styles.progress}>
