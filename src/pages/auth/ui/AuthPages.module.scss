@@ -1,12 +1,9 @@
 .shell {
+  isolation: isolate;
+  position: relative;
   min-height: 100vh;
   padding: 1.5rem;
-  background: radial-gradient(
-    circle at 50% -20%,
-    #35356c 0,
-    #171721 38%,
-    #101010 70%
-  );
+  background: #101010;
 }
 
 .topBar {
@@ -49,6 +46,7 @@
 }
 
 .card {
+  position: relative;
   width: min(100%, 29rem);
   margin: clamp(3rem, 10vh, 7rem) auto 0;
   padding: clamp(1.5rem, 5vw, 2.5rem);
@@ -56,6 +54,20 @@
   border-radius: 1.5rem;
   background: #1e1e28;
   box-shadow: 0 30px 80px #0006;
+}
+
+.card::before {
+  background-image: radial-gradient(
+    circle,
+    rgba(145, 163, 255, 0.17) 1px,
+    transparent 1.2px
+  );
+  background-size: 12px 12px;
+  content: '';
+  inset: -2rem -1rem;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
 }
 
 .eyebrow {

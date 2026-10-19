@@ -10,6 +10,7 @@ import { DeleteGoalButton } from '../../../features/delete-goal';
 import { EditGoalDialog } from '../../../features/edit-goal';
 import { Button } from '../../../shared/ui/Button/Button';
 import { useI18n } from '../../../shared/lib/i18n';
+import { AppHeader } from '../../../widgets/app-header';
 import {
   GoalSummary,
   TransactionsHistory,
@@ -30,44 +31,53 @@ export const GoalDetailPage = () => {
 
   if (goal === undefined) {
     return (
-      <main className={styles.page}>
-        <h1>{t('detail.notFound')}</h1>
-        <Link to="/app">
-          <ChevronLeft size={16} />
-          {t('detail.back')}
-        </Link>
-      </main>
+      <>
+        <AppHeader />
+        <main className={styles.page}>
+          <h1>{t('detail.notFound')}</h1>
+          <Link to="/app">
+            <ChevronLeft size={16} />
+            {t('detail.back')}
+          </Link>
+        </main>
+      </>
     );
   }
 
   const isCompleted = balance >= goal.targetAmount;
 
   return (
-    <main className={styles.page}>
-      <Link className={styles.backLink} to="/app">
-        <ChevronLeft size={16} />
-        {t('detail.back')}
-      </Link>
-      <h1>{goal.title}</h1>
-      <div className={styles.layout}>
-        <GoalSummary goal={goal} isCompleted={isCompleted} />
-        <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
-        <TransactionsHistory goalId={goal.id} isCompleted={isCompleted} />
-        <div className={styles.actions}>
-          <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
-            {t('detail.edit')}
-          </Button>
-          <DeleteGoalButton
-            goalId={goal.id}
-            onDeleted={() => navigate('/app')}
-          />
+    <>
+      <AppHeader />
+      <main className={styles.page}>
+        <Link className={styles.backLink} to="/app">
+          <ChevronLeft size={16} />
+          {t('detail.back')}
+        </Link>
+        <h1>{goal.title}</h1>
+        <div className={styles.layout}>
+          <GoalSummary goal={goal} isCompleted={isCompleted} />
+          <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
+          <TransactionsHistory goalId={goal.id} isCompleted={isCompleted} />
+          <div className={styles.actions}>
+            <Button
+              onClick={() => setIsEditDialogOpen(true)}
+              variant="secondary"
+            >
+              {t('detail.edit')}
+            </Button>
+            <DeleteGoalButton
+              goalId={goal.id}
+              onDeleted={() => navigate('/app')}
+            />
+          </div>
         </div>
-      </div>
-      <EditGoalDialog
-        goal={goal}
-        isOpen={isEditDialogOpen}
-        onClose={() => setIsEditDialogOpen(false)}
-      />
-    </main>
+        <EditGoalDialog
+          goal={goal}
+          isOpen={isEditDialogOpen}
+          onClose={() => setIsEditDialogOpen(false)}
+        />
+      </main>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
 
 import { useLedgerSelector } from '../../entities/ledger';
@@ -13,9 +13,9 @@ import {
 import { GoalDetailPage } from '../../pages/goal-detail';
 import { GoalsOverviewPage } from '../../pages/goals-overview';
 import { WelcomePage } from '../../pages/welcome';
+import { AppHeader } from '../../widgets/app-header';
 import { useI18n } from '../../shared/lib/i18n';
 import { Button } from '../../shared/ui/Button/Button';
-import { LanguageSwitcher } from '../../shared/ui/LanguageSwitcher/LanguageSwitcher';
 import styles from './AppRouter.module.scss';
 
 const WelcomeRoute = () => {
@@ -25,61 +25,6 @@ const WelcomeRoute = () => {
       onSignUp={() => navigate('/auth/sign-up')}
       onSignIn={() => navigate('/auth/sign-in')}
     />
-  );
-};
-
-const ModeToolbar = () => {
-  const { t } = useI18n();
-  const navigate = useNavigate();
-  const session = useSession();
-  const [error, setError] = useState<string>();
-
-  const signOut = async () => {
-    setError(undefined);
-    try {
-      await session.signOut();
-      navigate('/', { replace: true });
-    } catch {
-      setError(t('toolbar.signOutError'));
-    }
-  };
-
-  return (
-    <div className={styles.toolbar}>
-      <div className={styles.toolbarContent}>
-        <span className={styles.modeLabel}>
-          {session.mode === 'demo' ? t('toolbar.demoMode') : session.email}
-        </span>
-        <div className={styles.toolbarActions}>
-          <LanguageSwitcher />
-          {session.mode === 'demo' ? (
-            <>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  if (window.confirm(t('toolbar.resetPrompt')))
-                    session.resetDemo();
-                }}
-              >
-                {t('toolbar.reset')}
-              </Button>
-              <Button variant="secondary" onClick={() => navigate('/')}>
-                {t('toolbar.home')}
-              </Button>
-            </>
-          ) : (
-            <Button variant="secondary" onClick={() => void signOut()}>
-              {t('toolbar.signOut')}
-            </Button>
-          )}
-        </div>
-      </div>
-      {error && (
-        <p className={styles.toolbarError} role="alert">
-          {error}
-        </p>
-      )}
-    </div>
   );
 };
 
@@ -110,19 +55,24 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <ModeToolbar />
       {initialLoad ? (
-        <main className={styles.statusPage} role="status">
-          {t('status.loadingGoals')}
-        </main>
+        <>
+          <AppHeader />
+          <main className={styles.statusPage} role="status">
+            {t('status.loadingGoals')}
+          </main>
+        </>
       ) : blockingError ? (
-        <main className={styles.statusPage}>
-          <h1>{t('status.loadError')}</h1>
-          <p>{session.ledgerError}</p>
-          <Button onClick={() => void session.refresh()}>
-            {t('status.retry')}
-          </Button>
-        </main>
+        <>
+          <AppHeader />
+          <main className={styles.statusPage}>
+            <h1>{t('status.loadError')}</h1>
+            <p>{session.ledgerError}</p>
+            <Button onClick={() => void session.refresh()}>
+              {t('status.retry')}
+            </Button>
+          </main>
+        </>
       ) : (
         <>
           {session.mode === 'cloud' && session.ledgerStatus === 'error' && (

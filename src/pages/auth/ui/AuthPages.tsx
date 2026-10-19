@@ -7,6 +7,7 @@ import { Button } from '../../../shared/ui/Button/Button';
 import { Field } from '../../../shared/ui/Field/Field';
 import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSwitcher';
 import styles from './AuthPages.module.scss';
+import { DotBackdrop } from '../../../shared/ui/DotBackdrop/DotBackdrop';
 
 type Translate = ReturnType<typeof useI18n>['t'];
 
@@ -31,6 +32,7 @@ const AuthShell = ({
   const { t } = useI18n();
   return (
     <main className={styles.shell}>
+      <DotBackdrop />
       <div className={styles.topBar}>
         <Link className={styles.brand} to="/">
           Goal Tracker

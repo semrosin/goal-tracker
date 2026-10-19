@@ -14,42 +14,12 @@ import { publicAsset } from '../../../shared/lib/publicPath';
 import { Button } from '../../../shared/ui/Button/Button';
 import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSwitcher';
 import styles from './WelcomePage.module.scss';
+import { DotBackdrop } from '../../../shared/ui/DotBackdrop/DotBackdrop';
 
 type WelcomePageProps = {
   onSignUp: () => void;
   onSignIn: () => void;
 };
-
-// Decorative goal-shaped cards that drift and change while the page scrolls.
-// Their geometry lives in WelcomePage.module.scss per shape class.
-const backdropShapes = [
-  'cardTall',
-  'cardWide',
-  'cardCircle',
-  'cardPill',
-  'cardSquare',
-  'cardRing',
-  'cardDiamond',
-  'cardSlim',
-] as const;
-
-const Backdrop = () => (
-  <div aria-hidden="true" className={styles.backdrop}>
-    <div className={styles.dotField} />
-    <div className={styles.backdropCards}>
-      {backdropShapes.map((shape) => (
-        <div className={`${styles.backdropCard} ${styles[shape]}`} key={shape}>
-          <span className={styles.backdropDot} />
-          <span className={styles.backdropLine} />
-          <span className={styles.backdropLineShort} />
-          <span className={styles.backdropTrack}>
-            <span className={styles.backdropFill} />
-          </span>
-        </div>
-      ))}
-    </div>
-  </div>
-);
 
 type Feature = {
   icon: ReactNode;
@@ -101,7 +71,7 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
 
   return (
     <div className={styles.shell}>
-      <Backdrop />
+      <DotBackdrop />
 
       <header className={styles.header}>
         <div className={styles.headerInner}>
@@ -123,16 +93,18 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
           <div className={styles.heroContent}>
             <h1 id="welcome-title">{t('welcome.title')}</h1>
             <p className={styles.lead}>{t('welcome.lead')}</p>
-            <div className={styles.actions}>
-              <Button className={styles.primaryAction} onClick={onSignUp}>
-                {t('auth.createAccount')}{' '}
-                <ArrowRight aria-hidden="true" size={18} />
-              </Button>
-              <Button onClick={onSignIn} variant="secondary">
-                {t('welcome.signIn')}
-              </Button>
+            <div className={styles.heroCta}>
+              <div className={styles.actions}>
+                <Button className={styles.primaryAction} onClick={onSignUp}>
+                  {t('auth.createAccount')}{' '}
+                  <ArrowRight aria-hidden="true" size={18} />
+                </Button>
+                <Button onClick={onSignIn} variant="secondary">
+                  {t('welcome.signIn')}
+                </Button>
+              </div>
+              <p className={styles.hint}>{t('welcome.heroHint')}</p>
             </div>
-            <p className={styles.hint}>{t('welcome.heroHint')}</p>
           </div>
         </section>
 

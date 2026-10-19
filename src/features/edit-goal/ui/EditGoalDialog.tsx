@@ -8,6 +8,9 @@ import { useI18n } from '../../../shared/lib/i18n';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
 import { Field } from '../../../shared/ui/Field/Field';
+import { MonthPicker } from '../../../shared/ui/MonthPicker/MonthPicker';
+import { CurrencyPicker } from '../../../shared/ui/CurrencyPicker/CurrencyPicker';
+import type { Currency } from '../../../shared/lib/money';
 import styles from './EditGoalDialog.module.scss';
 
 type EditGoalDialogProps = {
@@ -33,6 +36,7 @@ export const EditGoalDialog = ({
   const [description, setDescription] = useState(goal.description ?? '');
   const [targetAmount, setTargetAmount] = useState(String(goal.targetAmount));
   const [targetMonth, setTargetMonth] = useState(goal.targetMonth ?? '');
+  const [currency, setCurrency] = useState<Currency>(goal.currency ?? 'RUB');
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>();
 
@@ -54,6 +58,8 @@ export const EditGoalDialog = ({
     setTargetAmount(String(goal.targetAmount));
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTargetMonth(goal.targetMonth ?? '');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCurrency(goal.currency ?? 'RUB');
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setErrors({});
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -94,6 +100,7 @@ export const EditGoalDialog = ({
         title: normalizedTitle,
         description: description.trim(),
         targetAmount: amount,
+        currency,
         ...(targetMonth === '' ? {} : { targetMonth }),
       });
     } catch {
@@ -130,11 +137,10 @@ export const EditGoalDialog = ({
           onChange={(event) => setTargetAmount(event.target.value)}
           value={targetAmount}
         />
-        <Field
+        <CurrencyPicker value={currency} onChange={setCurrency} />
+        <MonthPicker
           error={errors.targetMonth}
-          label={t('goal.monthLabel')}
-          onChange={(event) => setTargetMonth(event.target.value)}
-          type="month"
+          onChange={setTargetMonth}
           value={targetMonth}
         />
         {(submitError ?? error) ? (

@@ -40,14 +40,20 @@ describe('CreateGoalDialog', () => {
 
       await userEvent.type(screen.getByLabelText('Name'), 'Trip');
       await userEvent.type(screen.getByLabelText('Amount'), '100000');
-      fireEvent.change(screen.getByLabelText('Target month'), {
-        target: { value: '2027-02' },
+      await userEvent.selectOptions(screen.getByLabelText('Currency'), 'USD');
+      await userEvent.selectOptions(
+        screen.getByLabelText('Target month'),
+        '02'
+      );
+      fireEvent.change(screen.getByLabelText('Year'), {
+        target: { value: '2027' },
       });
       await submitForm('Create');
 
       expect(store.getState().goals[0]).toMatchObject({
         title: 'Trip',
         targetMonth: '2027-02',
+        currency: 'USD',
       });
     } finally {
       localStorage.removeItem('goal-tracker-locale');
@@ -102,8 +108,12 @@ describe('CreateGoalDialog', () => {
 
     await userEvent.type(screen.getByLabelText('Название'), 'Отпуск');
     await userEvent.type(screen.getByLabelText('Сумма'), '100000');
-    fireEvent.change(screen.getByLabelText('Месяц достижения'), {
-      target: { value: '2027-02' },
+    await userEvent.selectOptions(
+      screen.getByLabelText('Месяц достижения'),
+      '02'
+    );
+    fireEvent.change(screen.getByLabelText('Год'), {
+      target: { value: '2027' },
     });
     await submitForm('Создать');
 
@@ -203,6 +213,7 @@ describe('CreateGoalDialog', () => {
         title: 'Поездка',
         description: '',
         targetAmount: 120_000,
+        currency: 'RUB',
       },
     ]);
   });
@@ -230,6 +241,19 @@ describe('CreateGoalDialog', () => {
     ]);
   });
 
+  it('changes an existing goal to dollars', async () => {
+    const { store } = renderWithLedger(
+      <EditGoalDialog goal={existingGoal} isOpen onClose={jest.fn()} />,
+      { goals: [existingGoal], transactions: [] }
+    );
+    await userEvent.selectOptions(screen.getByLabelText('Валюта'), 'USD');
+    await submitForm('Сохранить');
+    expect(store.getState().goals[0]).toMatchObject({
+      currency: 'USD',
+      targetAmount: 100_000,
+    });
+  });
+
   it('can clear an existing target month', async () => {
     const goalWithTargetMonth = { ...existingGoal, targetMonth: '2027-02' };
     const { store } = renderWithLedger(
@@ -237,7 +261,7 @@ describe('CreateGoalDialog', () => {
       { goals: [goalWithTargetMonth], transactions: [] }
     );
 
-    expect(screen.getByLabelText('Месяц достижения')).toHaveValue('2027-02');
+    expect(screen.getByLabelText('Месяц достижения')).toHaveValue('02');
     fireEvent.change(screen.getByLabelText('Месяц достижения'), {
       target: { value: '' },
     });
