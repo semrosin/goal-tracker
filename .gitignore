@@ -16,6 +16,8 @@
 # production
 /build
 /.worktrees/
+/supabase/.branches/
+/supabase/.temp/
 
 # misc
 .DS_Store

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 
 import { useSession } from '../../../entities/session';
 import { useI18n } from '../../../shared/lib/i18n';
+import { publicAsset } from '../../../shared/lib/publicPath';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Field } from '../../../shared/ui/Field/Field';
 import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSwitcher';
@@ -35,14 +36,10 @@ const AuthShell = ({
       <DotBackdrop />
       <div className={styles.topBar}>
         <Link className={styles.brand} to="/">
-          Goal Tracker
+          <img alt="" height={40} src={publicAsset('logo.svg')} width={40} />
+          <span>GoalCraft</span>
         </Link>
-        <div className={styles.topActions}>
-          <LanguageSwitcher />
-          <Link className={styles.backLink} to="/">
-            {t('auth.backHome')}
-          </Link>
-        </div>
+        <LanguageSwitcher />
       </div>
       <section className={styles.card}>
         <p className={styles.eyebrow}>{t('auth.eyebrow')}</p>
