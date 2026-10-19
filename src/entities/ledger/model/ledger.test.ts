@@ -17,6 +17,28 @@ const goal: Goal = {
   createdAt: '2026-01-01T00:00:00.000Z',
 };
 
+test('preserves goal currencies through persistence and edits', () => {
+  const dollarGoal = { ...goal, currency: 'USD' as const };
+  const state = { goals: [dollarGoal], transactions: [] };
+  expect(decodeLedgerState(serializeLedgerState(state))).toEqual(state);
+  expect(
+    ledgerReducer(
+      state,
+      goalsActions.goalUpdated({ ...dollarGoal, currency: 'RUB' })
+    ).goals[0].currency
+  ).toBe('RUB');
+});
+
+test('rejects an unsupported persisted currency while accepting legacy goals', () => {
+  expect(decodeLedgerState({ goals: [goal], transactions: [] })).toBeDefined();
+  expect(
+    decodeLedgerState({
+      goals: [{ ...goal, currency: 'EUR' }],
+      transactions: [],
+    })
+  ).toBeUndefined();
+});
+
 const validLedger: Transaction[] = [
   {
     id: 'd1',

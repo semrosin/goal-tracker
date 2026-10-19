@@ -11,6 +11,25 @@ const goalRow = {
   created_at: '2026-01-01T00:00:00.000Z',
 };
 
+test('loads a dollar goal and sends its currency in both mutation RPCs', async () => {
+  const goal = mapCloudLedger([{ ...goalRow, currency: 'USD' }], []).goals[0];
+  expect(goal.currency).toBe('USD');
+  const rpc = jest.fn().mockResolvedValue({ error: null });
+  const repository = createCloudLedgerRepository({
+    rpc,
+  } as unknown as SupabaseClient);
+  await repository.createGoal(goal);
+  await repository.updateGoal(goal);
+  expect(rpc).toHaveBeenCalledWith(
+    'create_goal',
+    expect.objectContaining({ p_currency: 'USD' })
+  );
+  expect(rpc).toHaveBeenCalledWith(
+    'update_goal',
+    expect.objectContaining({ p_currency: 'USD' })
+  );
+});
+
 test('maps nullable month and preserves server transaction order', () => {
   expect(
     mapCloudLedger(
