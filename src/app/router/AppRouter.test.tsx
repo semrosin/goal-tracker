@@ -12,6 +12,65 @@ import {
 } from '../../entities/session';
 
 describe('AppRouter', () => {
+  it.each(['loading', 'error'] as const)(
+    'keeps account controls available while the ledger is %s',
+    (ledgerStatus) => {
+      const session: SessionContextValue = {
+        mode: 'cloud',
+        configured: true,
+        ledgerStatus,
+        chooseDemo: jest.fn(),
+        resetDemo: jest.fn(),
+        refresh: jest.fn(),
+        signUp: jest.fn(),
+        signIn: jest.fn(),
+        requestPasswordReset: jest.fn(),
+        updatePassword: jest.fn(),
+        signOut: jest.fn(),
+      };
+      render(
+        <SessionContext.Provider value={session}>
+          <Provider store={createAppStore({ goals: [], transactions: [] })}>
+            <MemoryRouter initialEntries={['/app']}>
+              <AppRouter />
+            </MemoryRouter>
+          </Provider>
+        </SessionContext.Provider>
+      );
+      expect(screen.getAllByRole('banner')).toHaveLength(1);
+      expect(screen.getByRole('button', { name: 'Выйти' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
+    }
+  );
+  it('shows account actions in a single goals header without exposing email', () => {
+    const session: SessionContextValue = {
+      mode: 'cloud',
+      email: 'private@example.test',
+      configured: true,
+      ledgerStatus: 'ready',
+      chooseDemo: jest.fn(),
+      resetDemo: jest.fn(),
+      refresh: jest.fn(),
+      signUp: jest.fn(),
+      signIn: jest.fn(),
+      requestPasswordReset: jest.fn(),
+      updatePassword: jest.fn(),
+      signOut: jest.fn(),
+    };
+    render(
+      <SessionContext.Provider value={session}>
+        <Provider store={createAppStore({ goals: [], transactions: [] })}>
+          <MemoryRouter initialEntries={['/app']}>
+            <AppRouter />
+          </MemoryRouter>
+        </Provider>
+      </SessionContext.Provider>
+    );
+    expect(screen.getAllByRole('banner')).toHaveLength(1);
+    expect(screen.getByRole('button', { name: 'Выйти' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
+    expect(screen.queryByText('private@example.test')).not.toBeInTheDocument();
+  });
   it('shows a safe state for an unknown goal id', () => {
     render(
       <Provider store={createAppStore({ goals: [], transactions: [] })}>

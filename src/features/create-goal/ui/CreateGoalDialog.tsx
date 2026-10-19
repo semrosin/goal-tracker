@@ -10,6 +10,9 @@ import { isPositiveInteger } from '../../../shared/lib/validation';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Dialog } from '../../../shared/ui/Dialog/Dialog';
 import { Field } from '../../../shared/ui/Field/Field';
+import { MonthPicker } from '../../../shared/ui/MonthPicker/MonthPicker';
+import { CurrencyPicker } from '../../../shared/ui/CurrencyPicker/CurrencyPicker';
+import type { Currency } from '../../../shared/lib/money';
 import styles from './CreateGoalDialog.module.scss';
 
 type CreateGoalDialogProps = {
@@ -33,6 +36,7 @@ export const CreateGoalDialog = ({
   const [description, setDescription] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [targetMonth, setTargetMonth] = useState('');
+  const [currency, setCurrency] = useState<Currency>('RUB');
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>();
 
@@ -78,6 +82,7 @@ export const CreateGoalDialog = ({
         title: normalizedTitle,
         description: description.trim(),
         targetAmount: amount,
+        currency,
         ...(targetMonth === '' ? {} : { targetMonth }),
         createdAt: createTimestamp(),
       });
@@ -89,6 +94,7 @@ export const CreateGoalDialog = ({
     setDescription('');
     setTargetAmount('');
     setTargetMonth('');
+    setCurrency('RUB');
     setErrors({});
     handleClose();
   };
@@ -109,11 +115,10 @@ export const CreateGoalDialog = ({
           onChange={(event) => setTargetAmount(event.target.value)}
           value={targetAmount}
         />
-        <Field
+        <CurrencyPicker value={currency} onChange={setCurrency} />
+        <MonthPicker
           error={errors.targetMonth}
-          label={t('goal.monthLabel')}
-          onChange={(event) => setTargetMonth(event.target.value)}
-          type="month"
+          onChange={setTargetMonth}
           value={targetMonth}
         />
         {(submitError ?? error) ? (

@@ -2,7 +2,7 @@
 
 [Русская версия](README.ru.md)
 
-A bilingual savings goal tracker built with React and TypeScript. Create an email account to sync goals and transactions through Supabase. All amounts are whole rubles.
+A bilingual savings goal tracker built with React and TypeScript. Create an email account to sync goals and transactions through Supabase. Each goal uses whole rubles or US dollars.
 
 ## Screenshots
 
@@ -15,6 +15,7 @@ A bilingual savings goal tracker built with React and TypeScript. Create an emai
 ## Features
 
 - Multiple goals with deposits, withdrawals, progress, and ordered transaction history.
+- Choose RUB or USD for each goal. Overview totals stay separate by currency; amounts are not converted.
 - An optional target month and required contribution: `ceil(remaining / months including the current and target months)`.
 - A what-if calculator forecasts the completion month for a chosen monthly contribution. Completed and overdue goals have distinct states.
 - An offline demo with example goals remains for browsers that stored the preference earlier; its data stays in browser storage and is never uploaded automatically.
@@ -27,7 +28,7 @@ The app uses React 19, TypeScript, React Router, Redux Toolkit, CSS Modules, Jes
 
 Cloud tables use owner-only SELECT policies. Direct client writes are revoked; five authenticated RPCs create/update/delete goals and add/delete transactions. A separate `get_ledger()` function reads both tables in one snapshot and returns the complete ledger as one object. Transactions have an explicit `position`, so order does not depend on timestamps. Each balance-changing RPC locks its goal row and validates the ordered history. Updating `ledger_version` makes a competing `REPEATABLE READ` writer fail with a serialization conflict instead of accepting a stale balance. The browser also checks common invalid actions, while the server remains authoritative.
 
-The cloud client reloads a small complete ledger after each change instead of using realtime subscriptions or optimistic writes. This simplifies consistency and error recovery, but very large histories would need pagination. Amounts are integer RUB; fractional currency is out of scope. Local data is deliberately separate from cloud accounts. A paused Supabase Free project affects accounts, while the static demo remains usable.
+The cloud client reloads a small complete ledger after each change instead of using realtime subscriptions or optimistic writes. This simplifies consistency and error recovery, but very large histories would need pagination. Amounts are integer RUB or USD; fractional currency and exchange rates are out of scope. Existing goals without a currency use RUB. Local data is deliberately separate from cloud accounts. A paused Supabase Free project affects accounts, while the static demo remains usable.
 
 ## Run locally
 
@@ -39,6 +40,8 @@ npm start
 ```
 
 Open `http://localhost:3000`. The app boots without environment values; for cloud accounts, copy `.env.example` to `.env`, then set `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` for a Supabase project with the migration applied. Webpack reads `.env` at startup. These values are public browser configuration; **never use a service-role or secret key here**.
+
+Apply all migrations before deploying the frontend, including `20261019000100_goal_currency.sql`, which adds the currency column and extends the goal RPCs. Older clients remain compatible with the new RPC defaults.
 
 ```sh
 npm run lint

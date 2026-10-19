@@ -1,0 +1,38 @@
+.backdrop {
+  --rail-width: clamp(2rem, 7vw, 8.5rem);
+  --rail-inset: max(1.5rem, calc((100vw - 94rem) / 2));
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+.backdrop::before,
+.backdrop::after {
+  background-image: radial-gradient(
+    circle,
+    rgba(145, 163, 255, 0.19) 1px,
+    transparent 1.2px
+  );
+  background-size: 12px 12px;
+  content: '';
+  inset-block: 4.5rem 0;
+  position: absolute;
+  width: var(--rail-width);
+}
+
+.backdrop::before {
+  left: var(--rail-inset);
+}
+.backdrop::after {
+  right: var(--rail-inset);
+}
+
+@media (max-width: 48rem) {
+  .backdrop {
+    --rail-inset: 0.75rem;
+    --rail-width: 1.5rem;
+    opacity: 0.5;
+  }
+}
