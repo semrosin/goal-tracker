@@ -14,6 +14,10 @@ module.exports = merge(createCommonConfig({ sourceMap: true }), {
     open: true,
     static: false,
     historyApiFallback: { disableDotRule: true, index: '/' },
-    client: { overlay: { errors: true, warnings: false } },
+    client: {
+      // Match the page origin even when the server binds to a different host.
+      webSocketURL: 'auto://0.0.0.0:0/ws',
+      overlay: { errors: true, warnings: false },
+    },
   },
 });

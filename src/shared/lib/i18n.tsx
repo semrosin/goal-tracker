@@ -7,7 +7,7 @@ const storageKey = 'goal-tracker-locale';
 
 const messages = {
   ru: {
-    'app.title': 'Goal Tracker — цели накоплений',
+    'app.title': 'GoalCraft — цели накоплений',
     'app.description': 'Планируйте накопления и отслеживайте прогресс целей.',
     'welcome.title': 'Копите на важное с понятным планом',
     'welcome.lead':
@@ -16,7 +16,7 @@ const messages = {
     'welcome.heroHint': 'Бесплатно. Регистрация занимает минуту.',
     'welcome.featuresTitle': 'Всё для ваших накоплений',
     'welcome.featuresLead':
-      'Goal Tracker показывает картину целиком: сколько уже отложено, сколько осталось и что делать дальше.',
+      'GoalCraft показывает картину целиком: сколько уже отложено, сколько осталось и что делать дальше.',
     'welcome.featureGoals': 'Цели с прогрессом',
     'welcome.featureGoalsText':
       'Задайте сумму и описание — прогресс-бар покажет, сколько уже накоплено.',
@@ -47,9 +47,9 @@ const messages = {
     'welcome.ctaTitle': 'Начните копить с понятным планом',
     'welcome.ctaLead': 'Создайте аккаунт и добавьте первую цель за пару минут.',
     'welcome.ctaAction': 'Начать бесплатно',
-    'welcome.footer': 'Goal Tracker — трекер целей накоплений.',
+    'welcome.footer': 'GoalCraft — трекер целей накоплений.',
     'language.label': 'Язык',
-    'overview.logo': 'Логотип Goal Tracker',
+    'overview.logo': 'Логотип GoalCraft',
     'overview.create': 'Новая цель',
     'overview.summary': 'Сводка накоплений',
     'overview.total': 'Всего накоплено',
@@ -105,7 +105,6 @@ const messages = {
       'Нельзя удалить операцию: это приведёт к отрицательному балансу',
     'delete.transactionError': 'Не удалось удалить операцию',
     'dialog.close': 'Закрыть',
-    'auth.backHome': 'На главную',
     'auth.eyebrow': 'Ваши цели, ваш темп',
     'auth.email': 'Электронная почта',
     'auth.password': 'Пароль',
@@ -207,7 +206,7 @@ const messages = {
     'plan.forecast': 'Прогноз достижения: {month}',
   },
   en: {
-    'app.title': 'Goal Tracker — savings goals',
+    'app.title': 'GoalCraft — savings goals',
     'app.description': 'Plan savings and track progress toward your goals.',
     'welcome.title': 'Save for what matters with a clear plan',
     'welcome.lead':
@@ -216,7 +215,7 @@ const messages = {
     'welcome.heroHint': 'Free. Signing up takes a minute.',
     'welcome.featuresTitle': 'Everything for your savings',
     'welcome.featuresLead':
-      'Goal Tracker shows the whole picture: how much is set aside, what is left, and what to do next.',
+      'GoalCraft shows the whole picture: how much is set aside, what is left, and what to do next.',
     'welcome.featureGoals': 'Goals with progress',
     'welcome.featureGoalsText':
       'Set an amount and a description — the progress bar shows how far you are.',
@@ -248,9 +247,9 @@ const messages = {
     'welcome.ctaLead':
       'Create an account and add your first goal in a couple of minutes.',
     'welcome.ctaAction': 'Get started free',
-    'welcome.footer': 'Goal Tracker — a savings goals tracker.',
+    'welcome.footer': 'GoalCraft — a savings goals tracker.',
     'language.label': 'Language',
-    'overview.logo': 'Goal Tracker logo',
+    'overview.logo': 'GoalCraft logo',
     'overview.create': 'New goal',
     'overview.summary': 'Savings overview',
     'overview.total': 'Total saved',
@@ -308,7 +307,6 @@ const messages = {
       'This transaction cannot be deleted because the balance would become negative',
     'delete.transactionError': 'Could not delete the transaction',
     'dialog.close': 'Close',
-    'auth.backHome': 'Home',
     'auth.eyebrow': 'Your goals, your pace',
     'auth.email': 'Email',
     'auth.password': 'Password',

@@ -1,4 +1,4 @@
-# Goal Tracker
+# GoalCraft
 
 [Русская версия](README.ru.md)
 
@@ -6,11 +6,21 @@ A bilingual savings goal tracker built with React and TypeScript. Create an emai
 
 ## Screenshots
 
-| Welcome                                                 | Goal overview                                           | Savings plan and history                           |
-| ------------------------------------------------------- | ------------------------------------------------------- | -------------------------------------------------- |
-| ![Welcome screen](docs/screenshots/desktop-welcome.png) | ![Goal overview](docs/screenshots/desktop-overview.png) | ![Goal details](docs/screenshots/desktop-goal.png) |
+### Desktop
 
-[Mobile welcome](docs/screenshots/mobile-welcome.png) · [Mobile overview](docs/screenshots/mobile-overview.png) · [Mobile goal](docs/screenshots/mobile-goal.png)
+![Welcome screen](docs/screenshots/desktop-welcome.png)
+
+![Goal overview](docs/screenshots/desktop-overview.png)
+
+![Savings plan and transaction history](docs/screenshots/desktop-goal.png)
+
+### Mobile
+
+![Mobile welcome screen](docs/screenshots/mobile-welcome.png)
+
+![Mobile goal overview](docs/screenshots/mobile-overview.png)
+
+![Mobile savings plan and transaction history](docs/screenshots/mobile-goal.png)
 
 ## Features
 

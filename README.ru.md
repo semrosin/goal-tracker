@@ -1,4 +1,4 @@
-# Goal Tracker
+# GoalCraft
 
 [English version](README.md)
 
@@ -6,11 +6,21 @@
 
 ## Скриншоты
 
-| Стартовый экран                                          | Обзор целей                                           | План и история                                    |
-| -------------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------- |
-| ![Стартовый экран](docs/screenshots/desktop-welcome.png) | ![Обзор целей](docs/screenshots/desktop-overview.png) | ![Детали цели](docs/screenshots/desktop-goal.png) |
+### Компьютер
 
-[Мобильный стартовый экран](docs/screenshots/mobile-welcome.png) · [Мобильный обзор](docs/screenshots/mobile-overview.png) · [Мобильная цель](docs/screenshots/mobile-goal.png)
+![Стартовый экран](docs/screenshots/desktop-welcome.png)
+
+![Обзор целей](docs/screenshots/desktop-overview.png)
+
+![План накопления и история операций](docs/screenshots/desktop-goal.png)
+
+### Телефон
+
+![Мобильный стартовый экран](docs/screenshots/mobile-welcome.png)
+
+![Мобильный обзор целей](docs/screenshots/mobile-overview.png)
+
+![Мобильный план накопления и история операций](docs/screenshots/mobile-goal.png)
 
 ## Возможности
 

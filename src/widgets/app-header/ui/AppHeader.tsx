@@ -63,14 +63,16 @@ export const AppHeader = ({ children }: { children?: ReactNode }) => {
               </Button>
             </>
           ) : (
-            <Button
-              variant="secondary"
+            <button
+              className={styles.signOut}
+              type="button"
+              aria-label={t('toolbar.signOut')}
+              title={t('toolbar.signOut')}
               disabled={busy}
               onClick={() => void signOut()}
             >
-              <LogOut size={16} aria-hidden="true" />
-              {t('toolbar.signOut')}
-            </Button>
+              <LogOut size={20} aria-hidden="true" />
+            </button>
           )}
         </div>
       </div>

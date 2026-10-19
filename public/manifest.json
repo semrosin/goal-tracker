@@ -1,6 +1,6 @@
 {
-  "short_name": "Goal Tracker",
-  "name": "Goal Tracker",
+  "short_name": "GoalCraft",
+  "name": "GoalCraft",
   "description": "Plan and track your savings goals.",
   "start_url": ".",
   "display": "standalone",

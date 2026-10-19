@@ -32,12 +32,12 @@ describe('i18n', () => {
     expect(
       screen.getByText('Копите на важное с понятным планом')
     ).toBeInTheDocument();
-    expect(document.title).toBe('Goal Tracker — цели накоплений');
+    expect(document.title).toBe('GoalCraft — цели накоплений');
     fireEvent.click(screen.getByRole('button', { name: 'English' }));
     expect(
       screen.getByText('Save for what matters with a clear plan')
     ).toBeInTheDocument();
-    expect(document.title).toBe('Goal Tracker — savings goals');
+    expect(document.title).toBe('GoalCraft — savings goals');
     expect(localStorage.getItem('goal-tracker-locale')).toBe('en');
   });
 });

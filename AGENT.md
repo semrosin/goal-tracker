@@ -1,4 +1,4 @@
-# Goal Tracker — project guide
+# GoalCraft — project guide
 
 ## Product goal
 
