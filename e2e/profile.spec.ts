@@ -34,7 +34,7 @@ test('profile inherits the landing language and preserves changes after reload',
   );
   await expect(page).toHaveTitle('GoalCraft — savings goals');
   await expect(
-    page.getByRole('heading', { name: 'Profile', exact: true })
+    page.getByRole('heading', { name: 'Your statistics', exact: true })
   ).toBeVisible();
   await expect(page.getByRole('button', { name: 'EN' })).toHaveAttribute(
     'aria-pressed',
@@ -48,7 +48,7 @@ test('profile inherits the landing language and preserves changes after reload',
   ).toBeVisible();
   await page.getByRole('button', { name: 'RU' }).click();
   await expect(
-    page.getByRole('heading', { name: 'Профиль', exact: true })
+    page.getByRole('heading', { name: 'Ваша статистика', exact: true })
   ).toBeVisible();
   await page.reload();
   await expect(page.getByRole('button', { name: 'RU' })).toHaveAttribute(
