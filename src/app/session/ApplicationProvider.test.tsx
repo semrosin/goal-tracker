@@ -33,6 +33,7 @@ const Probe = () => {
         {goals.map((item) => item.title).join(',')}
       </span>
       <span data-testid="recovery-ready">{String(session.recoveryReady)}</span>
+      <span data-testid="account-created-at">{session.createdAt}</span>
       <button onClick={() => void session.signOut()}>Sign out</button>
       <button
         onClick={() => void session.requestPasswordReset('me@example.com')}
@@ -48,7 +49,15 @@ test('loads cloud ledger on session and clears it on sign out without touching l
   window.localStorage.setItem(STORAGE_KEY, legacy);
   const auth = {
     getSession: jest.fn().mockResolvedValue({
-      data: { session: { user: { id: 'user-1', email: 'me@example.com' } } },
+      data: {
+        session: {
+          user: {
+            id: 'user-1',
+            email: 'me@example.com',
+            created_at: '2026-01-01T00:00:00.000Z',
+          },
+        },
+      },
       error: null,
     }),
     onAuthStateChange: jest.fn().mockReturnValue({
@@ -72,12 +81,16 @@ test('loads cloud ledger on session and clears it on sign out without touching l
     expect(screen.getByTestId('goals')).toHaveTextContent('Cloud goal')
   );
   expect(window.localStorage.getItem(STORAGE_KEY)).toBe(legacy);
+  expect(screen.getByTestId('account-created-at')).toHaveTextContent(
+    '2026-01-01T00:00:00.000Z'
+  );
 
   fireEvent.click(screen.getByRole('button', { name: 'Sign out' }));
   await waitFor(() =>
     expect(screen.getByTestId('mode')).toHaveTextContent('guest')
   );
   expect(screen.getByTestId('goals')).toBeEmptyDOMElement();
+  expect(screen.getByTestId('account-created-at')).toBeEmptyDOMElement();
   expect(window.localStorage.getItem(STORAGE_KEY)).toBe(legacy);
 });
 

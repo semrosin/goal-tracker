@@ -38,11 +38,15 @@ describe('AppRouter', () => {
         </SessionContext.Provider>
       );
       expect(screen.getAllByRole('banner')).toHaveLength(1);
+      fireEvent.click(screen.getByRole('link', { name: 'Профиль' }));
+      expect(
+        screen.getByRole('complementary', { name: 'Данные аккаунта' })
+      ).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Выйти' })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
     }
   );
-  it('shows account actions in a single goals header without exposing email', () => {
+  it('moves account actions from the goals header into the profile', () => {
     const session: SessionContextValue = {
       mode: 'cloud',
       email: 'private@example.test',
@@ -67,9 +71,16 @@ describe('AppRouter', () => {
       </SessionContext.Provider>
     );
     expect(screen.getAllByRole('banner')).toHaveLength(1);
-    expect(screen.getByRole('button', { name: 'Выйти' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Выйти' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'EN' })
+    ).not.toBeInTheDocument();
     expect(screen.queryByText('private@example.test')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('link', { name: 'Профиль' }));
+    expect(screen.getByText('private@example.test')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Выйти' })).toBeInTheDocument();
   });
   it('shows a safe state for an unknown goal id', () => {
     render(

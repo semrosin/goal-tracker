@@ -75,6 +75,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
   > | null>(null);
   const [mode, setMode] = useState<SessionMode>('initializing');
   const [email, setEmail] = useState<string>();
+  const [createdAt, setCreatedAt] = useState<string>();
   const [ledgerStatus, setLedgerStatus] = useState<LedgerLoadStatus>('idle');
   const [ledgerError, setLedgerError] = useState<string>();
   const [mutationBusy, setMutationBusy] = useState(false);
@@ -89,6 +90,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
     userIdRef.current = null;
     cloudStore.dispatch(ledgerReplaced(ledgerInitialState));
     setEmail(undefined);
+    setCreatedAt(undefined);
     setLedgerStatus('idle');
     setLedgerError(undefined);
     setMutationError(undefined);
@@ -161,6 +163,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
         userIdRef.current = nextUserId;
       }
       setEmail(session.user.email);
+      setCreatedAt(session.user.created_at);
       setMode('cloud');
       void refreshUser(nextUserId);
     },
@@ -322,6 +325,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
       mode,
       configured: client !== null,
       email,
+      createdAt,
       ledgerStatus,
       ledgerError,
       recoveryReady,
@@ -339,6 +343,7 @@ export const ApplicationProvider = ({ children }: { children: ReactNode }) => {
       mode,
       client,
       email,
+      createdAt,
       ledgerStatus,
       ledgerError,
       recoveryReady,

@@ -16,54 +16,32 @@
   display: flex;
   flex-shrink: 0;
 }
-.brand:focus-visible {
+.brand:focus-visible,
+.profile:focus-visible {
   outline: 2px solid #b9c8ff;
   outline-offset: 4px;
 }
 .actions {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
   gap: 0.75rem;
-  justify-content: flex-end;
 }
-.signOut {
+.profile {
   align-items: center;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 0;
+  border: 1px solid #353535;
+  border-radius: 10px;
   color: #ced1d8;
-  cursor: pointer;
   display: inline-flex;
-  flex: 0 0 2.75rem;
-  height: 2.75rem;
   justify-content: center;
-  padding: 0;
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease;
-  width: 2.75rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0.65rem 0.65rem;
 }
-.signOut:not(:disabled):hover,
-.signOut:focus-visible {
-  background: #242424;
-  border-color: #454545;
-  color: #fff;
-}
-.signOut:focus-visible {
-  outline: 2px solid #b9c8ff;
-  outline-offset: 2px;
-}
-.signOut:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-.error {
-  color: #ffb4b4;
-  margin: 0 auto;
-  max-width: 80rem;
-  padding: 0 1rem 0.75rem;
+.profile:hover,
+.profile[aria-current='page'] {
+  background: #20253c;
+  border-color: #555d89;
+  color: #c4cdff;
 }
 @media (max-width: 48rem) {
   .content {
@@ -73,8 +51,12 @@
   .actions {
     gap: 0.5rem;
   }
-  .actions > button:not(.signOut) {
-    min-height: 2.75rem;
-    padding: 0.5rem 0.75rem;
+}
+@media (max-width: 25rem) {
+  .profile {
+    padding-inline: 0.75rem;
+  }
+  .profile span {
+    display: none;
   }
 }

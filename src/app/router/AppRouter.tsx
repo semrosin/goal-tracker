@@ -12,6 +12,7 @@ import {
 } from '../../pages/auth';
 import { GoalDetailPage } from '../../pages/goal-detail';
 import { GoalsOverviewPage } from '../../pages/goals-overview';
+import { ProfilePage } from '../../pages/profile';
 import { WelcomePage } from '../../pages/welcome';
 import { AppHeader } from '../../widgets/app-header';
 import { useI18n } from '../../shared/lib/i18n';
@@ -28,7 +29,13 @@ const WelcomeRoute = () => {
   );
 };
 
-const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+const ProtectedRoute = ({
+  children,
+  requireLedger = true,
+}: {
+  children: ReactNode;
+  requireLedger?: boolean;
+}) => {
   const { t } = useI18n();
   const session = useSession();
   const hasLedger = useLedgerSelector(
@@ -45,6 +52,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   if (session.mode === 'expired')
     return <Navigate replace to="/auth/sign-in" />;
   if (session.mode === 'guest') return <Navigate replace to="/" />;
+  if (!requireLedger) return <>{children}</>;
 
   const initialLoad =
     session.mode === 'cloud' &&
@@ -108,6 +116,14 @@ export const AppRouter = () => (
         </ProtectedRoute>
       }
       path="/app"
+    />
+    <Route
+      element={
+        <ProtectedRoute requireLedger={false}>
+          <ProfilePage />
+        </ProtectedRoute>
+      }
+      path="/profile"
     />
     <Route
       element={
