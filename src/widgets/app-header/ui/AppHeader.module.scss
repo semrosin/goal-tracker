@@ -32,11 +32,10 @@
   border-radius: 10px;
   color: #ced1d8;
   display: inline-flex;
-  gap: 0.5rem;
   justify-content: center;
   min-height: 2.75rem;
-  padding: 0.65rem 1rem;
-  text-decoration: none;
+  min-width: 2.75rem;
+  padding: 0.65rem 0.65rem;
 }
 .profile:hover,
 .profile[aria-current='page'] {

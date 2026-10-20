@@ -49,8 +49,6 @@ const messages = {
     'welcome.ctaAction': 'Начать бесплатно',
     'welcome.footer': 'GoalCraft — трекер целей накоплений.',
     'language.label': 'Язык',
-    'profile.title': 'Профиль',
-    'profile.lead': 'Ваши накопления, прогресс и настройки аккаунта.',
     'profile.account': 'Данные аккаунта',
     'profile.createdAt': 'Дата регистрации',
     'profile.storage': 'Хранение данных',
@@ -59,7 +57,6 @@ const messages = {
     'profile.demoHint':
       'Это демо. Цели и операции хранятся только в этом браузере.',
     'profile.settings': 'Настройки',
-    'profile.languageHint': 'Язык для всех страниц приложения.',
     'profile.signingOut': 'Выходим…',
     'profile.statistics': 'Ваша статистика',
     'profile.currencyHint': 'Суммы показаны отдельно для каждой валюты.',
@@ -283,8 +280,6 @@ const messages = {
     'welcome.ctaAction': 'Get started free',
     'welcome.footer': 'GoalCraft — a savings goals tracker.',
     'language.label': 'Language',
-    'profile.title': 'Profile',
-    'profile.lead': 'Your savings, progress, and account settings.',
     'profile.account': 'Account details',
     'profile.createdAt': 'Joined',
     'profile.storage': 'Data storage',
@@ -293,7 +288,6 @@ const messages = {
     'profile.demoHint':
       'This is a demo. Goals and transactions are saved only in this browser.',
     'profile.settings': 'Settings',
-    'profile.languageHint': 'The language for all app pages.',
     'profile.signingOut': 'Signing out…',
     'profile.statistics': 'Your statistics',
     'profile.currencyHint': 'Amounts are shown separately for each currency.',

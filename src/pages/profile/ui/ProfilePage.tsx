@@ -80,10 +80,6 @@ export const ProfilePage = () => {
           {t('detail.back')}
         </Link>
         <div className={styles.pageHeading}>
-          <div>
-            <h1>{t('profile.title')}</h1>
-            <p>{t('profile.lead')}</p>
-          </div>
           {session.mode === 'demo' && (
             <span className={styles.demoBadge}>{t('profile.demo')}</span>
           )}

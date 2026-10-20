@@ -29,11 +29,10 @@ export const AppHeader = ({ children }: { children?: ReactNode }) => {
           <NavLink
             className={styles.profile}
             to="/profile"
-            aria-label={t('profile.title')}
-            title={t('profile.title')}
+            aria-label={'Profile'}
+            title={'Profile'}
           >
             <UserRound size={20} aria-hidden="true" />
-            <span>{t('profile.title')}</span>
           </NavLink>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Globe2, LogOut, UserRound } from 'lucide-react';
+import { LogOut, UserRound } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 
@@ -67,11 +67,9 @@ export const AccountPanel = () => {
       <section className={styles.accountSection}>
         <h2>{t('profile.settings')}</h2>
         <div className={styles.languageRow}>
-          <Globe2 size={18} aria-hidden="true" />
           <span>{t('language.label')}</span>
+          <LanguageSwitcher />
         </div>
-        <p className={styles.hint}>{t('profile.languageHint')}</p>
-        <LanguageSwitcher />
       </section>
       <div className={styles.accountSection}>
         {session.mode === 'demo' ? (
