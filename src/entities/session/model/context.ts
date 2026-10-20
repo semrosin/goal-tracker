@@ -9,6 +9,7 @@ export type SessionContextValue = {
   mode: SessionMode;
   configured: boolean;
   email?: string;
+  createdAt?: string;
   ledgerStatus: LedgerLoadStatus;
   ledgerError?: string;
   recoveryReady?: boolean;

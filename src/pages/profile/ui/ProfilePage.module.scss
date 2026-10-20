@@ -1,0 +1,425 @@
+.shell {
+  min-height: 100vh;
+}
+.page {
+  margin: 0 auto;
+  max-width: 80rem;
+  padding: 2rem 2rem 5rem;
+}
+.backLink {
+  align-items: center;
+  color: #bdc7f8;
+  display: inline-flex;
+  font-size: 0.95rem;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  text-decoration: none;
+}
+.backLink:hover {
+  color: #fff;
+}
+.backLink:focus-visible,
+.goalHeading a:focus-visible {
+  outline: 2px solid #b9c8ff;
+  outline-offset: 4px;
+}
+.pageHeading {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin: 1rem 0 2.5rem;
+}
+.pageHeading h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin: 0 0 0.75rem;
+}
+.pageHeading p {
+  color: #b1b3bd;
+  font-size: 1.1rem;
+  margin: 0;
+}
+.demoBadge {
+  background: #20253c;
+  border: 1px solid #424969;
+  border-radius: 2rem;
+  color: #c4cdff;
+  font-size: 0.875rem;
+  padding: 0.5rem 0.875rem;
+}
+.layout {
+  align-items: start;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) 19rem;
+}
+.statistics {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+.statisticsHeading,
+.panelHeading {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
+.statisticsHeading h2,
+.account h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+}
+.hint {
+  color: #aaaeba;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+.currencyPicker {
+  background: #181818;
+  border: 1px solid #353535;
+  border-radius: 10px;
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+}
+.currencyPicker button {
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: #aaaeba;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  min-height: 2.25rem;
+  padding: 0.5rem 0.75rem;
+}
+.currencyPicker button[aria-pressed='true'] {
+  background: #303754;
+  color: #d6ddff;
+}
+.currencyPicker button:focus-visible {
+  outline: 2px solid #b9c8ff;
+  outline-offset: 1px;
+}
+.metrics {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.metric {
+  background: #1b1b1d;
+  border: 1px solid #343438;
+  border-radius: 1rem;
+  min-width: 0;
+  padding: 1.25rem;
+}
+.metric > div {
+  align-items: center;
+  color: #c9cbd4;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+.metric svg {
+  flex-shrink: 0;
+}
+.metric strong {
+  display: block;
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 1.25rem 0 0.5rem;
+  overflow-wrap: anywhere;
+}
+.metric small {
+  color: #a7aab5;
+}
+.savedCard {
+  background: linear-gradient(120deg, #393388, #294777);
+  border-color: #54569a;
+}
+.savedCard small,
+.savedCard > div {
+  color: #e0e2fa;
+}
+.depositCard strong {
+  color: #75dfbd;
+}
+.withdrawalCard strong {
+  color: #f0b18f;
+}
+.panel,
+.account {
+  background: #19191b;
+  border: 1px solid #333337;
+  border-radius: 1rem;
+}
+.panel {
+  min-width: 0;
+  padding: 1.5rem;
+}
+.panel h3 {
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+}
+.chart {
+  display: block;
+  margin-top: 0.75rem;
+  overflow: visible;
+  width: 100%;
+}
+.chart text {
+  fill: #b4b7c4;
+  font-family: inherit;
+  font-size: 13px;
+}
+.gridLine {
+  stroke: #36363c;
+  stroke-dasharray: 4 5;
+}
+.chartHint {
+  color: #9398a7;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0.5rem 0 0;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.legend span {
+  align-items: center;
+  color: #c0c3cd;
+  display: flex;
+  font-size: 0.85rem;
+  gap: 0.4rem;
+}
+.legend i {
+  border-radius: 3px;
+  height: 8px;
+  width: 8px;
+}
+.depositDot {
+  background: #61d8b3;
+}
+.withdrawalDot {
+  background: #f0aa83;
+}
+.chartDetails {
+  color: #adb8ee;
+  font-size: 0.9rem;
+  min-width: 0;
+}
+.chartDetails summary {
+  cursor: pointer;
+  padding: 0.5rem 0;
+  width: fit-content;
+}
+.chartDetails summary:focus-visible {
+  outline: 2px solid #b9c8ff;
+  outline-offset: 2px;
+}
+.tableScroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.chartDetails table {
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+.chartDetails td,
+.chartDetails th {
+  border-bottom: 1px solid #333337;
+  color: #bfc2ce;
+  font-size: 0.85rem;
+  padding: 0.75rem 0.5rem;
+  text-align: right;
+  white-space: nowrap;
+}
+.chartDetails th:first-child {
+  text-align: left;
+}
+.goalProgress {
+  display: grid;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+.goalHeading {
+  align-items: baseline;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.goalHeading a {
+  color: #e0e4f4;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.goalHeading a:hover {
+  color: #b3c0ff;
+}
+.goalHeading strong {
+  color: #b7c3ff;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+.goalProgress li > p {
+  color: #a5aab8;
+  font-size: 0.875rem;
+  margin: 0.6rem 0 0;
+}
+.account {
+  overflow: hidden;
+}
+.accountSection {
+  padding: 1.5rem;
+}
+.accountSection + .accountSection {
+  border-top: 1px solid #333337;
+}
+.accountIcon {
+  align-items: center;
+  background: #282d47;
+  border: 1px solid #454e79;
+  border-radius: 1rem;
+  color: #bec9ff;
+  display: flex;
+  height: 3.5rem;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  width: 3.5rem;
+}
+.accountData {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1.5rem 0 0;
+}
+.accountData dt {
+  color: #999ead;
+  font-size: 0.875rem;
+  margin-bottom: 0.4rem;
+}
+.accountData dd {
+  color: #e2e4ec;
+  line-height: 1.5;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.languageRow {
+  align-items: center;
+  color: #d5d8e5;
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+.languageRow + p {
+  margin: 0.5rem 0 1rem;
+}
+.account button {
+  gap: 0.5rem;
+}
+.error {
+  color: #ffb4b4;
+  line-height: 1.5;
+  margin: 1rem 0 0;
+}
+.demoActions {
+  display: grid;
+  gap: 0.5rem;
+}
+.demoActions a {
+  justify-content: center;
+}
+.empty {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.empty > svg {
+  color: #8a9af1;
+  margin-bottom: 1rem;
+}
+.empty .hint {
+  margin: 0.75rem auto;
+  max-width: 25rem;
+}
+@media (min-width: 75rem) {
+  .metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .metric {
+    padding: 1rem;
+  }
+  .metric > div {
+    align-items: start;
+    font-size: 0.9rem;
+  }
+  .metric strong {
+    font-size: 1.35rem;
+  }
+}
+@media (max-width: 63rem) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .account {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .accountSection + .accountSection {
+    border-top: 0;
+    border-left: 1px solid #333337;
+  }
+  .accountSection:last-child {
+    border-left: 0;
+    border-top: 1px solid #333337;
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 40rem) {
+  .page {
+    padding: 1.25rem 1rem 3rem;
+  }
+  .pageHeading {
+    margin-bottom: 2rem;
+  }
+  .panel {
+    padding: 1rem;
+  }
+  .metric {
+    padding: 1rem;
+  }
+  .metric strong {
+    font-size: 1.2rem;
+  }
+  .metric > div {
+    align-items: start;
+    font-size: 0.9rem;
+  }
+  .account {
+    display: block;
+  }
+  .accountSection + .accountSection {
+    border-left: 0;
+    border-top: 1px solid #333337;
+  }
+  .chart text {
+    font-size: 18px;
+  }
+  .chart {
+    margin-top: 1.25rem;
+  }
+}

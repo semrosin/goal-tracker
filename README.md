@@ -31,6 +31,7 @@ A bilingual savings goal tracker built with React and TypeScript. Create an emai
 - An offline demo with example goals remains for browsers that stored the preference earlier; its data stays in browser storage and is never uploaded automatically.
 - Supabase Auth for email/password registration, confirmation, sign-in, and password recovery. Postgres is the source of truth for an account.
 - Russian and English UI with a saved language choice.
+- A user profile with account details, language and sign-out settings, currency-separated totals, six-month savings and cash-flow charts, and goal progress. The language selected on the welcome page carries over to the profile.
 
 ## Architecture and tradeoffs
 

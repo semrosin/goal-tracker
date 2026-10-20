@@ -1,4 +1,8 @@
 export { useLedgerDispatch, useLedgerSelector } from './model/hooks';
+export {
+  calculateStatistics,
+  type ProfileStatistics,
+} from './model/statistics';
 export { createCloudLedgerRepository } from './api/cloudLedger';
 export {
   LedgerCommandsProvider,
