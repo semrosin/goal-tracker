@@ -152,7 +152,7 @@ it('inherits the welcome language and persists profile language changes across n
   await screen.findByRole('heading', { name: 'My goals' });
   fireEvent.click(screen.getByRole('link', { name: 'Profile' }));
   expect(
-    screen.getByRole('heading', { name: 'Profile', exact: true })
+    screen.getByRole('heading', { name: 'Your statistics', exact: true })
   ).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'EN' })).toHaveAttribute(
     'aria-pressed',
@@ -175,7 +175,7 @@ it('keeps the profile open and shows an error if sign-out fails', async () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Не удалось выйти')
   );
   expect(
-    screen.getByRole('heading', { name: 'Профиль', exact: true })
+    screen.getByRole('complementary', { name: 'Данные аккаунта' })
   ).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Выйти' })).toBeEnabled();
 });

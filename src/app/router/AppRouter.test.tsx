@@ -40,7 +40,7 @@ describe('AppRouter', () => {
       expect(screen.getAllByRole('banner')).toHaveLength(1);
       fireEvent.click(screen.getByRole('link', { name: 'Профиль' }));
       expect(
-        screen.getByRole('heading', { name: 'Профиль' })
+        screen.getByRole('complementary', { name: 'Данные аккаунта' })
       ).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Выйти' })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'EN' })).toBeInTheDocument();
