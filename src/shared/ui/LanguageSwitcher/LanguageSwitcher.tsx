@@ -12,7 +12,6 @@ export const LanguageSwitcher = () => {
     >
       <button
         aria-pressed={locale === 'ru'}
-        className={locale === 'ru' ? styles.active : undefined}
         onClick={() => setLocale('ru')}
         type="button"
       >
@@ -20,7 +19,6 @@ export const LanguageSwitcher = () => {
       </button>
       <button
         aria-pressed={locale === 'en'}
-        className={locale === 'en' ? styles.active : undefined}
         onClick={() => setLocale('en')}
         type="button"
       >
