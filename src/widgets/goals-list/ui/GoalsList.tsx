@@ -15,15 +15,16 @@ export const GoalsList = () => {
 
   return (
     <div className={styles.list}>
-      {goals.map((goal) => {
+      {goals.map((goal, index) => {
         const balance = calculateBalance(goal.id, transactions);
         const progress = calculateProgress(balance, goal.targetAmount);
         const isCompleted = balance >= goal.targetAmount;
+        const isFeatured = !isCompleted && (index % 8 === 0 || index % 8 === 5);
 
         return (
           <Link
             key={goal.id}
-            className={`${styles.card} ${styles.gridCard} ${isCompleted ? styles.completedCard : ''}`}
+            className={`${styles.card} ${isFeatured ? styles.featuredCard : ''} ${isCompleted ? styles.completedCard : ''} ${balance === 0 ? styles.emptyCard : ''}`}
             to={`/goals/${goal.id}`}
           >
             <div className={styles.cardHeader}>
@@ -35,7 +36,7 @@ export const GoalsList = () => {
             <p>{progress.toFixed(0)}%</p>
             <ProgressBar
               label={t('goal.progressLabel', { title: goal.title })}
-              tone={isCompleted ? 'light' : 'default'}
+              tone={isCompleted ? 'success' : isFeatured ? 'light' : 'default'}
               value={progress}
             />
             <p>

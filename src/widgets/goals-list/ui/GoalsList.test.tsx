@@ -1,8 +1,5 @@
 /// <reference types="@testing-library/jest-dom" />
 
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
-
 import { screen, within } from '@testing-library/react';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
@@ -106,18 +103,5 @@ describe('GoalsList', () => {
       /100,000 ₽/
     );
     localStorage.removeItem('goal-tracker-locale');
-  });
-
-  it('limits the desktop goal grid to two columns', () => {
-    const source = readFileSync(
-      join(__dirname, 'GoalsList.module.scss'),
-      'utf8'
-    );
-    const listRules = source.match(/\.list\s*\{([\s\S]*?)\}/)?.[1];
-
-    expect(listRules).toBeDefined();
-    expect(listRules).toMatch(
-      /grid-template-columns\s*:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/
-    );
   });
 });
