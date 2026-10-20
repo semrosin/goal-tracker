@@ -9,7 +9,6 @@ import {
   type LedgerCommands,
 } from '../../../entities/ledger';
 import { TransactionForm } from './TransactionForm';
-import styles from './TransactionForm.module.scss';
 
 const goal = {
   id: 'g1',
@@ -32,13 +31,12 @@ describe('TransactionForm', () => {
       name: '\u0421\u043d\u044f\u0442\u044c',
     });
 
-    expect(deposit).toHaveClass(styles.selected);
-    expect(withdrawal).not.toHaveClass(styles.selected);
+    expect(deposit).toHaveAttribute('aria-pressed', 'true');
+    expect(withdrawal).toHaveAttribute('aria-pressed', 'false');
 
     await userEvent.click(withdrawal);
 
-    expect(deposit).not.toHaveClass(styles.selected);
-    expect(withdrawal).toHaveClass(styles.selected);
+    expect(deposit).toHaveAttribute('aria-pressed', 'false');
     expect(withdrawal).toHaveAttribute('aria-pressed', 'true');
   });
 

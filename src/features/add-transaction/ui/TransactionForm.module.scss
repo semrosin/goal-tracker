@@ -1,3 +1,5 @@
+@use '../../../shared/styles/segmentedControl';
+
 .panel {
   background: #141414;
   border: 1px solid #353535;
@@ -36,18 +38,9 @@
   gap: 1rem;
 }
 .typePicker {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  @include segmentedControl.group;
 }
 
-.selected {
-  background: #20253c;
-  color: #5c73e6;
-  border-color: #6e82e6;
-}
-
-.selected:not(:disabled):hover {
-  background: rgba(92, 115, 230, 0.9);
-  color: rgba(255, 255, 255, 0.9);
+.typePicker button {
+  @include segmentedControl.item;
 }
