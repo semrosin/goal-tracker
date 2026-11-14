@@ -86,6 +86,25 @@
 .currencyPicker button {
   @include segmentedControl.item;
 }
+.currencyPicker {
+  border-color: #69616e;
+  border-radius: 7px;
+  gap: 0;
+  padding: 0;
+}
+.currencyPicker button {
+  border-radius: 5px;
+  color: #f4f1f5;
+  font-size: 0.875rem;
+  min-height: 2.5rem;
+  min-width: 5rem;
+
+  &[aria-pressed='true'],
+  &[aria-pressed='true']:not(:disabled):hover {
+    background: #c6a8ed;
+    color: #17121d;
+  }
+}
 .metrics {
   display: grid;
   gap: 0.75rem;
@@ -541,6 +560,7 @@
   grid-column: 1 / -1;
   grid-row: 3;
   padding: 0.5rem 1.5rem;
+  position: relative;
 }
 .noTransactions {
   background: #131313;
@@ -548,22 +568,45 @@
   grid-column: 1 / -1;
   grid-row: 4;
   padding: 1rem 1.5rem;
+  position: relative;
 }
 .accountSection + .accountSection {
   border-top: 1px dashed #535158;
+  position: relative;
+}
+.accountSection + .accountSection::before {
+  background:
+    linear-gradient(#131313, #131313) top 1px left 1px / 8px 8px no-repeat,
+    linear-gradient(#131313, #131313) top 1px right 1px / 8px 8px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top left / 10px 10px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top right / 10px 10px no-repeat;
+  content: '';
+  height: 10px;
+  left: -5px;
+  pointer-events: none;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  z-index: 1;
 }
 .metric::before,
 .panel::before,
-.account::before {
-  background: #131313;
-  border: 1px solid #85818c;
+.account::before,
+.chartDetails::before,
+.noTransactions::before {
+  background:
+    linear-gradient(#131313, #131313) top 1px left 1px / 8px 8px no-repeat,
+    linear-gradient(#131313, #131313) top 1px right 1px / 8px 8px no-repeat,
+    linear-gradient(#131313, #131313) bottom 1px left 1px / 8px 8px no-repeat,
+    linear-gradient(#131313, #131313) bottom 1px right 1px / 8px 8px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top left / 10px 10px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top right / 10px 10px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) bottom left / 10px 10px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) bottom right / 10px 10px no-repeat;
   content: '';
-  height: 6px;
-  left: -4px;
+  inset: -5px;
   pointer-events: none;
   position: absolute;
-  top: -4px;
-  width: 6px;
   z-index: 1;
 }
 @media (max-width: 63rem) {
