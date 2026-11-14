@@ -1,5 +1,17 @@
 @use '../../../shared/styles/segmentedControl';
 
+@mixin dashedRule($edge) {
+  background-image: repeating-linear-gradient(
+    to right,
+    rgb(255 255 255 / 18%) 0 10px,
+    transparent 10px 20px
+  );
+  background-position: $edge;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  border-#{$edge}-color: transparent;
+}
+
 .shell {
   min-height: 100vh;
 }
@@ -707,5 +719,29 @@
   .metric strong {
     font-family: 'Finlandica Text', sans-serif;
     font-size: 1rem;
+  }
+}
+
+// Match the long, evenly spaced rules used in the header, at a smaller scale.
+.goalProgress li + li,
+.chartDetails,
+.noTransactions,
+.accountSection + .accountSection {
+  @include dashedRule(top);
+}
+.primaryPanel,
+.balancePanel,
+.account {
+  @include dashedRule(bottom);
+}
+@media (max-width: 63rem) {
+  .activityPanel,
+  .progressPanel,
+  .chartDetails,
+  .noTransactions {
+    @include dashedRule(bottom);
+  }
+  .account {
+    background-image: none;
   }
 }
