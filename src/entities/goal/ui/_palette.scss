@@ -1,0 +1,25 @@
+@mixin palette {
+  --goal-surface: #302846;
+  --goal-accent: #c3b1f4;
+  --goal-border: #675784;
+  &[data-color='forest'] {
+    --goal-surface: #213a34;
+    --goal-accent: #9bd2b7;
+    --goal-border: #487562;
+  }
+  &[data-color='ocean'] {
+    --goal-surface: #263746;
+    --goal-accent: #a4c8e0;
+    --goal-border: #536f85;
+  }
+  &[data-color='amber'] {
+    --goal-surface: #403329;
+    --goal-accent: #edc28d;
+    --goal-border: #80664f;
+  }
+  &[data-color='rose'] {
+    --goal-surface: #412b37;
+    --goal-accent: #e6adc3;
+    --goal-border: #855869;
+  }
+}

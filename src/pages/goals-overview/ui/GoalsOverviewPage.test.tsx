@@ -1,9 +1,9 @@
-/// <reference types="@testing-library/jest-dom" />
+﻿/// <reference types="@testing-library/jest-dom" />
 
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
 import { LocaleProvider } from '../../../shared/lib/i18n';
@@ -80,4 +80,23 @@ test('shows the savings summary above the goals list', () => {
   expect(screen.getByLabelText('Всего накоплено')).toHaveTextContent('800 ₽');
   expect(screen.getByLabelText('Активных целей')).toHaveTextContent('1');
   expect(screen.getByLabelText('Выполненных целей')).toHaveTextContent('1');
+});
+
+test('places the create action with the goals list', () => {
+  localStorage.setItem('goal-tracker-locale', 'en');
+  renderWithLedger(
+    <LocaleProvider>
+      <GoalsOverviewPage />
+    </LocaleProvider>
+  );
+  const list = screen.getByRole('region', { name: 'Goals list' });
+  expect(
+    within(list).getByRole('button', { name: 'New goal' })
+  ).toBeInTheDocument();
+  expect(
+    within(screen.getByRole('banner')).queryByRole('button', {
+      name: 'New goal',
+    })
+  ).not.toBeInTheDocument();
+  localStorage.removeItem('goal-tracker-locale');
 });

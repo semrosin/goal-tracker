@@ -38,7 +38,7 @@ test('English goal uses localized months and retains dollars after reload', asyn
   ).toBe(false);
 });
 
-test('centers header navigation within the header at each viewport', async ({
+test('centers header navigation and keeps controls separate at each viewport', async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -46,25 +46,50 @@ test('centers header navigation within the header at each viewport', async ({
     localStorage.setItem('goal-tracker-locale', 'en');
   });
   await page.goto('/app');
-  const header = await page.getByRole('banner').boundingBox();
-  const navigation = await page
-    .getByRole('navigation', { name: 'Goals' })
-    .boundingBox();
-  expect(header).not.toBeNull();
-  expect(navigation).not.toBeNull();
-  expect(
-    Math.abs(
-      navigation!.x + navigation!.width / 2 - (header!.x + header!.width / 2)
-    )
-  ).toBeLessThan(2);
-  const controls = await page.getByRole('banner').locator('a, button').all();
-  const boxes = await Promise.all(
-    controls.map((control) => control.boundingBox())
-  );
-  const sorted = boxes.filter((box) => box !== null).sort((a, b) => a.x - b.x);
-  for (let index = 1; index < sorted.length; index += 1) {
-    expect(sorted[index - 1].x + sorted[index - 1].width).toBeLessThanOrEqual(
-      sorted[index].x
+  for (const width of [320, 768, 1440]) {
+    await page.setViewportSize({ width, height: 800 });
+    const header = await page.getByRole('banner').boundingBox();
+    const navigation = await page
+      .getByRole('navigation', { name: 'Goals' })
+      .boundingBox();
+    expect(header).not.toBeNull();
+    expect(navigation).not.toBeNull();
+    expect(
+      Math.abs(
+        navigation!.x + navigation!.width / 2 - (header!.x + header!.width / 2)
+      )
+    ).toBeLessThan(2);
+    const controls = await page.getByRole('banner').locator('a, button').all();
+    const boxes = await Promise.all(
+      controls.map((control) => control.boundingBox())
     );
+    const sorted = boxes
+      .filter((box) => box !== null)
+      .sort((a, b) => a.x - b.x);
+    for (let index = 1; index < sorted.length; index += 1) {
+      expect(sorted[index - 1].x + sorted[index - 1].width).toBeLessThanOrEqual(
+        sorted[index].x
+      );
+    }
   }
+});
+
+test('shows the goals underline on hover and preserves profile navigation', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'Hover requires a pointer');
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const profile = page.getByRole('link', { name: 'Profile' });
+  const goals = page.getByRole('link', { name: 'Goals', exact: true });
+  await expect(profile).toHaveAttribute('aria-current', 'page');
+  await expect(goals).toHaveCSS('border-bottom-color', 'rgba(0, 0, 0, 0)');
+  await goals.hover();
+  await expect(goals).toHaveCSS('border-bottom-color', 'rgb(137, 150, 237)');
+  await goals.click();
+  await expect(goals).toHaveAttribute('aria-current', 'page');
+  await expect(profile).not.toHaveAttribute('aria-current', 'page');
 });

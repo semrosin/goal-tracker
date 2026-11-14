@@ -32,14 +32,14 @@
     color 160ms ease;
 
   &:not(:disabled):hover {
-    background: #252839;
+    background: #302b3c;
     color: #eef0ff;
   }
 
   &[aria-pressed='true'],
   &[aria-pressed='true']:not(:disabled):hover {
-    background: #303754;
-    color: #d6ddff;
+    background: #514476;
+    color: #f4efff;
   }
 
   &:focus-visible {

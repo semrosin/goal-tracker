@@ -22,9 +22,7 @@ const openGoals = async (page: Page, count: number) => {
   return cards;
 };
 
-test('goal blocks repeat with alternating wide and tall cards', async ({
-  page,
-}, testInfo) => {
+test('goal cards form a consistent grid', async ({ page }, testInfo) => {
   const cards = await openGoals(page, 12);
   const boxes = await cards.evaluateAll((elements) =>
     elements.map((element) => {
@@ -40,20 +38,14 @@ test('goal blocks repeat with alternating wide and tall cards', async ({
       if (index > 0) expect(box.y).toBeGreaterThan(boxes[index - 1].y);
     });
   } else {
-    expect(boxes[0].width).toBeGreaterThan(boxes[2].width * 1.9);
-    expect(boxes[1].height).toBeGreaterThan(boxes[2].height * 1.9);
-    expect(boxes[0].y).toBe(boxes[1].y);
-    expect(boxes[2].y).toBe(boxes[3].y);
-    expect(boxes[2].x).toBe(boxes[0].x);
-    expect(boxes[4].x).toBe(boxes[0].x);
-    expect(boxes[4].height).toBe(boxes[1].height);
-    expect(boxes[5].width).toBeCloseTo(boxes[0].width, 0);
-    expect(boxes[4].y).toBe(boxes[5].y);
-    expect(boxes[6].x).toBe(boxes[5].x);
-    expect(boxes[6].y).toBe(boxes[7].y);
-    expect(boxes[8].x).toBe(boxes[0].x);
-    expect(boxes[8].width).toBe(boxes[0].width);
-    expect(boxes[9].x).toBe(boxes[1].x);
+    boxes.forEach((box, index) => {
+      expect(box.width).toBeCloseTo(boxes[0].width, 0);
+      if (index % 3 === 0 && index > 0) {
+        expect(box.y).toBeGreaterThan(boxes[index - 1].y);
+      } else if (index % 3 !== 0) {
+        expect(box.y).toBe(boxes[index - 1].y);
+      }
+    });
   }
 
   await cards.first().click();

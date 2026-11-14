@@ -25,6 +25,7 @@ A bilingual savings goal tracker built with React and TypeScript. Create an emai
 ## Features
 
 - Multiple goals with deposits, withdrawals, progress, and ordered transaction history. The goal page shows saved, target, and remaining amounts alongside separate operation, plan, and history sections.
+- Choose a preset color and icon for each goal; appearance follows the goal across devices.
 - Choose RUB or USD for each goal. Overview totals stay separate by currency; amounts are not converted.
 - An optional target month and required contribution: `ceil(remaining / months including the current and target months)`.
 - A what-if calculator forecasts the completion month for a chosen monthly contribution. Completed and overdue goals have distinct states.
@@ -56,7 +57,7 @@ npm start
 
 Open `http://localhost:3000`. The app boots without environment values; for cloud accounts, copy `.env.example` to `.env`, then set `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` for a Supabase project with the migration applied. Webpack reads `.env` at startup. These values are public browser configuration; **never use a service-role or secret key here**.
 
-Apply all migrations before deploying the frontend, including `20261019000100_goal_currency.sql`, which adds the currency column and extends the goal RPCs. Older clients remain compatible with the new RPC defaults.
+Apply all migrations before deploying the frontend, including `20261114000100_goal_appearance.sql`, which adds goal appearance and extends the goal RPCs. Older clients remain compatible with the new RPC defaults.
 
 ```sh
 npm run lint

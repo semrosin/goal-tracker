@@ -1,0 +1,67 @@
+@use './palette';
+.picker {
+  display: grid;
+  gap: 1rem;
+}
+.group {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+.group legend {
+  color: #f7f7f7;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.choice {
+  cursor: pointer;
+  display: inline-flex;
+  position: relative;
+}
+.choice input {
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+.swatch,
+.iconChoice {
+  align-items: center;
+  border: 1px solid #4d4956;
+  border-radius: 8px;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+.swatch {
+  @include palette.palette;
+  background: var(--goal-surface);
+  border-color: var(--goal-border);
+}
+.swatch::after {
+  background: var(--goal-accent);
+  border-radius: 50%;
+  content: '';
+  height: 14px;
+  width: 14px;
+}
+.iconChoice {
+  background: #24232a;
+  color: #cfccd8;
+}
+.choice input:checked + span {
+  outline: 2px solid #d6caff;
+  outline-offset: 2px;
+}
+.choice input:focus-visible + span {
+  outline: 3px solid white;
+  outline-offset: 3px;
+}

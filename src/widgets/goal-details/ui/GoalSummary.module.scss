@@ -1,94 +1,110 @@
-﻿.summary {
-  background: #171719;
-  border: 1px solid #303035;
-  border-radius: 1rem;
+@use '../../../entities/goal/ui/palette';
+
+.summary {
+  @include palette.palette;
+  background: var(--goal-surface);
+  border: 1px solid var(--goal-border);
+  border-radius: 14px;
+  color: #f6f3fa;
   min-width: 0;
-  padding: 1.75rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
 }
 .description {
-  color: #a9abb4;
+  color: #e0dce8;
   line-height: 1.5;
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.5rem;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
 .state {
-  align-items: center;
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: minmax(0, 1fr) 6.5rem;
+  gap: 2rem;
 }
 .amounts {
+  align-items: end;
   display: grid;
-  gap: 1.2rem;
-  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  grid-template-columns: 2fr 1fr 1fr;
+  font-variant-numeric: tabular-nums;
 }
 .amounts div {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.4rem;
   min-width: 0;
 }
+.amounts div + div {
+  border-left: 1px solid var(--goal-border);
+  padding-left: 1.5rem;
+}
 .amounts span {
-  color: #a9abb4;
-  font-size: 0.875rem;
+  color: #d7d0e0;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 .amounts strong {
-  color: #f7f7f7;
-  font-size: 1.1rem;
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
   max-width: 100%;
   overflow-wrap: anywhere;
 }
 .amounts div:first-child strong {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  letter-spacing: -0.03em;
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
   line-height: 1.1;
 }
-.progress {
+.progressSection {
   display: grid;
-  place-items: center;
-  position: relative;
-  width: 6.5rem;
+  gap: 0.6rem;
 }
-.progress svg {
-  transform: rotate(-90deg);
-  width: 100%;
+.progressHeading {
+  align-items: baseline;
+  display: flex;
+  font-size: 0.9rem;
+  gap: 1rem;
+  justify-content: space-between;
 }
-.progress circle {
-  fill: none;
-  stroke-width: 5;
+.progressHeading strong {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1rem;
 }
-.track {
-  stroke: #383a43;
+.progress {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  height: 0.7rem;
+  overflow: hidden;
 }
 .value {
-  stroke: #8996ed;
-  stroke-linecap: round;
+  background: var(--goal-accent);
+  border-radius: inherit;
+  height: 100%;
 }
 .completedSurface .value {
-  stroke: #49ba92;
+  background: #9bd2b7;
 }
-.progress strong {
-  color: #f7f7f7;
-  font-size: 1.25rem;
-  position: absolute;
-}
-@media (max-width: 24rem) {
-  .summary {
-    padding: 1.25rem;
+@media (max-width: 40rem) {
+  .amounts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .amounts div:first-child {
+    grid-column: 1 / -1;
+  }
+  .amounts div:nth-child(2) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .amounts div:nth-child(3) {
+    padding-left: 1.25rem;
   }
   .state {
-    gap: 1rem;
-    grid-template-columns: minmax(0, 1fr) 5rem;
-  }
-  .progress {
-    width: 5rem;
+    gap: 1.5rem;
   }
 }
 
-@media (min-width: 48rem) {
-  .amounts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-  }
+.activeSurface {
+  border-color: var(--goal-border);
+}
+
+.amounts div:first-child strong {
+  color: var(--goal-accent);
 }

@@ -1,7 +1,8 @@
+import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-import { selectGoalById } from '../../../entities/goal';
+import { GoalIcon, selectGoalById } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { TransactionForm } from '../../../features/add-transaction';
@@ -47,8 +48,14 @@ export const GoalDetailPage = () => {
       <AppHeader />
       <main className={styles.page}>
         <div className={styles.heading}>
-          <h1>{goal.title}</h1>
+          <div className={styles.identity} data-color={goal.color ?? 'violet'}>
+            <span className={styles.goalIcon}>
+              <GoalIcon name={goal.icon} size={24} />
+            </span>
+            <h1>{goal.title}</h1>
+          </div>
           <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
+            <Pencil size={16} aria-hidden="true" />
             {t('detail.edit')}
           </Button>
         </div>

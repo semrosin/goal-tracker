@@ -1,8 +1,8 @@
 ﻿.panel {
   background: #171719;
   border: 1px solid #303035;
-  border-radius: 1rem;
-  padding: 1.75rem;
+  border-radius: 10px;
+  padding: 1.5rem;
 }
 .panel h2 {
   color: #f7f7f7;
@@ -53,4 +53,11 @@
   .item {
     gap: 0.35rem;
   }
+}
+
+.panel {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 1.5rem 0;
 }

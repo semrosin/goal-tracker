@@ -1,3 +1,5 @@
+@use '../../../entities/goal/ui/palette';
+
 .page {
   margin: 0 auto;
   max-width: 72rem;
@@ -45,5 +47,64 @@
   .layout > :nth-child(4),
   .actions {
     grid-column: 1 / -1;
+  }
+}
+
+.page {
+  max-width: 80rem;
+  padding-bottom: 5rem;
+}
+.page h1 {
+  font-family: 'Finlandica Text', sans-serif;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 700;
+}
+.heading {
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.layout {
+  align-items: start;
+}
+@media (min-width: 48rem) {
+  .layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+}
+
+.identity {
+  @include palette.palette;
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  min-width: 0;
+}
+.goalIcon {
+  align-items: center;
+  background: var(--goal-surface);
+  border: 1px solid var(--goal-border);
+  border-radius: 10px;
+  color: var(--goal-accent);
+  display: flex;
+  flex: 0 0 48px;
+  height: 48px;
+  justify-content: center;
+}
+.layout {
+  gap: 0 2.5rem;
+}
+.layout > :first-child {
+  margin-bottom: 1rem;
+}
+.layout > :nth-child(4) {
+  border-top: 1px solid #39383e;
+  margin-top: 1rem;
+}
+@media (max-width: 47.999rem) {
+  .layout > :nth-child(3) {
+    border-top: 1px solid #39383e;
+  }
+  .layout > :nth-child(4) {
+    margin-top: 0;
   }
 }

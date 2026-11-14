@@ -24,6 +24,7 @@ export const AppHeader = ({ children }: { children?: ReactNode }) => {
             width={44}
             height={44}
           />
+          <span>GoalCraft</span>
         </Link>
         <nav className={styles.navigation} aria-label={t('nav.goals')}>
           <Link
@@ -46,7 +47,7 @@ export const AppHeader = ({ children }: { children?: ReactNode }) => {
             aria-label={t('profile.title')}
             title={t('profile.title')}
           >
-            <UserRound size={20} aria-hidden="true" />
+            <UserRound size={20} strokeWidth={1.8} aria-hidden="true" />
           </NavLink>
         </div>
       </div>

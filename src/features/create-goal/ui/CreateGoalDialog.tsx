@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { isValidTargetMonth } from '../../../entities/goal';
+import {
+  GoalAppearancePicker,
+  isValidTargetMonth,
+  type GoalColor,
+  type GoalIconName,
+} from '../../../entities/goal';
 import { useLedgerCommands } from '../../../entities/ledger';
 import { createTimestamp } from '../../../shared/lib/date';
 import { createId } from '../../../shared/lib/id';
@@ -37,6 +42,8 @@ export const CreateGoalDialog = ({
   const [targetAmount, setTargetAmount] = useState('');
   const [targetMonth, setTargetMonth] = useState('');
   const [currency, setCurrency] = useState<Currency>('RUB');
+  const [color, setColor] = useState<GoalColor>('violet');
+  const [icon, setIcon] = useState<GoalIconName>('target');
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>();
 
@@ -83,6 +90,8 @@ export const CreateGoalDialog = ({
         description: description.trim(),
         targetAmount: amount,
         currency,
+        color,
+        icon,
         ...(targetMonth === '' ? {} : { targetMonth }),
         createdAt: createTimestamp(),
       });
@@ -95,6 +104,8 @@ export const CreateGoalDialog = ({
     setTargetAmount('');
     setTargetMonth('');
     setCurrency('RUB');
+    setColor('violet');
+    setIcon('target');
     setErrors({});
     handleClose();
   };
@@ -116,6 +127,12 @@ export const CreateGoalDialog = ({
           value={targetAmount}
         />
         <CurrencyPicker value={currency} onChange={setCurrency} />
+        <GoalAppearancePicker
+          color={color}
+          icon={icon}
+          onColorChange={setColor}
+          onIconChange={setIcon}
+        />
         <MonthPicker
           error={errors.targetMonth}
           onChange={setTargetMonth}

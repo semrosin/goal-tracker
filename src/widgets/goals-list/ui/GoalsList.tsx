@@ -1,6 +1,7 @@
+import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { calculateProgress } from '../../../entities/goal';
+import { calculateProgress, GoalIcon } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { formatMoney } from '../../../shared/lib/money';
@@ -15,28 +16,39 @@ export const GoalsList = () => {
 
   return (
     <div className={styles.list}>
-      {goals.map((goal, index) => {
+      {goals.map((goal) => {
         const balance = calculateBalance(goal.id, transactions);
         const progress = calculateProgress(balance, goal.targetAmount);
         const isCompleted = balance >= goal.targetAmount;
-        const isFeatured = !isCompleted && (index % 8 === 0 || index % 8 === 5);
 
         return (
           <Link
             key={goal.id}
-            className={`${styles.card} ${isFeatured ? styles.featuredCard : ''} ${isCompleted ? styles.completedCard : ''} ${balance === 0 ? styles.emptyCard : ''}`}
+            className={`${styles.card} ${isCompleted ? styles.completedCard : ''}`}
+            data-color={goal.color ?? 'violet'}
             to={`/goals/${goal.id}`}
           >
             <div className={styles.cardHeader}>
-              <h2>{goal.title}</h2>
+              <div className={styles.identity}>
+                <span className={styles.goalIcon}>
+                  <GoalIcon name={goal.icon} />
+                </span>
+                <h2>{goal.title}</h2>
+              </div>
               {isCompleted ? (
                 <span className={styles.status}>{t('list.completed')}</span>
-              ) : null}
+              ) : (
+                <ArrowUpRight
+                  className={styles.arrow}
+                  size={20}
+                  aria-hidden="true"
+                />
+              )}
             </div>
             <p>{progress.toFixed(0)}%</p>
             <ProgressBar
               label={t('goal.progressLabel', { title: goal.title })}
-              tone={isCompleted ? 'success' : isFeatured ? 'light' : 'default'}
+              tone={isCompleted ? 'success' : 'default'}
               value={progress}
             />
             <p>

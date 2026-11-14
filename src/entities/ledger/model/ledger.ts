@@ -4,6 +4,8 @@ import {
   goalsActions,
   goalsReducer,
   isValidTargetMonth,
+  isGoalColor,
+  isGoalIcon,
   type Goal,
   type GoalUpdate,
 } from '../../goal';
@@ -59,6 +61,11 @@ const decodeGoal = (value: unknown): Goal | undefined => {
   )
     return undefined;
 
+  if (candidate.color !== undefined && !isGoalColor(candidate.color))
+    return undefined;
+  if (candidate.icon !== undefined && !isGoalIcon(candidate.icon))
+    return undefined;
+
   if (
     candidate.targetMonth !== undefined &&
     !isValidTargetMonth(candidate.targetMonth)
@@ -73,6 +80,8 @@ const decodeGoal = (value: unknown): Goal | undefined => {
       ? {}
       : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
+    ...(candidate.color === undefined ? {} : { color: candidate.color }),
+    ...(candidate.icon === undefined ? {} : { icon: candidate.icon }),
     ...(candidate.currency === undefined
       ? {}
       : { currency: candidate.currency }),
@@ -109,6 +118,11 @@ const decodeGoalUpdate = (value: unknown): GoalUpdate | undefined => {
     return undefined;
   }
 
+  if (candidate.color !== undefined && !isGoalColor(candidate.color))
+    return undefined;
+  if (candidate.icon !== undefined && !isGoalIcon(candidate.icon))
+    return undefined;
+
   if (
     candidate.targetMonth !== undefined &&
     !isValidTargetMonth(candidate.targetMonth)
@@ -123,6 +137,8 @@ const decodeGoalUpdate = (value: unknown): GoalUpdate | undefined => {
       ? {}
       : { description: candidate.description }),
     targetAmount: candidate.targetAmount,
+    ...(candidate.color === undefined ? {} : { color: candidate.color }),
+    ...(candidate.icon === undefined ? {} : { icon: candidate.icon }),
     ...(candidate.currency === undefined
       ? {}
       : { currency: candidate.currency }),
@@ -222,6 +238,8 @@ export const serializeLedgerState = (state: LedgerState): LedgerState => ({
       ? {}
       : { description: goal.description }),
     targetAmount: goal.targetAmount,
+    ...(goal.color === undefined ? {} : { color: goal.color }),
+    ...(goal.icon === undefined ? {} : { icon: goal.icon }),
     ...(goal.currency === undefined ? {} : { currency: goal.currency }),
     ...(goal.targetMonth === undefined
       ? {}

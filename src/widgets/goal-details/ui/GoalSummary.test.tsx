@@ -143,7 +143,7 @@ test('keeps the goal amounts aligned together', () => {
   );
 });
 
-test('does not draw a progress arc for an empty goal', () => {
+test('shows no filled progress for an empty goal', () => {
   const goal = {
     id: 'empty',
     title: 'Trip',
@@ -156,7 +156,7 @@ test('does not draw a progress arc for an empty goal', () => {
   });
   const progress = screen.getByRole('progressbar');
   expect(progress).toHaveAttribute('aria-valuenow', '0');
-  expect(progress.querySelectorAll('circle')).toHaveLength(1);
+  expect(progress.firstElementChild).toHaveStyle({ width: '0%' });
 });
 
 test('wraps a long amount within its grid cell', () => {
@@ -182,7 +182,7 @@ test('allows amount cells to shrink within the summary grid', () => {
   expect(amountCellRules).toMatch(/min-width\s*:\s*0/);
 });
 
-test('shows circular progress with an accessible value for the goal', () => {
+test('shows progress with an accessible value for the goal', () => {
   const goal = {
     id: 'ring-goal',
     title: 'Trip',
@@ -203,7 +203,7 @@ test('shows circular progress with an accessible value for the goal', () => {
   });
   const progress = screen.getByRole('progressbar');
   expect(progress).toHaveAttribute('aria-valuenow', '25');
-  expect(progress.querySelector('circle')).toBeInTheDocument();
+  expect(progress.firstElementChild).toHaveStyle({ width: '25%' });
 });
 
 test('shows the remaining amount in the goal currency', () => {

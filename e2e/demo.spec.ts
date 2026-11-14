@@ -25,6 +25,42 @@ test('demo can create a goal and add a deposit', async ({ page }) => {
   await expect(page.getByText('+1 000 ₽')).toBeVisible();
 });
 
+test('goal appearance persists after reload and can be edited', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  await page.getByRole('button', { name: 'New goal' }).click();
+  const create = page.getByRole('dialog', { name: 'New goal' });
+  await create.getByLabel('Name').fill('Appearance test');
+  await create.getByLabel('Amount').fill('1000');
+  await create.getByRole('radio', { name: 'Forest' }).check();
+  await create.getByRole('radio', { name: 'Travel' }).check();
+  await create.getByRole('button', { name: 'Create', exact: true }).click();
+  const card = page.getByRole('link').filter({ hasText: 'Appearance test' });
+  await expect(card).toHaveAttribute('data-color', 'forest');
+  await card.click();
+  await page.reload();
+  await expect(
+    page.getByRole('region', { name: 'Appearance test' })
+  ).toHaveAttribute('data-color', 'forest');
+  await page.getByRole('button', { name: 'Edit' }).click();
+  const edit = page.getByRole('dialog');
+  await expect(edit.getByRole('radio', { name: 'Travel' })).toBeChecked();
+  await edit.getByRole('radio', { name: 'Rose' }).check();
+  await edit.getByRole('radio', { name: 'Home' }).check();
+  await edit.getByRole('button', { name: 'Save', exact: true }).click();
+  await page.reload();
+  await expect(
+    page.getByRole('region', { name: 'Appearance test' })
+  ).toHaveAttribute('data-color', 'rose');
+  await page.getByRole('button', { name: 'Edit' }).click();
+  await expect(page.getByRole('radio', { name: 'Home' })).toBeChecked();
+});
+
 test('demo enforces withdrawal and history rules in the browser', async ({
   page,
 }) => {

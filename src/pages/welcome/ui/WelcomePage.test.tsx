@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 
 import { LocaleProvider } from '../../../shared/lib/i18n';
 import { WelcomePage } from './WelcomePage';
@@ -27,7 +27,14 @@ describe('WelcomePage', () => {
     const onSignIn = jest.fn();
 
     render(<WelcomePage onSignIn={onSignIn} onSignUp={() => undefined} />);
-    fireEvent.click(screen.getAllByRole('button', { name: /войти/i })[0]);
+    expect(
+      within(screen.getByRole('banner')).queryByRole('button', {
+        name: /войти/i,
+      })
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      within(screen.getByRole('main')).getByRole('button', { name: /войти/i })
+    );
 
     expect(onSignIn).toHaveBeenCalledTimes(1);
   });

@@ -137,7 +137,7 @@ it('inherits the welcome language and persists profile language changes across n
   renderProfile({}, '/');
   fireEvent.click(screen.getByRole('button', { name: 'EN' }));
   fireEvent.click(
-    within(screen.getByRole('banner')).getByRole('button', {
+    within(screen.getByRole('main')).getByRole('button', {
       name: 'Sign in',
       exact: true,
     })
