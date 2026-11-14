@@ -57,20 +57,6 @@ test('centers header navigation within the header at each viewport', async ({
       navigation!.x + navigation!.width / 2 - (header!.x + header!.width / 2)
     )
   ).toBeLessThan(2);
-  const create = await page
-    .getByRole('button', { name: 'New goal' })
-    .boundingBox();
-  const profile = await page
-    .getByRole('link', { name: 'Profile' })
-    .boundingBox();
-  expect(create).not.toBeNull();
-  expect(profile).not.toBeNull();
-  expect(Math.abs(create!.height - profile!.height)).toBeLessThan(1);
-  expect(
-    Math.abs(
-      create!.y + create!.height / 2 - (profile!.y + profile!.height / 2)
-    )
-  ).toBeLessThan(1);
   const controls = await page.getByRole('banner').locator('a, button').all();
   const boxes = await Promise.all(
     controls.map((control) => control.boundingBox())

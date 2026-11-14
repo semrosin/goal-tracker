@@ -10,7 +10,7 @@
   margin: 0 auto;
   max-width: 80rem;
   min-height: 4.75rem;
-  padding: 0 2rem;
+  padding: 0.75rem 2rem;
 }
 .brand {
   justify-self: start;
@@ -63,18 +63,14 @@
   }
 }
 
-.navigation {
-  align-self: stretch;
-  display: flex;
-}
 .goalsLink {
   align-items: center;
   color: #a9abb4;
   display: inline-flex;
   font-size: 0.95rem;
   font-weight: 600;
-  min-height: 4.75rem;
-  padding: 0 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.25rem;
   position: relative;
   text-decoration: none;
 }
@@ -85,12 +81,12 @@
 .goalsLink[aria-current='page']::after {
   background: #8996ed;
   border-radius: 1rem;
-  bottom: -1px;
+  bottom: 0.2rem;
   content: '';
   height: 2px;
-  left: 0.5rem;
+  left: 0.25rem;
   position: absolute;
-  right: 0.5rem;
+  right: 0.25rem;
 }
 .goalsLink:focus-visible {
   outline: 2px solid #b9c8ff;
