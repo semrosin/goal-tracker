@@ -73,9 +73,6 @@
   font-size: 1.25rem;
   position: absolute;
 }
-.state > :last-child {
-  grid-column: 1 / -1;
-}
 @media (max-width: 24rem) {
   .summary {
     padding: 1.25rem;
@@ -86,5 +83,12 @@
   }
   .progress {
     width: 5rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .amounts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
   }
 }

@@ -24,7 +24,7 @@ A bilingual savings goal tracker built with React and TypeScript. Create an emai
 
 ## Features
 
-- Multiple goals with deposits, withdrawals, progress, and ordered transaction history.
+- Multiple goals with deposits, withdrawals, progress, and ordered transaction history. The goal page shows saved, target, and remaining amounts alongside separate operation, plan, and history sections.
 - Choose RUB or USD for each goal. Overview totals stay separate by currency; amounts are not converted.
 - An optional target month and required contribution: `ceil(remaining / months including the current and target months)`.
 - A what-if calculator forecasts the completion month for a chosen monthly contribution. Completed and overdue goals have distinct states.

@@ -1,4 +1,4 @@
-import { ChevronLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 
@@ -13,6 +13,7 @@ import { useI18n } from '../../../shared/lib/i18n';
 import { AppHeader } from '../../../widgets/app-header';
 import {
   GoalSummary,
+  SavingsPlan,
   TransactionsHistory,
 } from '../../../widgets/goal-details';
 import styles from './GoalDetailPage.module.scss';
@@ -35,8 +36,8 @@ export const GoalDetailPage = () => {
         <AppHeader />
         <main className={styles.page}>
           <h1>{t('detail.notFound')}</h1>
-          <Link to="/app">
-            <ChevronLeft size={16} />
+          <Link className={styles.backLink} to="/app">
+            <ArrowLeft size={17} aria-hidden="true" />
             {t('detail.back')}
           </Link>
         </main>
@@ -51,21 +52,21 @@ export const GoalDetailPage = () => {
       <AppHeader />
       <main className={styles.page}>
         <Link className={styles.backLink} to="/app">
-          <ChevronLeft size={16} />
+          <ArrowLeft size={17} aria-hidden="true" />
           {t('detail.back')}
         </Link>
-        <h1>{goal.title}</h1>
+        <div className={styles.heading}>
+          <h1>{goal.title}</h1>
+          <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
+            {t('detail.edit')}
+          </Button>
+        </div>
         <div className={styles.layout}>
-          <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
           <GoalSummary goal={goal} isCompleted={isCompleted} />
+          <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
+          <SavingsPlan balance={balance} goal={goal} />
           <TransactionsHistory goalId={goal.id} isCompleted={isCompleted} />
           <div className={styles.actions}>
-            <Button
-              onClick={() => setIsEditDialogOpen(true)}
-              variant="secondary"
-            >
-              {t('detail.edit')}
-            </Button>
             <DeleteGoalButton
               goalId={goal.id}
               onDeleted={() => navigate('/app')}

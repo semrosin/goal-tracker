@@ -60,3 +60,25 @@
     display: none;
   }
 }
+
+.navigation {
+  margin-right: auto;
+}
+.goalsLink {
+  align-items: center;
+  border-radius: 0.5rem;
+  color: #ced1d8;
+  display: inline-flex;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+}
+.goalsLink:hover,
+.goalsLink[aria-current='page'] {
+  background: #20253c;
+  color: #fff;
+}
+.goalsLink:focus-visible {
+  outline: 2px solid #b9c8ff;
+  outline-offset: 4px;
+}

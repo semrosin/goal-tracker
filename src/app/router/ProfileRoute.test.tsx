@@ -160,7 +160,7 @@ it('inherits the welcome language and persists profile language changes across n
   );
   fireEvent.click(screen.getByRole('button', { name: 'RU' }));
   expect(window.localStorage.getItem('goal-tracker-locale')).toBe('ru');
-  fireEvent.click(screen.getByRole('link', { name: 'К списку целей' }));
+  fireEvent.click(screen.getByRole('link', { name: 'Все цели' }));
   expect(screen.getByRole('heading', { name: 'Мои цели' })).toBeInTheDocument();
 });
 

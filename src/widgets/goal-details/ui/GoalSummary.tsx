@@ -3,10 +3,12 @@ import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { formatMoney } from '../../../shared/lib/money';
 import { useI18n } from '../../../shared/lib/i18n';
-import { SavingsPlan } from './SavingsPlan';
 import styles from './GoalSummary.module.scss';
 
-type GoalSummaryProps = { goal: Goal; isCompleted?: boolean };
+type GoalSummaryProps = {
+  goal: Goal;
+  isCompleted?: boolean;
+};
 
 export const GoalSummary = ({
   goal,
@@ -44,6 +46,16 @@ export const GoalSummary = ({
               {formatMoney(goal.targetAmount, goal.currency, locale)}
             </strong>
           </div>
+          <div>
+            <span>{t('goal.remaining')}</span>
+            <strong>
+              {formatMoney(
+                Math.max(0, goal.targetAmount - balance),
+                goal.currency,
+                locale
+              )}
+            </strong>
+          </div>
         </div>
         <div
           aria-label={t('goal.progressLabel', { title: goal.title })}
@@ -68,7 +80,6 @@ export const GoalSummary = ({
           </svg>
           <strong>{progress}%</strong>
         </div>
-        <SavingsPlan balance={balance} goal={goal} />
       </div>
     </section>
   );

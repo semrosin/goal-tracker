@@ -29,7 +29,7 @@ test('English goal uses localized months and retains dollars after reload', asyn
   await expect(page.getByLabel('Currency')).toHaveValue('USD');
   await expect(page.getByLabel('Target month')).toHaveValue('02');
   await page.getByRole('button', { name: 'Close', exact: true }).click();
-  await page.getByRole('link', { name: 'Back to goals' }).click();
+  await page.getByRole('link', { name: 'All goals' }).click();
   const totals = page.getByRole('article', { name: 'Total saved' });
   await expect(totals).toContainText('$100');
   await expect(totals).toContainText('₽');

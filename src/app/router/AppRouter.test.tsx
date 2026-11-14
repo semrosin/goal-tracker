@@ -94,9 +94,39 @@ describe('AppRouter', () => {
     expect(
       screen.getByRole('heading', { name: 'Цель не найдена' })
     ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Все цели' })).toHaveAttribute(
+      'href',
+      '/app'
+    );
+  });
+
+  it('provides active goals navigation on a directly opened goal', () => {
+    const goal = {
+      id: 'trip',
+      title: 'Trip',
+      targetAmount: 1000,
+      createdAt: '2026-01-01T00:00:00.000Z',
+    };
+    render(
+      <Provider store={createAppStore({ goals: [goal], transactions: [] })}>
+        <MemoryRouter initialEntries={['/goals/trip']}>
+          <AppRouter />
+        </MemoryRouter>
+      </Provider>
+    );
     expect(
-      screen.getByRole('link', { name: 'К списку целей' })
-    ).toHaveAttribute('href', '/app');
+      screen.getByRole('link', { name: '\u0426\u0435\u043b\u0438' })
+    ).toHaveAttribute('aria-current', 'page');
+    fireEvent.click(
+      screen.getByRole('link', {
+        name: '\u0412\u0441\u0435 \u0446\u0435\u043b\u0438',
+      })
+    );
+    expect(
+      screen.getByRole('heading', {
+        name: '\u041c\u043e\u0438 \u0446\u0435\u043b\u0438',
+      })
+    ).toBeInTheDocument();
   });
 
   it('opens the sign-up page from the welcome action', () => {

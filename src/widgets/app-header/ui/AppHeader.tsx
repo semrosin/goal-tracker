@@ -1,6 +1,6 @@
 import { UserRound } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 
 import { useI18n } from '../../../shared/lib/i18n';
 import { publicAsset } from '../../../shared/lib/publicPath';
@@ -8,6 +8,7 @@ import styles from './AppHeader.module.scss';
 
 export const AppHeader = ({ children }: { children?: ReactNode }) => {
   const { t } = useI18n();
+  const { pathname } = useLocation();
 
   return (
     <header className={styles.header}>
@@ -24,6 +25,19 @@ export const AppHeader = ({ children }: { children?: ReactNode }) => {
             height={44}
           />
         </Link>
+        <nav className={styles.navigation} aria-label={t('nav.goals')}>
+          <Link
+            className={styles.goalsLink}
+            to="/app"
+            aria-current={
+              pathname === '/app' || pathname.startsWith('/goals/')
+                ? 'page'
+                : undefined
+            }
+          >
+            {t('nav.goals')}
+          </Link>
+        </nav>
         <div className={styles.actions}>
           {children}
           <NavLink

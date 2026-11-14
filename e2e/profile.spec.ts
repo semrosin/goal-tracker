@@ -68,7 +68,7 @@ test('profile inherits the landing language and preserves changes after reload',
     path: join(tmpdir(), `goalcraft-profile-${testInfo.project.name}.png`),
     fullPage: true,
   });
-  await page.getByRole('link', { name: 'К списку целей' }).click();
+  await page.getByRole('link', { name: 'Все цели' }).click();
   await expect(page.getByRole('heading', { name: 'Мои цели' })).toBeVisible();
   expect(errors).toEqual([]);
 });
