@@ -79,41 +79,65 @@ export const ProfilePage = () => {
             <span className={styles.demoBadge}>{t('profile.demo')}</span>
           )}
         </div>
-        <div className={styles.layout}>
-          <section
-            className={styles.statistics}
-            aria-label={t('profile.statistics')}
-          >
-            <div className={styles.statisticsHeading}>
-              <div>
-                <h2>{t('profile.statistics')}</h2>
-                <p className={styles.hint}>{t('profile.currencyHint')}</p>
-              </div>
-              {currencies.length > 1 && (
-                <div
-                  className={styles.currencyPicker}
-                  role="group"
-                  aria-label={t('goal.currencyLabel')}
-                >
-                  {currencies.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      aria-pressed={currency === item}
-                      onClick={() => setSelectedCurrency(item)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              )}
+        <section
+          className={styles.statistics}
+          aria-label={t('profile.statistics')}
+        >
+          <div className={styles.statisticsHeading}>
+            <div>
+              <h2>{t('profile.statistics')}</h2>
+              <p className={styles.hint}>{t('profile.currencyHint')}</p>
             </div>
+            {currencies.length > 1 && (
+              <div
+                className={styles.currencyPicker}
+                role="group"
+                aria-label={t('goal.currencyLabel')}
+              >
+                {currencies.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    aria-pressed={currency === item}
+                    onClick={() => setSelectedCurrency(item)}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          {!loading && !failed && goals.length > 0 && (
+            <div className={styles.metrics}>
+              {metrics.map(({ label, value, icon: Icon, className }) => (
+                <article
+                  key={label}
+                  aria-label={label}
+                  className={`${styles.metric} ${className}`}
+                >
+                  <div>
+                    <span>{label}</span>
+                    <Icon size={18} aria-hidden="true" />
+                  </div>
+                  <strong>{value}</strong>
+                  <small>{t('profile.allTime', { currency })}</small>
+                </article>
+              ))}
+            </div>
+          )}
+          <div className={styles.layout}>
             {loading ? (
-              <p className={styles.panel} role="status">
+              <p
+                className={`${styles.panel} ${styles.primaryPanel}`}
+                role="status"
+              >
                 {t('status.loadingGoals')}
               </p>
             ) : failed ? (
-              <div className={styles.panel} role="alert">
+              <div
+                className={`${styles.panel} ${styles.primaryPanel}`}
+                role="alert"
+              >
                 <h3>{t('status.loadError')}</h3>
                 <p>{session.ledgerError}</p>
                 <Button
@@ -124,35 +148,23 @@ export const ProfilePage = () => {
                 </Button>
               </div>
             ) : goals.length === 0 ? (
-              <div className={`${styles.panel} ${styles.empty}`}>
+              <div
+                className={`${styles.panel} ${styles.primaryPanel} ${styles.empty}`}
+              >
                 <ChartNoAxesCombined size={40} aria-hidden="true" />
                 <h3>{t('profile.empty')}</h3>
                 <p className={styles.hint}>{t('profile.emptyHint')}</p>
               </div>
             ) : (
               <>
-                <div className={styles.metrics}>
-                  {metrics.map(({ label, value, icon: Icon, className }) => (
-                    <article
-                      key={label}
-                      aria-label={label}
-                      className={`${styles.metric} ${className}`}
-                    >
-                      <div>
-                        <span>{label}</span>
-                        <Icon size={18} aria-hidden="true" />
-                      </div>
-                      <strong>{value}</strong>
-                      <small>{t('profile.allTime', { currency })}</small>
-                    </article>
-                  ))}
-                </div>
                 {statistics.transactionCount === 0 && (
-                  <p className={styles.hint}>{t('profile.noTransactions')}</p>
+                  <p className={`${styles.hint} ${styles.noTransactions}`}>
+                    {t('profile.noTransactions')}
+                  </p>
                 )}
                 <StatisticsCharts statistics={statistics} currency={currency} />
                 <section
-                  className={styles.panel}
+                  className={`${styles.panel} ${styles.progressPanel}`}
                   aria-label={t('profile.progressChart')}
                 >
                   <h3>{t('profile.progressChart')}</h3>
@@ -185,9 +197,9 @@ export const ProfilePage = () => {
                 </section>
               </>
             )}
-          </section>
-          <AccountPanel />
-        </div>
+            <AccountPanel />
+          </div>
+        </section>
       </main>
     </div>
   );

@@ -401,7 +401,7 @@
     border-top: 1px solid #333337;
   }
   .chart text {
-    font-size: 18px;
+    font-size: 24px;
   }
   .chart {
     margin-top: 1.25rem;
@@ -429,4 +429,207 @@
   border-color: #5a4f7b;
   border-radius: 10px;
   color: #d6caff;
+}
+
+// One connected grid echoes the blocks and dashed rules on the welcome page.
+.pageHeading:empty {
+  display: none;
+}
+.statistics {
+  display: block;
+}
+.statisticsHeading {
+  margin-bottom: 1.5rem;
+}
+.statisticsHeading h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.25;
+}
+.metrics {
+  border: 1px solid #46444b;
+  border-bottom: 0;
+  gap: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.metric {
+  background: #151516;
+  border: 0;
+  border-radius: 0;
+  border-right: 1px solid #46444b;
+  min-width: 0;
+  padding: 1.5rem 1.5rem 1.5rem 2.25rem;
+  position: relative;
+}
+.metric::after {
+  background: #c6a8ed;
+  bottom: 1.5rem;
+  content: '';
+  left: 1rem;
+  position: absolute;
+  top: 1.5rem;
+  width: 4px;
+}
+.depositCard::after {
+  background: #75dfbd;
+}
+.withdrawalCard::after {
+  background: #f0b18f;
+}
+.metric svg {
+  display: none;
+}
+.metric:last-child {
+  border-right: 0;
+}
+.metric strong {
+  color: #f7f7f7;
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+  margin: 1rem 0 0.35rem;
+}
+.savedCard {
+  background: #151516;
+}
+.accountIcon {
+  display: none;
+}
+.goalProgress [role='progressbar'] > div {
+  background: #c6a8ed;
+}
+.layout {
+  align-items: stretch;
+  border: 1px solid #46444b;
+  gap: 0;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+.panel,
+.account {
+  background: #131313;
+  border: 0;
+  border-radius: 0;
+  min-width: 0;
+  position: relative;
+}
+.panel {
+  padding: 1.5rem;
+}
+.primaryPanel,
+.balancePanel {
+  border-bottom: 1px dashed #535158;
+  grid-column: 1 / 9;
+  grid-row: 1;
+}
+.account {
+  border-bottom: 1px dashed #535158;
+  border-left: 1px solid #46444b;
+  grid-column: 9 / -1;
+  grid-row: 1;
+  overflow: visible;
+}
+.activityPanel {
+  border-right: 1px solid #46444b;
+  grid-column: 1 / 8;
+  grid-row: 2;
+}
+.progressPanel {
+  grid-column: 8 / -1;
+  grid-row: 2;
+}
+.chartDetails {
+  background: #131313;
+  border-top: 1px dashed #535158;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  padding: 0.5rem 1.5rem;
+}
+.noTransactions {
+  background: #131313;
+  border-top: 1px dashed #535158;
+  grid-column: 1 / -1;
+  grid-row: 4;
+  padding: 1rem 1.5rem;
+}
+.accountSection + .accountSection {
+  border-top: 1px dashed #535158;
+}
+.metric::before,
+.panel::before,
+.account::before {
+  background: #131313;
+  border: 1px solid #85818c;
+  content: '';
+  height: 6px;
+  left: -4px;
+  pointer-events: none;
+  position: absolute;
+  top: -4px;
+  width: 6px;
+  z-index: 1;
+}
+@media (max-width: 63rem) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .metric:nth-child(2) {
+    border-right: 0;
+  }
+  .metric:nth-child(-n + 2) {
+    border-bottom: 1px solid #46444b;
+  }
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .primaryPanel,
+  .balancePanel,
+  .activityPanel,
+  .progressPanel,
+  .chartDetails,
+  .noTransactions,
+  .account {
+    border-left: 0;
+    border-right: 0;
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .activityPanel,
+  .progressPanel {
+    border-bottom: 1px dashed #535158;
+  }
+  .chartDetails,
+  .noTransactions {
+    border-top: 0;
+    border-bottom: 1px dashed #535158;
+  }
+  .account {
+    border-bottom: 0;
+    display: block;
+  }
+  .accountSection + .accountSection {
+    border-left: 0;
+    border-top: 1px dashed #535158;
+  }
+}
+@media (max-width: 40rem) {
+  .metric,
+  .panel,
+  .accountSection {
+    padding: 1.125rem;
+  }
+  .metric {
+    padding-left: 2rem;
+  }
+  .metric::after {
+    bottom: 1.125rem;
+    left: 0.75rem;
+    top: 1.125rem;
+  }
+  .metric strong {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 25rem) {
+  .metric strong {
+    font-family: 'Finlandica Text', sans-serif;
+    font-size: 1rem;
+  }
 }

@@ -2,6 +2,54 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from '@playwright/test';
 
+test('keeps a typical saved amount on one line on a narrow phone', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'ru');
+  });
+  await page.goto('/profile');
+  await page.evaluate(() => document.fonts.ready);
+  const value = page
+    .getByRole('article', { name: 'Всего накоплено' })
+    .locator('strong');
+  await expect(value).toBeVisible();
+  const lineCount = await value.evaluate((element) => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    return range.getClientRects().length;
+  });
+  expect(lineCount).toBe(1);
+});
+
+test('keeps profile metrics in a shared row above account settings on desktop', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile');
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const first = await page
+    .getByRole('article', { name: 'Total saved' })
+    .boundingBox();
+  const last = await page
+    .getByRole('article', { name: 'Transactions' })
+    .boundingBox();
+  const account = await page
+    .getByRole('complementary', { name: 'Account details' })
+    .boundingBox();
+  expect(first).not.toBeNull();
+  expect(last).not.toBeNull();
+  expect(account).not.toBeNull();
+  expect(Math.abs(first!.y - last!.y)).toBeLessThan(1);
+  expect(last!.x + last!.width).toBeCloseTo(account!.x + account!.width, 0);
+  expect(last!.y + last!.height).toBeLessThanOrEqual(account!.y);
+});
+
 test('profile inherits the landing language and preserves changes after reload', async ({
   page,
 }, testInfo) => {
