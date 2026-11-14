@@ -10,9 +10,8 @@ import {
 import type { ReactNode } from 'react';
 
 import { useI18n } from '../../../shared/lib/i18n';
-import { publicAsset } from '../../../shared/lib/publicPath';
 import { Button } from '../../../shared/ui/Button/Button';
-import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSwitcher';
+import { PublicHeader } from '../../../widgets/public-header/ui/PublicHeader';
 import styles from './WelcomePage.module.scss';
 import { DotBackdrop } from '../../../shared/ui/DotBackdrop/DotBackdrop';
 
@@ -73,17 +72,7 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
     <div className={styles.shell}>
       <DotBackdrop />
 
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <div className={styles.brand}>
-            <img alt="" height={40} src={publicAsset('logo.svg')} width={40} />
-            <span>GoalCraft</span>
-          </div>
-          <div className={styles.headerActions}>
-            <LanguageSwitcher />
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       <main className={styles.main}>
         <section aria-labelledby="welcome-title" className={styles.hero}>
@@ -92,15 +81,18 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
             <p className={styles.lead}>{t('welcome.lead')}</p>
             <div className={styles.heroCta}>
               <div className={styles.actions}>
-                <Button className={styles.primaryAction} onClick={onSignUp}>
+                <Button className={styles.actionButton} onClick={onSignUp}>
                   {t('auth.createAccount')}{' '}
                   <ArrowRight aria-hidden="true" size={18} />
                 </Button>
-                <Button onClick={onSignIn} variant="secondary">
+                <Button
+                  className={styles.actionButton}
+                  onClick={onSignIn}
+                  variant="secondary"
+                >
                   {t('welcome.signIn')}
                 </Button>
               </div>
-              <p className={styles.hint}>{t('welcome.heroHint')}</p>
             </div>
           </div>
         </section>
@@ -151,7 +143,7 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
             <h2>{t('welcome.ctaTitle')}</h2>
             <p>{t('welcome.ctaLead')}</p>
             <div className={styles.actions}>
-              <Button className={styles.primaryAction} onClick={onSignUp}>
+              <Button className={styles.actionButton} onClick={onSignUp}>
                 {t('welcome.ctaAction')}{' '}
                 <ArrowRight aria-hidden="true" size={18} />
               </Button>

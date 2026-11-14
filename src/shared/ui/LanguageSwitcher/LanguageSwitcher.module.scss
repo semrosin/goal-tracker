@@ -6,4 +6,6 @@
 
 .switcher button {
   @include segmentedControl.item;
+  min-height: 2rem;
+  min-width: 2.75rem;
 }

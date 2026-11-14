@@ -67,3 +67,124 @@ test('landing fits a mobile viewport', async ({ page }, testInfo) => {
   );
   expect(bottomOverflow).toBe(false);
 });
+
+test('the first screen reaches the bottom of the viewport', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'EN' }).click();
+  const section = page.getByRole('heading', {
+    name: 'Everything for your savings',
+  });
+  const top = await section.evaluate(
+    (heading) => heading.getBoundingClientRect().top
+  );
+  expect(top).toBeGreaterThanOrEqual(
+    await page.evaluate(() => window.innerHeight)
+  );
+});
+
+test('landing actions have equal heights', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'EN' }).click();
+  const signUp = await page
+    .getByRole('button', { name: 'Create account' })
+    .first()
+    .boundingBox();
+  const signIn = await page
+    .getByRole('button', { name: 'Sign in' })
+    .first()
+    .boundingBox();
+  expect(signUp).not.toBeNull();
+  expect(signIn).not.toBeNull();
+  expect(signIn!.height).toBeCloseTo(signUp!.height, 1);
+});
+
+test('public headers and language controls stay consistent across pages', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-locale', 'en');
+    localStorage.setItem('goal-tracker-mode', 'demo');
+  });
+  await page.goto('/');
+  const header = page.getByRole('banner');
+  const landingHeader = await header.boundingBox();
+  const landingSwitch = await page
+    .getByRole('group', { name: 'Language' })
+    .boundingBox();
+  await page.goto('/auth/sign-in');
+  const authHeader = await page.getByRole('banner').boundingBox();
+  const authSwitch = await page
+    .getByRole('group', { name: 'Language' })
+    .boundingBox();
+  expect(authHeader?.height).toBe(landingHeader?.height);
+  expect(authSwitch?.height).toBe(landingSwitch?.height);
+  expect(authSwitch?.width).toBe(landingSwitch?.width);
+  await page.goto('/profile');
+  const profileSwitch = await page
+    .getByRole('group', { name: 'Language' })
+    .boundingBox();
+  expect(profileSwitch?.height).toBe(landingSwitch?.height);
+  expect(profileSwitch?.width).toBe(landingSwitch?.width);
+});
+
+test('public layout stays aligned when navigating to sign in and sign up', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'EN' }).click();
+  const geometry = async () =>
+    page.evaluate(() => {
+      const header = document.querySelector('header')!;
+      const brand = header.querySelector('a')!;
+      const shell = header.parentElement!;
+      const backdrop = shell.firstElementChild!;
+      const leftRail = getComputedStyle(backdrop, '::before');
+      const rightRail = getComputedStyle(backdrop, '::after');
+      const box = brand.getBoundingClientRect();
+      return {
+        width: document.documentElement.clientWidth,
+        x: box.x,
+        right: box.right,
+        railLeft: leftRail.left,
+        railRight: rightRail.right,
+      };
+    });
+  await expect(page.locator('html')).toHaveCSS('scrollbar-gutter', 'stable');
+  const landing = await geometry();
+  await page.getByRole('button', { name: 'Sign in' }).first().click();
+  expect(await geometry()).toEqual(landing);
+  await page.getByRole('link', { name: 'Create account' }).click();
+  expect(await geometry()).toEqual(landing);
+});
+
+test('browser and installed app use the GoalCraft logo', async ({ page }) => {
+  await page.goto('/');
+  const favicon = page.locator('link[rel="icon"][type="image/svg+xml"]');
+  const iconHref = await favicon.getAttribute('href');
+  expect(iconHref).toBeTruthy();
+  const iconResponse = await page.request.get(
+    new URL(iconHref!, page.url()).href
+  );
+  expect(iconResponse.ok()).toBe(true);
+  expect(iconResponse.headers()['content-type']).toContain('image/svg+xml');
+  expect(await iconResponse.text()).toContain('M41.72 11.15');
+  const manifestHref = await page
+    .locator('link[rel="manifest"]')
+    .getAttribute('href');
+  const manifestResponse = await page.request.get(
+    new URL(manifestHref!, page.url()).href
+  );
+  const manifest = await manifestResponse.json();
+  expect(manifest.icons.map((icon: { sizes: string }) => icon.sizes)).toEqual(
+    expect.arrayContaining(['192x192', '512x512'])
+  );
+  for (const icon of manifest.icons) {
+    const response = await page.request.get(
+      new URL(icon.src, manifestResponse.url()).href
+    );
+    expect(response.ok()).toBe(true);
+    expect(response.headers()['content-type']).toContain('image/png');
+  }
+});

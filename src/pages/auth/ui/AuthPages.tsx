@@ -3,10 +3,9 @@ import { Link, useNavigate } from 'react-router';
 
 import { useSession } from '../../../entities/session';
 import { useI18n } from '../../../shared/lib/i18n';
-import { publicAsset } from '../../../shared/lib/publicPath';
 import { Button } from '../../../shared/ui/Button/Button';
 import { Field } from '../../../shared/ui/Field/Field';
-import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSwitcher';
+import { PublicHeader } from '../../../widgets/public-header/ui/PublicHeader';
 import styles from './AuthPages.module.scss';
 import { DotBackdrop } from '../../../shared/ui/DotBackdrop/DotBackdrop';
 
@@ -28,26 +27,18 @@ const AuthShell = ({
 }: {
   children: ReactNode;
   title: string;
-  description: string;
+  description?: string;
 }) => {
-  const { t } = useI18n();
   return (
-    <main className={styles.shell}>
+    <div className={styles.shell}>
       <DotBackdrop />
-      <div className={styles.topBar}>
-        <Link className={styles.brand} to="/">
-          <img alt="" height={40} src={publicAsset('logo.svg')} width={40} />
-          <span>GoalCraft</span>
-        </Link>
-        <LanguageSwitcher />
-      </div>
-      <section className={styles.card}>
-        <p className={styles.eyebrow}>{t('auth.eyebrow')}</p>
+      <PublicHeader />
+      <main className={styles.card}>
         <h1>{title}</h1>
-        <p className={styles.description}>{description}</p>
+        {description && <p className={styles.description}>{description}</p>}
         {children}
-      </section>
-    </main>
+      </main>
+    </div>
   );
 };
 
@@ -75,10 +66,7 @@ export const SignInPage = () => {
   };
 
   return (
-    <AuthShell
-      title={t('auth.signIn')}
-      description={t('auth.signInDescription')}
-    >
+    <AuthShell title={t('auth.signIn')}>
       {!session.configured && (
         <p className={styles.notice} role="alert">
           {t('auth.unavailable')}

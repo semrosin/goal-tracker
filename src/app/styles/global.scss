@@ -6,6 +6,10 @@
   color-scheme: dark;
 }
 
+html:has([data-public-layout]) {
+  scrollbar-gutter: stable;
+}
+
 * {
   box-sizing: border-box;
 }

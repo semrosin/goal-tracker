@@ -28,7 +28,6 @@ const messages = {
     'welcome.lead':
       'Записывайте пополнения и снятия, следите за прогрессом и узнавайте, сколько откладывать каждый месяц.',
     'welcome.signIn': 'Войти',
-    'welcome.heroHint': 'Бесплатно. Регистрация занимает минуту.',
     'welcome.featuresTitle': 'Всё для ваших накоплений',
     'welcome.featuresLead':
       'GoalCraft показывает картину целиком: сколько уже отложено, сколько осталось и что делать дальше.',
@@ -272,7 +271,6 @@ const messages = {
     'welcome.lead':
       'Record deposits and withdrawals, track progress, and see how much to save each month.',
     'welcome.signIn': 'Sign in',
-    'welcome.heroHint': 'Free. Signing up takes a minute.',
     'welcome.featuresTitle': 'Everything for your savings',
     'welcome.featuresLead':
       'GoalCraft shows the whole picture: how much is set aside, what is left, and what to do next.',

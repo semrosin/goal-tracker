@@ -99,24 +99,8 @@
 .currencyPicker button {
   @include segmentedControl.item;
 }
-.currencyPicker {
-  border-color: #69616e;
-  border-radius: 7px;
-  gap: 0;
-  padding: 0;
-}
 .currencyPicker button {
-  border-radius: 5px;
-  color: #f4f1f5;
-  font-size: 0.875rem;
-  min-height: 2.5rem;
   min-width: 5rem;
-
-  &[aria-pressed='true'],
-  &[aria-pressed='true']:not(:disabled):hover {
-    background: #c6a8ed;
-    color: #17121d;
-  }
 }
 .metrics {
   display: grid;
@@ -352,24 +336,6 @@
   gap: 0.5rem;
   margin-top: 1.25rem;
   margin-bottom: 1.5rem;
-}
-.languageRow [role='group'] {
-  border-color: #69616e;
-  border-radius: 7px;
-  gap: 0;
-  padding: 0;
-}
-.languageRow [role='group'] button {
-  border-radius: 5px;
-  color: #f4f1f5;
-  min-height: 2rem;
-  min-width: 2.75rem;
-
-  &[aria-pressed='true'],
-  &[aria-pressed='true']:not(:disabled):hover {
-    background: #c6a8ed;
-    color: #17121d;
-  }
 }
 .languageRow + div {
   align-items: center;

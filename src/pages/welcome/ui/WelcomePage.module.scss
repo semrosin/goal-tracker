@@ -10,39 +10,6 @@
   min-height: 100vh;
 }
 
-.header {
-  backdrop-filter: blur(14px);
-  background: rgba(16, 16, 16, 0.72);
-  border-bottom: 1px solid #23252e;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-.headerInner {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  margin: 0 auto;
-  min-height: 4.5rem;
-  width: var(--page-width);
-}
-
-.brand {
-  align-items: center;
-  display: flex;
-  gap: 0.75rem;
-  font-family: 'Unbounded', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.headerActions {
-  align-items: center;
-  display: flex;
-  gap: 0.75rem;
-}
-
 .main {
   position: relative;
   z-index: 1;
@@ -99,7 +66,7 @@
   margin-top: 0;
 }
 
-.primaryAction {
+.actionButton {
   gap: 0.6rem;
   padding: 0.9rem 1.35rem;
 }
@@ -312,14 +279,6 @@
   .features {
     grid-template-columns: 1fr;
   }
-
-  .brand {
-    font-size: 0.9rem;
-  }
-
-  .headerActions {
-    gap: 0.5rem;
-  }
 }
 
 .heroCta {
@@ -328,31 +287,8 @@
   position: relative;
   width: min(100%, 34rem);
 }
-@media (max-width: 25rem) {
-  .brand {
-    gap: 0.4rem;
-    font-size: 0.75rem;
-  }
-  .brand img {
-    width: 32px;
-    height: 32px;
-  }
-  .headerInner {
-    gap: 0.5rem;
-  }
-  .headerActions > button {
-    padding-inline: 0.75rem;
-  }
-}
-
-/* The public entry point shares the same accent and control treatment as the app. */
-.header {
-  backdrop-filter: none;
-  background: #151516;
-  border-color: #303034;
-}
 .hero {
-  min-height: min(44rem, calc(100svh - 4.5rem));
+  min-height: calc(100svh - 4.5rem);
 }
 .heroCta {
   margin-top: 2.5rem;
