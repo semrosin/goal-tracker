@@ -1,7 +1,17 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render as testingRender,
+  screen,
+  within,
+} from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
+import type { ReactElement } from 'react';
 
 import { LocaleProvider } from '../../../shared/lib/i18n';
 import { WelcomePage } from './WelcomePage';
+
+const render = (element: ReactElement) =>
+  testingRender(element, { wrapper: MemoryRouter });
 
 describe('WelcomePage', () => {
   it('offers sign-up as the primary action without a demo', () => {

@@ -99,3 +99,32 @@ test('landing actions have equal heights', async ({ page }) => {
   expect(signIn).not.toBeNull();
   expect(signIn!.height).toBeCloseTo(signUp!.height, 1);
 });
+
+test('public headers and language controls stay consistent across pages', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-locale', 'en');
+    localStorage.setItem('goal-tracker-mode', 'demo');
+  });
+  await page.goto('/');
+  const header = page.getByRole('banner');
+  const landingHeader = await header.boundingBox();
+  const landingSwitch = await page
+    .getByRole('group', { name: 'Language' })
+    .boundingBox();
+  await page.goto('/auth/sign-in');
+  const authHeader = await page.getByRole('banner').boundingBox();
+  const authSwitch = await page
+    .getByRole('group', { name: 'Language' })
+    .boundingBox();
+  expect(authHeader?.height).toBe(landingHeader?.height);
+  expect(authSwitch?.height).toBe(landingSwitch?.height);
+  expect(authSwitch?.width).toBe(landingSwitch?.width);
+  await page.goto('/profile');
+  const profileSwitch = await page
+    .getByRole('group', { name: 'Language' })
+    .boundingBox();
+  expect(profileSwitch?.height).toBe(landingSwitch?.height);
+  expect(profileSwitch?.width).toBe(landingSwitch?.width);
+});

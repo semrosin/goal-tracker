@@ -5,28 +5,7 @@
   isolation: isolate;
   position: relative;
   min-height: 100vh;
-  padding: 1.5rem;
   background: #101010;
-}
-
-.topBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  max-width: 76rem;
-  margin: 0 auto;
-}
-
-.brand {
-  align-items: center;
-  color: #fff;
-  display: flex;
-  font-family: 'Unbounded', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  gap: 0.75rem;
-  text-decoration: none;
 }
 
 .links a,
@@ -36,15 +15,14 @@
 }
 .links a:focus-visible,
 .success a:focus-visible,
-.notice a:focus-visible,
-.brand:focus-visible {
+.notice a:focus-visible {
   outline: 2px solid #b9c8ff;
   outline-offset: 4px;
 }
 
 .card {
   position: relative;
-  width: min(100%, 29rem);
+  width: min(calc(100% - 2rem), 29rem);
   margin: clamp(3rem, 10vh, 7rem) auto 0;
   padding: clamp(1.5rem, 5vw, 2.5rem);
   border: 1px solid #3b3c55;
@@ -108,9 +86,6 @@
 }
 
 @media (max-width: 32rem) {
-  .shell {
-    padding: 1rem;
-  }
   .card {
     margin-top: 3.5rem;
   }

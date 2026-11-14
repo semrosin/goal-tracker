@@ -1,0 +1,55 @@
+.header {
+  background: #101010;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgb(255 255 255 / 12%) 0 16px,
+    transparent 16px 32px
+  );
+  background-position: left bottom;
+  background-repeat: repeat-x;
+  background-size: 32px 1px;
+  position: relative;
+  z-index: 2;
+}
+.inner {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 auto;
+  max-width: 94rem;
+  min-height: 4.5rem;
+  padding: 0 1.5rem;
+}
+.brand {
+  align-items: center;
+  color: #f7f7f7;
+  display: flex;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  gap: 0.65rem;
+  text-decoration: none;
+}
+.brand:focus-visible {
+  outline: 2px solid #b9c8ff;
+  outline-offset: 3px;
+}
+@media (max-width: 48rem) {
+  .brand {
+    font-size: 0.9rem;
+  }
+  .inner {
+    padding-inline: 1rem;
+  }
+}
+@media (max-width: 25rem) {
+  .brand {
+    gap: 0.4rem;
+    font-size: 0.75rem;
+  }
+  .brand img {
+    height: 32px;
+    width: 32px;
+  }
+}

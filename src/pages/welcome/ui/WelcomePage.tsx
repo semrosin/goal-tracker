@@ -10,9 +10,8 @@ import {
 import type { ReactNode } from 'react';
 
 import { useI18n } from '../../../shared/lib/i18n';
-import { publicAsset } from '../../../shared/lib/publicPath';
 import { Button } from '../../../shared/ui/Button/Button';
-import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSwitcher';
+import { PublicHeader } from '../../../widgets/public-header/ui/PublicHeader';
 import styles from './WelcomePage.module.scss';
 import { DotBackdrop } from '../../../shared/ui/DotBackdrop/DotBackdrop';
 
@@ -73,17 +72,7 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
     <div className={styles.shell}>
       <DotBackdrop />
 
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <div className={styles.brand}>
-            <img alt="" height={36} src={publicAsset('logo.svg')} width={36} />
-            <span>GoalCraft</span>
-          </div>
-          <div className={styles.headerActions}>
-            <LanguageSwitcher />
-          </div>
-        </div>
-      </header>
+      <PublicHeader />
 
       <main className={styles.main}>
         <section aria-labelledby="welcome-title" className={styles.hero}>
