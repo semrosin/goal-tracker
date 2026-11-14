@@ -93,7 +93,6 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
                   {t('welcome.signIn')}
                 </Button>
               </div>
-              <p className={styles.hint}>{t('welcome.heroHint')}</p>
             </div>
           </div>
         </section>
