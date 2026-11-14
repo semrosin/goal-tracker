@@ -130,7 +130,11 @@
 }
 
 @media (max-width: 35rem) {
+  .createButton span {
+    display: none;
+  }
   .createButton {
+    min-width: 2.75rem;
     min-height: 2.75rem;
     padding: 0.5rem 0.875rem;
     gap: 0.5rem;

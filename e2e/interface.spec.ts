@@ -37,3 +37,34 @@ test('English goal uses localized months and retains dollars after reload', asyn
     await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)
   ).toBe(false);
 });
+
+test('centers header navigation within the header at each viewport', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  const header = await page.getByRole('banner').boundingBox();
+  const navigation = await page
+    .getByRole('navigation', { name: 'Goals' })
+    .boundingBox();
+  expect(header).not.toBeNull();
+  expect(navigation).not.toBeNull();
+  expect(
+    Math.abs(
+      navigation!.x + navigation!.width / 2 - (header!.x + header!.width / 2)
+    )
+  ).toBeLessThan(2);
+  const controls = await page.getByRole('banner').locator('a, button').all();
+  const boxes = await Promise.all(
+    controls.map((control) => control.boundingBox())
+  );
+  const sorted = boxes.filter((box) => box !== null).sort((a, b) => a.x - b.x);
+  for (let index = 1; index < sorted.length; index += 1) {
+    expect(sorted[index - 1].x + sorted[index - 1].width).toBeLessThanOrEqual(
+      sorted[index].x
+    );
+  }
+});

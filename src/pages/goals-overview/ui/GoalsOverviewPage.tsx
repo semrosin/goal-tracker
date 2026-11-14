@@ -35,6 +35,7 @@ export const GoalsOverviewPage = () => {
     <div className={styles.shell}>
       <AppHeader>
         <Button
+          aria-label={t('overview.create')}
           className={styles.createButton}
           onClick={() => setIsCreateDialogOpen(true)}
         >

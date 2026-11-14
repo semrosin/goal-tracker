@@ -4,15 +4,16 @@
 }
 .content {
   align-items: center;
-  display: flex;
+  display: grid;
   gap: 1rem;
-  justify-content: space-between;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   margin: 0 auto;
   max-width: 80rem;
   min-height: 4.75rem;
   padding: 0.75rem 2rem;
 }
 .brand {
+  justify-self: start;
   display: flex;
   flex-shrink: 0;
 }
@@ -22,6 +23,7 @@
   outline-offset: 4px;
 }
 .actions {
+  justify-self: end;
   align-items: center;
   display: flex;
   gap: 0.75rem;
@@ -61,9 +63,6 @@
   }
 }
 
-.navigation {
-  margin-right: auto;
-}
 .goalsLink {
   align-items: center;
   color: #a9abb4;
