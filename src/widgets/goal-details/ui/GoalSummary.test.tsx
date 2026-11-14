@@ -8,6 +8,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
 import { LocaleProvider } from '../../../shared/lib/i18n';
 import { GoalSummary } from './GoalSummary';
+import { SavingsPlan } from './SavingsPlan';
 
 test('shows a goal description when it is provided', () => {
   const goal = {
@@ -18,10 +19,16 @@ test('shows a goal description when it is provided', () => {
     createdAt: '2026-09-04T00:00:00.000Z',
   };
 
-  renderWithLedger(<GoalSummary goal={goal} />, {
-    goals: [goal],
-    transactions: [],
-  });
+  renderWithLedger(
+    <>
+      <GoalSummary goal={goal} />
+      <SavingsPlan goal={goal} balance={0} />
+    </>,
+    {
+      goals: [goal],
+      transactions: [],
+    }
+  );
 
   expect(screen.getByText('Хочу увидеть океан.')).toBeInTheDocument();
 });
@@ -37,10 +44,16 @@ test('shows the rounded monthly contribution and a what-if forecast', () => {
   };
 
   try {
-    renderWithLedger(<GoalSummary goal={goal} />, {
-      goals: [goal],
-      transactions: [],
-    });
+    renderWithLedger(
+      <>
+        <GoalSummary goal={goal} />
+        <SavingsPlan goal={goal} balance={0} />
+      </>,
+      {
+        goals: [goal],
+        transactions: [],
+      }
+    );
 
     expect(screen.getByText('500 ₽ в месяц')).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText('Если откладывать в месяц'), {
@@ -63,18 +76,24 @@ test('shows completion instead of overdue for a funded goal', () => {
   };
 
   try {
-    renderWithLedger(<GoalSummary goal={goal} />, {
-      goals: [goal],
-      transactions: [
-        {
-          id: 'deposit-1',
-          goalId: goal.id,
-          type: 'deposit',
-          amount: 1_000,
-          createdAt: '2026-08-01T00:00:00.000Z',
-        },
-      ],
-    });
+    renderWithLedger(
+      <>
+        <GoalSummary goal={goal} />
+        <SavingsPlan goal={goal} balance={1000} />
+      </>,
+      {
+        goals: [goal],
+        transactions: [
+          {
+            id: 'deposit-1',
+            goalId: goal.id,
+            type: 'deposit',
+            amount: 1_000,
+            createdAt: '2026-08-01T00:00:00.000Z',
+          },
+        ],
+      }
+    );
 
     expect(screen.getByText('Цель достигнута')).toBeInTheDocument();
     expect(screen.queryByText('Срок прошёл')).not.toBeInTheDocument();
@@ -98,6 +117,7 @@ test('shows the English planning copy and month forecast', () => {
     renderWithLedger(
       <LocaleProvider>
         <GoalSummary goal={goal} />
+        <SavingsPlan goal={goal} balance={0} />
       </LocaleProvider>,
       { goals: [goal], transactions: [] }
     );
@@ -123,7 +143,7 @@ test('keeps the goal amounts aligned together', () => {
   );
 });
 
-test('does not draw a progress arc for an empty goal', () => {
+test('shows no filled progress for an empty goal', () => {
   const goal = {
     id: 'empty',
     title: 'Trip',
@@ -136,7 +156,7 @@ test('does not draw a progress arc for an empty goal', () => {
   });
   const progress = screen.getByRole('progressbar');
   expect(progress).toHaveAttribute('aria-valuenow', '0');
-  expect(progress.querySelectorAll('circle')).toHaveLength(1);
+  expect(progress.firstElementChild).toHaveStyle({ width: '0%' });
 });
 
 test('wraps a long amount within its grid cell', () => {
@@ -162,7 +182,7 @@ test('allows amount cells to shrink within the summary grid', () => {
   expect(amountCellRules).toMatch(/min-width\s*:\s*0/);
 });
 
-test('shows circular progress with an accessible value for the goal', () => {
+test('shows progress with an accessible value for the goal', () => {
   const goal = {
     id: 'ring-goal',
     title: 'Trip',
@@ -183,5 +203,35 @@ test('shows circular progress with an accessible value for the goal', () => {
   });
   const progress = screen.getByRole('progressbar');
   expect(progress).toHaveAttribute('aria-valuenow', '25');
-  expect(progress.querySelector('circle')).toBeInTheDocument();
+  expect(progress.firstElementChild).toHaveStyle({ width: '25%' });
+});
+
+test('shows the remaining amount in the goal currency', () => {
+  const goal = {
+    id: 'remaining',
+    title: 'Trip',
+    targetAmount: 1000,
+    currency: 'USD' as const,
+    createdAt: '2026-01-01T00:00:00.000Z',
+  };
+  renderWithLedger(<GoalSummary goal={goal} />, {
+    goals: [goal],
+    transactions: [
+      {
+        id: 'deposit',
+        goalId: goal.id,
+        type: 'deposit',
+        amount: 250,
+        createdAt: '2026-01-02T00:00:00.000Z',
+      },
+    ],
+  });
+  expect(
+    screen.getByText('\u041e\u0441\u0442\u0430\u043b\u043e\u0441\u044c')
+      .parentElement
+  ).toHaveTextContent('750');
+  expect(
+    screen.getByText('\u041e\u0441\u0442\u0430\u043b\u043e\u0441\u044c')
+      .parentElement
+  ).toHaveTextContent('$');
 });

@@ -8,6 +8,7 @@ export type DialogProps = PropsWithChildren<{
   isOpen: boolean;
   title: string;
   onClose: () => void;
+  variant?: 'default' | 'goal';
 }>;
 
 const focusableSelector = [
@@ -61,7 +62,13 @@ const registerDialog = (dialog: HTMLElement) => {
   };
 };
 
-export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
+export const Dialog = ({
+  children,
+  isOpen,
+  onClose,
+  title,
+  variant = 'default',
+}: DialogProps) => {
   const { t } = useI18n();
   const titleId = useId();
   const dialogRef = useRef<HTMLElement>(null);
@@ -151,7 +158,7 @@ export const Dialog = ({ children, isOpen, onClose, title }: DialogProps) => {
       <section
         aria-labelledby={titleId}
         aria-modal="true"
-        className={styles.dialog}
+        className={`${styles.dialog} ${variant === 'goal' ? styles.goal : ''}`}
         ref={dialogRef}
         role="dialog"
         tabIndex={-1}

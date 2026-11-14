@@ -29,6 +29,28 @@ const submitForm = async (name: 'Создать' | 'Сохранить' | 'Creat
 };
 
 describe('CreateGoalDialog', () => {
+  it('places the symbol-only currency selector beside the amount', () => {
+    renderWithLedger(<CreateGoalDialog isOpen onClose={jest.fn()} />);
+    const amount = screen.getByLabelText('Сумма');
+    const currency = screen.getByLabelText('Валюта');
+    expect(amount.parentElement).toBe(currency.parentElement);
+    expect(
+      within(currency).getByRole('option', { name: '₽' })
+    ).toBeInTheDocument();
+    expect(
+      within(currency).getByRole('option', { name: '$' })
+    ).toBeInTheDocument();
+  });
+  it('labels the appearance choices in Russian', () => {
+    renderWithLedger(<CreateGoalDialog isOpen onClose={jest.fn()} />);
+    expect(screen.getByRole('group', { name: 'Цвет' })).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Иконка' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'Лесной' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('radio', { name: 'Путешествие' })
+    ).toBeInTheDocument();
+  });
+
   it('creates a timed goal from the English form', async () => {
     localStorage.setItem('goal-tracker-locale', 'en');
     try {
@@ -54,6 +76,28 @@ describe('CreateGoalDialog', () => {
         title: 'Trip',
         targetMonth: '2027-02',
         currency: 'USD',
+      });
+    } finally {
+      localStorage.removeItem('goal-tracker-locale');
+    }
+  });
+
+  it('saves the selected color and icon on a new goal', async () => {
+    localStorage.setItem('goal-tracker-locale', 'en');
+    try {
+      const { store } = renderWithLedger(
+        <LocaleProvider>
+          <CreateGoalDialog isOpen onClose={jest.fn()} />
+        </LocaleProvider>
+      );
+      await userEvent.type(screen.getByLabelText('Name'), 'Trip');
+      await userEvent.type(screen.getByLabelText('Amount'), '1000');
+      userEvent.click(screen.getByRole('radio', { name: 'Forest' }));
+      userEvent.click(screen.getByRole('radio', { name: 'Travel' }));
+      await submitForm('Create');
+      expect(store.getState().goals[0]).toMatchObject({
+        color: 'forest',
+        icon: 'plane',
       });
     } finally {
       localStorage.removeItem('goal-tracker-locale');
@@ -214,8 +258,40 @@ describe('CreateGoalDialog', () => {
         description: '',
         targetAmount: 120_000,
         currency: 'RUB',
+        color: 'violet',
+        icon: 'target',
       },
     ]);
+  });
+
+  it('edits an existing goal appearance', async () => {
+    localStorage.setItem('goal-tracker-locale', 'en');
+    try {
+      const goal = {
+        ...existingGoal,
+        color: 'forest' as const,
+        icon: 'plane' as const,
+      };
+      const { store } = renderWithLedger(
+        <LocaleProvider>
+          <EditGoalDialog goal={goal} isOpen onClose={jest.fn()} />
+        </LocaleProvider>,
+        { goals: [goal], transactions: [] }
+      );
+      expect(screen.getByRole('radio', { name: 'Forest' })).toBeChecked();
+      expect(screen.getByRole('radio', { name: 'Travel' })).toBeChecked();
+      userEvent.click(screen.getByRole('radio', { name: 'Rose' }));
+      userEvent.click(screen.getByRole('radio', { name: 'Home' }));
+      await act(async () => {
+        userEvent.click(screen.getByRole('button', { name: 'Save' }));
+      });
+      expect(store.getState().goals[0]).toMatchObject({
+        color: 'rose',
+        icon: 'home',
+      });
+    } finally {
+      localStorage.removeItem('goal-tracker-locale');
+    }
   });
 
   it('updates a goal description', async () => {

@@ -1,9 +1,22 @@
 @use '../../../shared/styles/segmentedControl';
 
+@mixin dashedRule($edge) {
+  background-image: repeating-linear-gradient(
+    to right,
+    rgb(255 255 255 / 18%) 0 10px,
+    transparent 10px 20px
+  );
+  background-position: $edge;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  border-#{$edge}-color: transparent;
+}
+
 .shell {
   min-height: 100vh;
 }
 .page {
+  font-family: 'Finlandica Text', sans-serif;
   margin: 0 auto;
   max-width: 80rem;
   padding: 2rem 2rem 5rem;
@@ -86,6 +99,25 @@
 .currencyPicker button {
   @include segmentedControl.item;
 }
+.currencyPicker {
+  border-color: #69616e;
+  border-radius: 7px;
+  gap: 0;
+  padding: 0;
+}
+.currencyPicker button {
+  border-radius: 5px;
+  color: #f4f1f5;
+  font-size: 0.875rem;
+  min-height: 2.5rem;
+  min-width: 5rem;
+
+  &[aria-pressed='true'],
+  &[aria-pressed='true']:not(:disabled):hover {
+    background: #c6a8ed;
+    color: #17121d;
+  }
+}
 .metrics {
   display: grid;
   gap: 0.75rem;
@@ -110,7 +142,7 @@
 }
 .metric strong {
   display: block;
-  font-family: 'Unbounded', sans-serif;
+  font-family: inherit;
   font-size: clamp(1.25rem, 2.4vw, 2rem);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
@@ -231,17 +263,23 @@
 }
 .goalProgress {
   display: grid;
-  gap: 1.5rem;
+  gap: 0;
   list-style: none;
   margin: 1.5rem 0 0;
   padding: 0;
 }
+.goalProgress li + li {
+  border-top: 1px dashed #535158;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
 .goalHeading {
   align-items: baseline;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   justify-content: space-between;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 .goalHeading a {
   color: #e0e4f4;
@@ -252,15 +290,22 @@
 .goalHeading a:hover {
   color: #b3c0ff;
 }
-.goalHeading strong {
-  color: #b7c3ff;
-  flex-shrink: 0;
+.goalHeading span {
+  color: #e2e4ec;
   font-variant-numeric: tabular-nums;
+  margin-left: auto;
 }
-.goalProgress li > p {
-  color: #a5aab8;
-  font-size: 0.875rem;
-  margin: 0.6rem 0 0;
+.goalProgressRow {
+  align-items: center;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.goalProgressRow strong {
+  color: #f7f7f7;
+  font-variant-numeric: tabular-nums;
+  min-width: 3rem;
+  text-align: right;
 }
 .account {
   overflow: hidden;
@@ -307,6 +352,24 @@
   gap: 0.5rem;
   margin-top: 1.25rem;
   margin-bottom: 1.5rem;
+}
+.languageRow [role='group'] {
+  border-color: #69616e;
+  border-radius: 7px;
+  gap: 0;
+  padding: 0;
+}
+.languageRow [role='group'] button {
+  border-radius: 5px;
+  color: #f4f1f5;
+  min-height: 2rem;
+  min-width: 2.75rem;
+
+  &[aria-pressed='true'],
+  &[aria-pressed='true']:not(:disabled):hover {
+    background: #c6a8ed;
+    color: #17121d;
+  }
 }
 .languageRow + div {
   align-items: center;
@@ -401,9 +464,284 @@
     border-top: 1px solid #333337;
   }
   .chart text {
-    font-size: 18px;
+    font-size: 24px;
   }
   .chart {
     margin-top: 1.25rem;
+  }
+}
+
+.metric,
+.panel,
+.account {
+  border-radius: 10px;
+}
+.savedCard {
+  background: #28204d;
+  border-color: #554d7d;
+}
+.demoBadge {
+  border-radius: 6px;
+}
+
+.metric {
+  border-color: #494650;
+}
+.accountIcon {
+  background: #30294c;
+  border-color: #5a4f7b;
+  border-radius: 10px;
+  color: #d6caff;
+}
+
+// One connected grid echoes the blocks and dashed rules on the welcome page.
+.pageHeading:empty {
+  display: none;
+}
+.statistics {
+  display: block;
+}
+.statisticsHeading {
+  margin-bottom: 1.5rem;
+}
+.statisticsHeading h2 {
+  font-family: inherit;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+.metrics {
+  border: 1px solid #46444b;
+  border-bottom: 0;
+  gap: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.metric {
+  background: #151516;
+  border: 0;
+  border-radius: 0;
+  border-right: 1px solid #46444b;
+  min-width: 0;
+  padding: 1.5rem 1.5rem 1.5rem 2.25rem;
+  position: relative;
+}
+.metric::after {
+  background: #c6a8ed;
+  bottom: 1.5rem;
+  content: '';
+  left: 1rem;
+  position: absolute;
+  top: 1.5rem;
+  width: 4px;
+}
+.depositCard::after {
+  background: #75dfbd;
+}
+.withdrawalCard::after {
+  background: #f0b18f;
+}
+.metric svg {
+  display: none;
+}
+.metric:last-child {
+  border-right: 0;
+}
+.metric strong {
+  color: #f7f7f7;
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  margin: 1rem 0 0.35rem;
+}
+.savedCard {
+  background: #151516;
+}
+.accountIcon {
+  display: none;
+}
+.goalProgress [role='progressbar'] > div {
+  background: #c6a8ed;
+}
+.layout {
+  align-items: stretch;
+  border: 1px solid #46444b;
+  gap: 0;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+.panel,
+.account {
+  background: #131313;
+  border: 0;
+  border-radius: 0;
+  min-width: 0;
+  position: relative;
+}
+.panel {
+  padding: 1.5rem;
+}
+.primaryPanel,
+.balancePanel {
+  border-bottom: 1px dashed #535158;
+  grid-column: 1 / 9;
+  grid-row: 1;
+}
+.account {
+  border-bottom: 1px dashed #535158;
+  border-left: 1px solid #46444b;
+  grid-column: 9 / -1;
+  grid-row: 1;
+  overflow: visible;
+}
+.activityPanel {
+  border-right: 1px solid #46444b;
+  grid-column: 1 / 8;
+  grid-row: 2;
+}
+.progressPanel {
+  grid-column: 8 / -1;
+  grid-row: 2;
+}
+.chartDetails {
+  background: #131313;
+  border-top: 1px dashed #535158;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  padding: 0.5rem 1.5rem;
+  position: relative;
+}
+.noTransactions {
+  background: #131313;
+  border-top: 1px dashed #535158;
+  grid-column: 1 / -1;
+  grid-row: 4;
+  padding: 1rem 1.5rem;
+  position: relative;
+}
+.accountSection + .accountSection {
+  border-top: 1px dashed #535158;
+  position: relative;
+}
+.accountSection + .accountSection::before {
+  background:
+    linear-gradient(#131313, #131313) top 1px left 1px / 5px 5px no-repeat,
+    linear-gradient(#131313, #131313) top 1px right 1px / 5px 5px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top left / 7px 7px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top right / 7px 7px no-repeat;
+  content: '';
+  height: 7px;
+  left: -3.5px;
+  pointer-events: none;
+  position: absolute;
+  right: -3.5px;
+  top: -3.5px;
+  z-index: 1;
+}
+.metric::before,
+.panel::before,
+.account::before,
+.chartDetails::before,
+.noTransactions::before {
+  background:
+    linear-gradient(#131313, #131313) top 1px left 1px / 5px 5px no-repeat,
+    linear-gradient(#131313, #131313) top 1px right 1px / 5px 5px no-repeat,
+    linear-gradient(#131313, #131313) bottom 1px left 1px / 5px 5px no-repeat,
+    linear-gradient(#131313, #131313) bottom 1px right 1px / 5px 5px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top left / 7px 7px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) top right / 7px 7px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) bottom left / 7px 7px no-repeat,
+    linear-gradient(#aaa4b1, #aaa4b1) bottom right / 7px 7px no-repeat;
+  content: '';
+  inset: -3.5px;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+@media (max-width: 63rem) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .metric:nth-child(2) {
+    border-right: 0;
+  }
+  .metric:nth-child(-n + 2) {
+    border-bottom: 1px solid #46444b;
+  }
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .primaryPanel,
+  .balancePanel,
+  .activityPanel,
+  .progressPanel,
+  .chartDetails,
+  .noTransactions,
+  .account {
+    border-left: 0;
+    border-right: 0;
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .activityPanel,
+  .progressPanel {
+    border-bottom: 1px dashed #535158;
+  }
+  .chartDetails,
+  .noTransactions {
+    border-top: 0;
+    border-bottom: 1px dashed #535158;
+  }
+  .account {
+    border-bottom: 0;
+    display: block;
+  }
+  .accountSection + .accountSection {
+    border-left: 0;
+    border-top: 1px dashed #535158;
+  }
+}
+@media (max-width: 40rem) {
+  .metric,
+  .panel,
+  .accountSection {
+    padding: 1.125rem;
+  }
+  .metric {
+    padding-left: 2rem;
+  }
+  .metric::after {
+    bottom: 1.125rem;
+    left: 0.75rem;
+    top: 1.125rem;
+  }
+  .metric strong {
+    font-size: 1.2rem;
+  }
+}
+@media (max-width: 25rem) {
+  .metric strong {
+    font-family: 'Finlandica Text', sans-serif;
+    font-size: 1rem;
+  }
+}
+
+// Match the long, evenly spaced rules used in the header, at a smaller scale.
+.goalProgress li + li,
+.chartDetails,
+.noTransactions,
+.accountSection + .accountSection {
+  @include dashedRule(top);
+}
+.primaryPanel,
+.balancePanel,
+.account {
+  @include dashedRule(bottom);
+}
+@media (max-width: 63rem) {
+  .activityPanel,
+  .progressPanel,
+  .chartDetails,
+  .noTransactions {
+    @include dashedRule(bottom);
+  }
+  .account {
+    background-image: none;
   }
 }

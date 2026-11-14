@@ -1,9 +1,11 @@
 .plan {
-  border-top: 1px solid #414141;
+  background: #171719;
+  border: 1px solid #303035;
+  border-radius: 10px;
   display: grid;
   gap: 0.75rem;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
+  min-width: 0;
+  padding: 1.5rem;
 }
 
 .heading {
@@ -14,9 +16,9 @@
   justify-content: space-between;
 }
 
-.heading h3 {
+.heading h2 {
   color: #f7f7f7;
-  font-size: 1rem;
+  font-size: 1.25rem;
   margin: 0;
 }
 
@@ -68,4 +70,11 @@
   display: grid;
   gap: 0.5rem;
   margin-top: 0.25rem;
+}
+
+.plan {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 1.5rem 0;
 }

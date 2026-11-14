@@ -1,8 +1,8 @@
-import { ChevronLeft } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
-import { selectGoalById } from '../../../entities/goal';
+import { GoalIcon, selectGoalById } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { TransactionForm } from '../../../features/add-transaction';
@@ -13,6 +13,7 @@ import { useI18n } from '../../../shared/lib/i18n';
 import { AppHeader } from '../../../widgets/app-header';
 import {
   GoalSummary,
+  SavingsPlan,
   TransactionsHistory,
 } from '../../../widgets/goal-details';
 import styles from './GoalDetailPage.module.scss';
@@ -35,10 +36,6 @@ export const GoalDetailPage = () => {
         <AppHeader />
         <main className={styles.page}>
           <h1>{t('detail.notFound')}</h1>
-          <Link to="/app">
-            <ChevronLeft size={16} />
-            {t('detail.back')}
-          </Link>
         </main>
       </>
     );
@@ -50,22 +47,24 @@ export const GoalDetailPage = () => {
     <>
       <AppHeader />
       <main className={styles.page}>
-        <Link className={styles.backLink} to="/app">
-          <ChevronLeft size={16} />
-          {t('detail.back')}
-        </Link>
-        <h1>{goal.title}</h1>
+        <div className={styles.heading}>
+          <div className={styles.identity} data-color={goal.color ?? 'violet'}>
+            <span className={styles.goalIcon}>
+              <GoalIcon name={goal.icon} size={24} />
+            </span>
+            <h1>{goal.title}</h1>
+          </div>
+          <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
+            <Pencil size={16} aria-hidden="true" />
+            {t('detail.edit')}
+          </Button>
+        </div>
         <div className={styles.layout}>
-          <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
           <GoalSummary goal={goal} isCompleted={isCompleted} />
+          <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
+          <SavingsPlan balance={balance} goal={goal} />
           <TransactionsHistory goalId={goal.id} isCompleted={isCompleted} />
           <div className={styles.actions}>
-            <Button
-              onClick={() => setIsEditDialogOpen(true)}
-              variant="secondary"
-            >
-              {t('detail.edit')}
-            </Button>
             <DeleteGoalButton
               goalId={goal.id}
               onDeleted={() => navigate('/app')}

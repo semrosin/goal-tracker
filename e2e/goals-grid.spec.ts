@@ -22,7 +22,7 @@ const openGoals = async (page: Page, count: number) => {
   return cards;
 };
 
-test('goal blocks repeat with alternating wide and tall cards', async ({
+test('goal cards repeat in wide and tall blocks on desktop', async ({
   page,
 }, testInfo) => {
   const cards = await openGoals(page, 12);
@@ -66,7 +66,7 @@ test('goal blocks repeat with alternating wide and tall cards', async ({
 test('partial goal blocks have no overlap, overflow, or empty trailing row', async ({
   page,
 }) => {
-  for (const count of [1, 2, 3, 5, 6, 7]) {
+  for (const count of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
     const cards = await openGoals(page, count);
     const layout = await cards.evaluateAll((elements) => {
       const boxes = elements.map((element) => element.getBoundingClientRect());

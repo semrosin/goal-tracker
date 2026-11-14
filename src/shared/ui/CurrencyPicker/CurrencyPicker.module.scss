@@ -1,0 +1,19 @@
+.select {
+  align-self: center;
+  background: #1b1b1b;
+  border: 0;
+  border-left: 1px solid #414141;
+  color: #f7f7f7;
+  cursor: pointer;
+  font: inherit;
+  height: 30px;
+  position: absolute;
+  right: 0.25rem;
+  text-align: center;
+  width: 4rem;
+}
+
+.select:focus-visible {
+  outline: 2px solid #a995f5;
+  outline-offset: -2px;
+}

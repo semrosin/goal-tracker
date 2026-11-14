@@ -1,6 +1,5 @@
 import {
   ArrowDownLeft,
-  ArrowLeft,
   ArrowUpRight,
   ChartNoAxesCombined,
   Wallet,
@@ -75,50 +74,70 @@ export const ProfilePage = () => {
     <div className={styles.shell}>
       <AppHeader />
       <main className={styles.page}>
-        <Link className={styles.backLink} to="/app">
-          <ArrowLeft size={17} aria-hidden="true" />
-          {t('detail.back')}
-        </Link>
         <div className={styles.pageHeading}>
           {session.mode === 'demo' && (
             <span className={styles.demoBadge}>{t('profile.demo')}</span>
           )}
         </div>
-        <div className={styles.layout}>
-          <section
-            className={styles.statistics}
-            aria-label={t('profile.statistics')}
-          >
-            <div className={styles.statisticsHeading}>
-              <div>
-                <h2>{t('profile.statistics')}</h2>
-                <p className={styles.hint}>{t('profile.currencyHint')}</p>
-              </div>
-              {currencies.length > 1 && (
-                <div
-                  className={styles.currencyPicker}
-                  role="group"
-                  aria-label={t('goal.currencyLabel')}
-                >
-                  {currencies.map((item) => (
-                    <button
-                      key={item}
-                      type="button"
-                      aria-pressed={currency === item}
-                      onClick={() => setSelectedCurrency(item)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              )}
+        <section
+          className={styles.statistics}
+          aria-label={t('profile.statistics')}
+        >
+          <div className={styles.statisticsHeading}>
+            <div>
+              <h2>{t('profile.statistics')}</h2>
+              <p className={styles.hint}>{t('profile.currencyHint')}</p>
             </div>
+            {currencies.length > 1 && (
+              <div
+                className={styles.currencyPicker}
+                role="group"
+                aria-label={t('goal.currencyLabel')}
+              >
+                {currencies.map((item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    aria-pressed={currency === item}
+                    onClick={() => setSelectedCurrency(item)}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          {!loading && !failed && goals.length > 0 && (
+            <div className={styles.metrics}>
+              {metrics.map(({ label, value, icon: Icon, className }) => (
+                <article
+                  key={label}
+                  aria-label={label}
+                  className={`${styles.metric} ${className}`}
+                >
+                  <div>
+                    <span>{label}</span>
+                    <Icon size={18} aria-hidden="true" />
+                  </div>
+                  <strong>{value}</strong>
+                  <small>{t('profile.allTime', { currency })}</small>
+                </article>
+              ))}
+            </div>
+          )}
+          <div className={styles.layout}>
             {loading ? (
-              <p className={styles.panel} role="status">
+              <p
+                className={`${styles.panel} ${styles.primaryPanel}`}
+                role="status"
+              >
                 {t('status.loadingGoals')}
               </p>
             ) : failed ? (
-              <div className={styles.panel} role="alert">
+              <div
+                className={`${styles.panel} ${styles.primaryPanel}`}
+                role="alert"
+              >
                 <h3>{t('status.loadError')}</h3>
                 <p>{session.ledgerError}</p>
                 <Button
@@ -129,38 +148,23 @@ export const ProfilePage = () => {
                 </Button>
               </div>
             ) : goals.length === 0 ? (
-              <div className={`${styles.panel} ${styles.empty}`}>
+              <div
+                className={`${styles.panel} ${styles.primaryPanel} ${styles.empty}`}
+              >
                 <ChartNoAxesCombined size={40} aria-hidden="true" />
                 <h3>{t('profile.empty')}</h3>
                 <p className={styles.hint}>{t('profile.emptyHint')}</p>
-                <Link className={styles.backLink} to="/app">
-                  {t('detail.back')}
-                </Link>
               </div>
             ) : (
               <>
-                <div className={styles.metrics}>
-                  {metrics.map(({ label, value, icon: Icon, className }) => (
-                    <article
-                      key={label}
-                      aria-label={label}
-                      className={`${styles.metric} ${className}`}
-                    >
-                      <div>
-                        <span>{label}</span>
-                        <Icon size={18} aria-hidden="true" />
-                      </div>
-                      <strong>{value}</strong>
-                      <small>{t('profile.allTime', { currency })}</small>
-                    </article>
-                  ))}
-                </div>
                 {statistics.transactionCount === 0 && (
-                  <p className={styles.hint}>{t('profile.noTransactions')}</p>
+                  <p className={`${styles.hint} ${styles.noTransactions}`}>
+                    {t('profile.noTransactions')}
+                  </p>
                 )}
                 <StatisticsCharts statistics={statistics} currency={currency} />
                 <section
-                  className={styles.panel}
+                  className={`${styles.panel} ${styles.progressPanel}`}
                   aria-label={t('profile.progressChart')}
                 >
                   <h3>{t('profile.progressChart')}</h3>
@@ -175,27 +179,29 @@ export const ProfilePage = () => {
                       <li key={goal.id}>
                         <div className={styles.goalHeading}>
                           <Link to={`/goals/${goal.id}`}>{goal.title}</Link>
+                          <span>
+                            {money(goal.balance)} / {money(goal.targetAmount)}
+                          </span>
+                        </div>
+                        <div className={styles.goalProgressRow}>
+                          <ProgressBar
+                            value={goal.progress}
+                            tone={goal.progress >= 100 ? 'success' : 'default'}
+                            label={t('profile.progressLabel', {
+                              title: goal.title,
+                            })}
+                          />
                           <strong>{Math.round(goal.progress)}%</strong>
                         </div>
-                        <ProgressBar
-                          value={goal.progress}
-                          tone={goal.progress >= 100 ? 'success' : 'default'}
-                          label={t('profile.progressLabel', {
-                            title: goal.title,
-                          })}
-                        />
-                        <p>
-                          {money(goal.balance)} / {money(goal.targetAmount)}
-                        </p>
                       </li>
                     ))}
                   </ul>
                 </section>
               </>
             )}
-          </section>
-          <AccountPanel />
-        </div>
+            <AccountPanel />
+          </div>
+        </section>
       </main>
     </div>
   );

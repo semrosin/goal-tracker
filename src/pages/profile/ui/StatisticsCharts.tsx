@@ -39,7 +39,10 @@ export const StatisticsCharts = ({
 
   return (
     <>
-      <section className={styles.panel} aria-label={t('profile.balanceChart')}>
+      <section
+        className={`${styles.panel} ${styles.balancePanel}`}
+        aria-label={t('profile.balanceChart')}
+      >
         <h3>{t('profile.balanceChart')}</h3>
         <p className={styles.hint}>{t('profile.period', { currency })}</p>
         <svg
@@ -50,8 +53,8 @@ export const StatisticsCharts = ({
         >
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#7c8fff" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#7c8fff" stopOpacity="0" />
+              <stop offset="0%" stopColor="#c6a8ed" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="#c6a8ed" stopOpacity="0" />
             </linearGradient>
           </defs>
           {[0, 0.5, 1].map((ratio) => (
@@ -79,7 +82,7 @@ export const StatisticsCharts = ({
           <polyline
             points={points}
             fill="none"
-            stroke="#95a4ff"
+            stroke="#c6a8ed"
             strokeWidth="3"
             strokeLinejoin="round"
           />
@@ -89,7 +92,7 @@ export const StatisticsCharts = ({
                 cx={x(index)}
                 cy={y(month.balance, balanceMax)}
                 r="4.5"
-                fill="#b8c2ff"
+                fill="#d2b8f1"
               >
                 <title>
                   {label(month.month)}: {money(month.balance)}
@@ -103,7 +106,10 @@ export const StatisticsCharts = ({
         </svg>
         <p className={styles.chartHint}>{t('profile.balanceHint')}</p>
       </section>
-      <section className={styles.panel} aria-label={t('profile.activityChart')}>
+      <section
+        className={`${styles.panel} ${styles.activityPanel}`}
+        aria-label={t('profile.activityChart')}
+      >
         <div className={styles.panelHeading}>
           <div>
             <h3>{t('profile.activityChart')}</h3>

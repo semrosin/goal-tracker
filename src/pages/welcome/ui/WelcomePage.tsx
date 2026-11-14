@@ -81,9 +81,6 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
           </div>
           <div className={styles.headerActions}>
             <LanguageSwitcher />
-            <Button onClick={onSignIn} variant="secondary">
-              {t('welcome.signIn')}
-            </Button>
           </div>
         </div>
       </header>

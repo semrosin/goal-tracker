@@ -19,6 +19,9 @@ const goalSlice = createSlice({
           goal.description = action.payload.description;
         }
         goal.targetAmount = action.payload.targetAmount;
+        if (action.payload.color !== undefined)
+          goal.color = action.payload.color;
+        if (action.payload.icon !== undefined) goal.icon = action.payload.icon;
         if (action.payload.currency !== undefined)
           goal.currency = action.payload.currency;
         if (action.payload.targetMonth === undefined) {

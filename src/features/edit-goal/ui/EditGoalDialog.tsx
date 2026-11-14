@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 
-import { isValidTargetMonth, type Goal } from '../../../entities/goal';
+import {
+  GoalAppearancePicker,
+  isValidTargetMonth,
+  type Goal,
+  type GoalColor,
+  type GoalIconName,
+} from '../../../entities/goal';
 import { useLedgerCommands } from '../../../entities/ledger';
 import { isPositiveInteger } from '../../../shared/lib/validation';
 import { useI18n } from '../../../shared/lib/i18n';
@@ -37,6 +43,8 @@ export const EditGoalDialog = ({
   const [targetAmount, setTargetAmount] = useState(String(goal.targetAmount));
   const [targetMonth, setTargetMonth] = useState(goal.targetMonth ?? '');
   const [currency, setCurrency] = useState<Currency>(goal.currency ?? 'RUB');
+  const [color, setColor] = useState<GoalColor>(goal.color ?? 'violet');
+  const [icon, setIcon] = useState<GoalIconName>(goal.icon ?? 'target');
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitError, setSubmitError] = useState<string>();
 
@@ -60,6 +68,10 @@ export const EditGoalDialog = ({
     setTargetMonth(goal.targetMonth ?? '');
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrency(goal.currency ?? 'RUB');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setColor(goal.color ?? 'violet');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIcon(goal.icon ?? 'target');
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setErrors({});
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -101,6 +113,8 @@ export const EditGoalDialog = ({
         description: description.trim(),
         targetAmount: amount,
         currency,
+        color,
+        icon,
         ...(targetMonth === '' ? {} : { targetMonth }),
       });
     } catch {
@@ -111,7 +125,12 @@ export const EditGoalDialog = ({
   };
 
   return (
-    <Dialog isOpen={isOpen} title={t('goal.editTitle')} onClose={handleClose}>
+    <Dialog
+      isOpen={isOpen}
+      title={t('goal.editTitle')}
+      onClose={handleClose}
+      variant="goal"
+    >
       <form className={styles.form} noValidate onSubmit={handleSubmit}>
         <Field
           error={errors.title}
@@ -135,9 +154,15 @@ export const EditGoalDialog = ({
           inputMode="numeric"
           label={t('goal.amountLabel')}
           onChange={(event) => setTargetAmount(event.target.value)}
+          trailing={<CurrencyPicker value={currency} onChange={setCurrency} />}
           value={targetAmount}
         />
-        <CurrencyPicker value={currency} onChange={setCurrency} />
+        <GoalAppearancePicker
+          color={color}
+          icon={icon}
+          onColorChange={setColor}
+          onIconChange={setIcon}
+        />
         <MonthPicker
           error={errors.targetMonth}
           onChange={setTargetMonth}

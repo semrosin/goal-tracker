@@ -123,3 +123,25 @@ test('loads a complete ledger through a single snapshot RPC beyond row limits', 
   expect(ledger.transactions).toHaveLength(1001);
   expect(ledger.transactions[1000].id).toBe('deposit-1000');
 });
+
+test('round trips the selected appearance through cloud RPCs', async () => {
+  const goal = mapCloudLedger(
+    [{ ...goalRow, color: 'forest', icon: 'plane' }],
+    []
+  ).goals[0];
+  expect(goal).toMatchObject({ color: 'forest', icon: 'plane' });
+  const rpc = jest.fn().mockResolvedValue({ error: null });
+  const repository = createCloudLedgerRepository({
+    rpc,
+  } as unknown as SupabaseClient);
+  await repository.createGoal(goal);
+  await repository.updateGoal(goal);
+  expect(rpc).toHaveBeenCalledWith(
+    'create_goal',
+    expect.objectContaining({ p_color: 'forest', p_icon: 'plane' })
+  );
+  expect(rpc).toHaveBeenCalledWith(
+    'update_goal',
+    expect.objectContaining({ p_color: 'forest', p_icon: 'plane' })
+  );
+});

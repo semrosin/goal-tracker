@@ -1,5 +1,80 @@
 import { expect, test } from '@playwright/test';
 
+test('animated background stays decorative and respects reduced motion', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  const particles = page.locator('[data-ambient-particles]');
+  await expect(particles).toHaveAttribute('aria-hidden', 'true');
+  await expect(particles).toHaveCSS('pointer-events', 'none');
+  await expect(particles.locator('span').first()).not.toHaveCSS(
+    'animation-name',
+    'none'
+  );
+  await page.getByRole('link', { name: 'Profile' }).click();
+  await expect(page.locator('[data-ambient-particles]')).toHaveCount(1);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('[data-ambient-particles]')).toBeHidden();
+});
+
+test('keeps currency totals side by side when they fit on a narrow screen', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+    localStorage.setItem(
+      'goal-tracker-demo-state',
+      JSON.stringify({
+        goals: [
+          {
+            id: 'usd',
+            title: 'Dollar goal',
+            targetAmount: 100,
+            currency: 'USD',
+            createdAt: '2026-01-01T00:00:00.000Z',
+          },
+          {
+            id: 'rub',
+            title: 'Ruble goal',
+            targetAmount: 100,
+            currency: 'RUB',
+            createdAt: '2026-01-01T00:00:00.000Z',
+          },
+        ],
+        transactions: [
+          {
+            id: 'deposit',
+            goalId: 'usd',
+            type: 'deposit',
+            amount: 2,
+            createdAt: '2026-01-02T00:00:00.000Z',
+          },
+        ],
+      })
+    );
+  });
+  await page.goto('/app');
+  const totals = page
+    .getByRole('article', { name: 'Total saved' })
+    .locator('strong');
+  await expect(totals).toHaveCount(2);
+  const first = await totals.nth(0).boundingBox();
+  const second = await totals.nth(1).boundingBox();
+  expect(first).not.toBeNull();
+  expect(second).not.toBeNull();
+  expect(Math.abs(first!.y - second!.y)).toBeLessThan(1);
+  expect(second!.x - (first!.x + first!.width)).toBeGreaterThanOrEqual(32);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(320);
+});
+
 test('English goal uses localized months and retains dollars after reload', async ({
   page,
 }) => {
@@ -29,11 +104,67 @@ test('English goal uses localized months and retains dollars after reload', asyn
   await expect(page.getByLabel('Currency')).toHaveValue('USD');
   await expect(page.getByLabel('Target month')).toHaveValue('02');
   await page.getByRole('button', { name: 'Close', exact: true }).click();
-  await page.getByRole('link', { name: 'Back to goals' }).click();
+  await page.getByRole('link', { name: 'Goals', exact: true }).click();
   const totals = page.getByRole('article', { name: 'Total saved' });
   await expect(totals).toContainText('$100');
   await expect(totals).toContainText('₽');
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)
   ).toBe(false);
+});
+
+test('centers header navigation and keeps controls separate at each viewport', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  for (const width of [320, 768, 1440]) {
+    await page.setViewportSize({ width, height: 800 });
+    const header = await page.getByRole('banner').boundingBox();
+    const navigation = await page
+      .getByRole('navigation', { name: 'Goals' })
+      .boundingBox();
+    expect(header).not.toBeNull();
+    expect(navigation).not.toBeNull();
+    expect(
+      Math.abs(
+        navigation!.x + navigation!.width / 2 - (header!.x + header!.width / 2)
+      )
+    ).toBeLessThan(2);
+    const controls = await page.getByRole('banner').locator('a, button').all();
+    const boxes = await Promise.all(
+      controls.map((control) => control.boundingBox())
+    );
+    const sorted = boxes
+      .filter((box) => box !== null)
+      .sort((a, b) => a.x - b.x);
+    for (let index = 1; index < sorted.length; index += 1) {
+      expect(sorted[index - 1].x + sorted[index - 1].width).toBeLessThanOrEqual(
+        sorted[index].x
+      );
+    }
+  }
+});
+
+test('shows the goals underline on hover and preserves profile navigation', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile', 'Hover requires a pointer');
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const profile = page.getByRole('link', { name: 'Profile' });
+  const goals = page.getByRole('link', { name: 'Goals', exact: true });
+  await expect(profile).toHaveAttribute('aria-current', 'page');
+  await expect(goals).toHaveCSS('border-bottom-color', 'rgba(0, 0, 0, 0)');
+  await goals.hover();
+  await expect(goals).toHaveCSS('border-bottom-color', 'rgb(137, 150, 237)');
+  await goals.click();
+  await expect(goals).toHaveAttribute('aria-current', 'page');
+  await expect(profile).not.toHaveAttribute('aria-current', 'page');
 });

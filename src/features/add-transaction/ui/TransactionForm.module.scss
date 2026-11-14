@@ -3,10 +3,10 @@
 .panel {
   align-self: start;
   background: #171719;
-  border: 1px solid #474955;
-  border-radius: 1rem;
+  border: 1px solid #303035;
+  border-radius: 10px;
   min-width: 0;
-  padding: 1.75rem;
+  padding: 1.5rem;
 }
 .panel h2 {
   color: #f7f7f7;
@@ -24,16 +24,17 @@
   @include segmentedControl.item;
 }
 .form > button[type='submit'] {
-  background: #7887e7;
-  color: #10121d;
   margin-top: 0.25rem;
-}
-.form > button[type='submit']:not(:disabled):hover {
-  background: #9aa6f2;
-  color: #10121d;
 }
 @media (max-width: 24rem) {
   .panel {
     padding: 1.25rem;
   }
+}
+
+.panel {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 1.5rem 0;
 }

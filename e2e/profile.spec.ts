@@ -2,6 +2,105 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from '@playwright/test';
 
+test('uses one profile typeface and a compact highlighted language switch', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const heading = page.getByRole('heading', { name: 'Your statistics' });
+  const amount = page
+    .getByRole('article', { name: 'Total saved' })
+    .locator('strong');
+  await expect(heading).toHaveCSS('font-family', /Finlandica Text/);
+  await expect(amount).toHaveCSS('font-family', /Finlandica Text/);
+  const language = page.getByRole('group', { name: 'Language' });
+  await expect(language.getByRole('button', { name: 'EN' })).toHaveCSS(
+    'background-color',
+    'rgb(198, 168, 237)'
+  );
+  await language.getByRole('button', { name: 'RU' }).click();
+  await expect(page.getByRole('button', { name: 'RU' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+});
+
+test('places goal amounts above the bar and the percentage beside it', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const progress = page.getByRole('progressbar').first();
+  const row = progress.locator('..');
+  const percent = row.locator('strong');
+  const item = row.locator('..');
+  const heading = item.locator('div').first();
+  await expect(heading.locator('a')).toBeVisible();
+  await expect(heading.locator('span')).toContainText('/');
+  const barBox = await progress.boundingBox();
+  const percentBox = await percent.boundingBox();
+  const headingBox = await heading.boundingBox();
+  expect(barBox).not.toBeNull();
+  expect(percentBox).not.toBeNull();
+  expect(headingBox).not.toBeNull();
+  expect(headingBox!.y + headingBox!.height).toBeLessThan(barBox!.y);
+  expect(percentBox!.x).toBeGreaterThanOrEqual(barBox!.x + barBox!.width);
+});
+
+test('keeps a typical saved amount on one line on a narrow phone', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'ru');
+  });
+  await page.goto('/profile');
+  await page.evaluate(() => document.fonts.ready);
+  const value = page
+    .getByRole('article', { name: 'Всего накоплено' })
+    .locator('strong');
+  await expect(value).toBeVisible();
+  const lineCount = await value.evaluate((element) => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    return range.getClientRects().length;
+  });
+  expect(lineCount).toBe(1);
+});
+
+test('keeps profile metrics in a shared row above account settings on desktop', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name === 'mobile');
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const first = await page
+    .getByRole('article', { name: 'Total saved' })
+    .boundingBox();
+  const last = await page
+    .getByRole('article', { name: 'Transactions' })
+    .boundingBox();
+  const account = await page
+    .getByRole('complementary', { name: 'Account details' })
+    .boundingBox();
+  expect(first).not.toBeNull();
+  expect(last).not.toBeNull();
+  expect(account).not.toBeNull();
+  expect(Math.abs(first!.y - last!.y)).toBeLessThan(1);
+  expect(last!.x + last!.width).toBeCloseTo(account!.x + account!.width, 0);
+  expect(last!.y + last!.height).toBeLessThanOrEqual(account!.y);
+});
+
 test('profile inherits the landing language and preserves changes after reload', async ({
   page,
 }, testInfo) => {
@@ -17,7 +116,7 @@ test('profile inherits the landing language and preserves changes after reload',
   await page.goto('/');
   await page.getByRole('button', { name: 'EN' }).click();
   await page
-    .getByRole('banner')
+    .getByRole('main')
     .getByRole('button', { name: 'Sign in', exact: true })
     .click();
   await expect(
@@ -68,7 +167,7 @@ test('profile inherits the landing language and preserves changes after reload',
     path: join(tmpdir(), `goalcraft-profile-${testInfo.project.name}.png`),
     fullPage: true,
   });
-  await page.getByRole('link', { name: 'К списку целей' }).click();
+  await page.getByRole('link', { name: 'Цели', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Мои цели' })).toBeVisible();
   expect(errors).toEqual([]);
 });

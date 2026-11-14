@@ -271,3 +271,39 @@ test('clears a target month when an update omits it', () => {
     ).goals
   ).toEqual([{ ...goal, title: 'Trip', targetAmount: 2_000 }]);
 });
+
+test('preserves a goal appearance when editing and serializing the ledger', () => {
+  const initial = ledgerReducer(
+    undefined,
+    goalsActions.goalCreated({ ...goal, color: 'forest', icon: 'plane' })
+  );
+  const updated = ledgerReducer(
+    initial,
+    goalsActions.goalUpdated({
+      ...goal,
+      title: 'Updated',
+      color: 'rose',
+      icon: 'home',
+    })
+  );
+  expect(serializeLedgerState(updated).goals[0]).toMatchObject({
+    color: 'rose',
+    icon: 'home',
+  });
+});
+
+test('rejects unsupported goal appearance without rejecting legacy goals', () => {
+  expect(decodeLedgerState({ goals: [goal], transactions: [] })).toBeDefined();
+  expect(
+    decodeLedgerState({
+      goals: [{ ...goal, color: 'unknown' }],
+      transactions: [],
+    })
+  ).toBeUndefined();
+  expect(
+    decodeLedgerState({
+      goals: [{ ...goal, icon: 'unknown' }],
+      transactions: [],
+    })
+  ).toBeUndefined();
+});

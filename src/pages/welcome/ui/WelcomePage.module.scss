@@ -344,3 +344,26 @@
     padding-inline: 0.75rem;
   }
 }
+
+/* The public entry point shares the same accent and control treatment as the app. */
+.header {
+  backdrop-filter: none;
+  background: #151516;
+  border-color: #303034;
+}
+.hero {
+  min-height: min(44rem, calc(100svh - 4.5rem));
+}
+.heroCta {
+  margin-top: 2.5rem;
+  padding: 0;
+}
+.featureIcon {
+  color: #bcaeff;
+}
+.featureCard {
+  background: #19191d;
+}
+.stepNumber {
+  color: #bcaeff;
+}

@@ -1,6 +1,6 @@
 import { useI18n } from '../../lib/i18n';
 import type { Currency } from '../../lib/money';
-import { SelectField } from '../SelectField/SelectField';
+import styles from './CurrencyPicker.module.scss';
 
 export const CurrencyPicker = ({
   value,
@@ -11,13 +11,14 @@ export const CurrencyPicker = ({
 }) => {
   const { t } = useI18n();
   return (
-    <SelectField
-      label={t('goal.currencyLabel')}
+    <select
+      aria-label={t('goal.currencyLabel')}
+      className={styles.select}
       value={value}
       onChange={(event) => onChange(event.target.value as Currency)}
     >
-      <option value="RUB">{t('currency.rub')}</option>
-      <option value="USD">{t('currency.usd')}</option>
-    </SelectField>
+      <option value="RUB">₽</option>
+      <option value="USD">$</option>
+    </select>
   );
 };

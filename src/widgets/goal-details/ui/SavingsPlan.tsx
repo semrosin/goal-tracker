@@ -52,9 +52,9 @@ export const SavingsPlan = ({ goal, balance }: SavingsPlanProps) => {
   );
 
   return (
-    <div className={styles.plan}>
+    <section className={styles.plan} aria-labelledby="savings-plan-title">
       <div className={styles.heading}>
-        <h3>{t('plan.title')}</h3>
+        <h2 id="savings-plan-title">{t('plan.title')}</h2>
         <span className={`${styles.status} ${styles[plan.status] ?? ''}`}>
           {t(statusKeys[plan.status])}
         </span>
@@ -79,9 +79,6 @@ export const SavingsPlan = ({ goal, balance }: SavingsPlanProps) => {
           })}
         </p>
       ) : null}
-      {plan.status === 'overdue' ? (
-        <p className={styles.note}>{t('plan.overdueHint')}</p>
-      ) : null}
       {plan.status === 'without-deadline' ? (
         <p className={styles.note}>{t('plan.noDeadlineHint')}</p>
       ) : null}
@@ -102,6 +99,6 @@ export const SavingsPlan = ({ goal, balance }: SavingsPlanProps) => {
           </p>
         </div>
       )}
-    </div>
+    </section>
   );
 };

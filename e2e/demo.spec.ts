@@ -9,6 +9,42 @@ const openDemo = async (page: Page) => {
   await page.goto('/app');
 };
 
+test('goal creation and edit dialogs share the accent border', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  await page.getByRole('button', { name: 'New goal' }).click();
+  const create = page.getByRole('dialog', { name: 'New goal' });
+  await expect(create).toHaveCSS('border-top-color', 'rgb(214, 174, 199)');
+  await expect(create).toHaveCSS('border-top-width', '2px');
+  await create.getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('link').filter({ hasText: 'Emergency fund' }).click();
+  await page.getByRole('button', { name: 'Edit', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveCSS(
+    'border-top-color',
+    'rgb(214, 174, 199)'
+  );
+});
+
+test('keeps the month selector readable in a narrow goal dialog', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'ru');
+  });
+  await page.goto('/app');
+  await page.getByRole('button', { name: 'Новая цель' }).click();
+  const month = await page.getByLabel('Месяц достижения').boundingBox();
+  expect(month).not.toBeNull();
+  expect(month!.width).toBeGreaterThanOrEqual(112);
+});
+
 test('demo can create a goal and add a deposit', async ({ page }) => {
   await openDemo(page);
   await expect(page.getByRole('heading', { name: 'Мои цели' })).toBeVisible();
@@ -23,6 +59,42 @@ test('demo can create a goal and add a deposit', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Сумма' }).fill('1000');
   await page.getByRole('button', { name: 'Добавить операцию' }).click();
   await expect(page.getByText('+1 000 ₽')).toBeVisible();
+});
+
+test('goal appearance persists after reload and can be edited', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  await page.getByRole('button', { name: 'New goal' }).click();
+  const create = page.getByRole('dialog', { name: 'New goal' });
+  await create.getByLabel('Name').fill('Appearance test');
+  await create.getByLabel('Amount').fill('1000');
+  await create.getByRole('radio', { name: 'Forest' }).check();
+  await create.getByRole('radio', { name: 'Travel' }).check();
+  await create.getByRole('button', { name: 'Create', exact: true }).click();
+  const card = page.getByRole('link').filter({ hasText: 'Appearance test' });
+  await expect(card).toHaveAttribute('data-color', 'forest');
+  await card.click();
+  await page.reload();
+  await expect(
+    page.getByRole('region', { name: 'Appearance test' })
+  ).toHaveAttribute('data-color', 'forest');
+  await page.getByRole('button', { name: 'Edit' }).click();
+  const edit = page.getByRole('dialog');
+  await expect(edit.getByRole('radio', { name: 'Travel' })).toBeChecked();
+  await edit.getByRole('radio', { name: 'Rose' }).check();
+  await edit.getByRole('radio', { name: 'Home' }).check();
+  await edit.getByRole('button', { name: 'Save', exact: true }).click();
+  await page.reload();
+  await expect(
+    page.getByRole('region', { name: 'Appearance test' })
+  ).toHaveAttribute('data-color', 'rose');
+  await page.getByRole('button', { name: 'Edit' }).click();
+  await expect(page.getByRole('radio', { name: 'Home' })).toBeChecked();
 });
 
 test('demo enforces withdrawal and history rules in the browser', async ({

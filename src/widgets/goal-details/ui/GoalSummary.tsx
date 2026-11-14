@@ -3,10 +3,12 @@ import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { formatMoney } from '../../../shared/lib/money';
 import { useI18n } from '../../../shared/lib/i18n';
-import { SavingsPlan } from './SavingsPlan';
 import styles from './GoalSummary.module.scss';
 
-type GoalSummaryProps = { goal: Goal; isCompleted?: boolean };
+type GoalSummaryProps = {
+  goal: Goal;
+  isCompleted?: boolean;
+};
 
 export const GoalSummary = ({
   goal,
@@ -20,6 +22,7 @@ export const GoalSummary = ({
   return (
     <section
       aria-label={goal.title}
+      data-color={goal.color ?? 'violet'}
       className={`${styles.summary} ${
         isCompleted || balance >= goal.targetAmount
           ? styles.completedSurface
@@ -44,31 +47,33 @@ export const GoalSummary = ({
               {formatMoney(goal.targetAmount, goal.currency, locale)}
             </strong>
           </div>
+          <div>
+            <span>{t('goal.remaining')}</span>
+            <strong>
+              {formatMoney(
+                Math.max(0, goal.targetAmount - balance),
+                goal.currency,
+                locale
+              )}
+            </strong>
+          </div>
         </div>
-        <div
-          aria-label={t('goal.progressLabel', { title: goal.title })}
-          aria-valuemax={100}
-          aria-valuemin={0}
-          aria-valuenow={progress}
-          className={styles.progress}
-          role="progressbar"
-        >
-          <svg aria-hidden="true" viewBox="0 0 120 120">
-            <circle className={styles.track} cx="60" cy="60" r="52" />
-            {progress > 0 ? (
-              <circle
-                className={styles.value}
-                cx="60"
-                cy="60"
-                r="52"
-                pathLength="100"
-                strokeDasharray={`${progress} 100`}
-              />
-            ) : null}
-          </svg>
-          <strong>{progress}%</strong>
+        <div className={styles.progressSection}>
+          <div className={styles.progressHeading}>
+            <span>{t('goal.progress')}</span>
+            <strong>{progress}%</strong>
+          </div>
+          <div
+            aria-label={t('goal.progressLabel', { title: goal.title })}
+            aria-valuemax={100}
+            aria-valuemin={0}
+            aria-valuenow={progress}
+            className={styles.progress}
+            role="progressbar"
+          >
+            <div className={styles.value} style={{ width: `${progress}%` }} />
+          </div>
         </div>
-        <SavingsPlan balance={balance} goal={goal} />
       </div>
     </section>
   );

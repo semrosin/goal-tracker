@@ -33,15 +33,7 @@ export const GoalsOverviewPage = () => {
 
   return (
     <div className={styles.shell}>
-      <AppHeader>
-        <Button
-          className={styles.createButton}
-          onClick={() => setIsCreateDialogOpen(true)}
-        >
-          <Plus size={18} />
-          <span>{t('overview.create')}</span>
-        </Button>
-      </AppHeader>
+      <AppHeader />
       <main className={styles.page}>
         <section aria-label={t('overview.summary')} className={styles.summary}>
           <article
@@ -77,7 +69,16 @@ export const GoalsOverviewPage = () => {
           </article>
         </section>
         <section aria-label={t('overview.goalList')} className={styles.content}>
-          <h1>{t('overview.title')}</h1>
+          <div className={styles.sectionHeading}>
+            <h1>{t('overview.title')}</h1>
+            <Button
+              className={styles.createButton}
+              onClick={() => setIsCreateDialogOpen(true)}
+            >
+              <Plus size={19} aria-hidden="true" />
+              <span>{t('overview.create')}</span>
+            </Button>
+          </div>
           {goals.length > 0 ? (
             <GoalsList />
           ) : (

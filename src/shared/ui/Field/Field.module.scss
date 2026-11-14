@@ -10,6 +10,16 @@
   margin-left: 0.25rem;
 }
 
+.inputRow {
+  display: flex;
+  min-width: 0;
+  position: relative;
+}
+
+.inputRow:has(select) .input {
+  padding-right: 5rem;
+}
+
 .input {
   background: #1b1b1b;
   border: 1px solid #414141;
@@ -22,8 +32,8 @@
 }
 
 .input:focus {
-  border-color: #2364eb;
-  box-shadow: 0 0 0 3px rgba(35, 100, 235, 0.16);
+  border-color: #a995f5;
+  box-shadow: 0 0 0 3px rgba(169, 149, 245, 0.2);
   outline: none;
 }
 
@@ -32,7 +42,7 @@
 }
 
 .error {
-  color: #a92424;
+  color: #ffabab;
   font-size: 0.85rem;
   margin: 0;
 }

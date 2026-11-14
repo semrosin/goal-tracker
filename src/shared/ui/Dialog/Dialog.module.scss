@@ -14,10 +14,30 @@
   border-radius: 16px;
   box-shadow: 0 20px 48px rgba(17, 29, 51, 0.24);
   max-height: calc(100vh - 2rem);
-  max-width: 32rem;
+  max-width: 37rem;
   overflow: auto;
-  padding: 2.25rem 2rem;
+  padding: 2rem;
   width: 100%;
+}
+
+.goal {
+  border: 2px solid #d6aec7;
+  padding: 2.75rem 2.5rem;
+}
+
+@media (max-width: 40rem) {
+  .goal {
+    padding: 2.5rem 2.25rem;
+  }
+}
+
+@media (max-width: 25rem) {
+  .goal .header {
+    gap: 0.5rem;
+  }
+  .goal .title {
+    font-size: 1.4rem;
+  }
 }
 
 .header {

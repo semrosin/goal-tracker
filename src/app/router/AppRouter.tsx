@@ -17,6 +17,7 @@ import { WelcomePage } from '../../pages/welcome';
 import { AppHeader } from '../../widgets/app-header';
 import { useI18n } from '../../shared/lib/i18n';
 import { Button } from '../../shared/ui/Button/Button';
+import { AmbientParticles } from './AmbientParticles';
 import styles from './AppRouter.module.scss';
 
 const WelcomeRoute = () => {
@@ -52,7 +53,13 @@ const ProtectedRoute = ({
   if (session.mode === 'expired')
     return <Navigate replace to="/auth/sign-in" />;
   if (session.mode === 'guest') return <Navigate replace to="/" />;
-  if (!requireLedger) return <>{children}</>;
+  if (!requireLedger)
+    return (
+      <div className={styles.appSurface}>
+        <AmbientParticles />
+        {children}
+      </div>
+    );
 
   const initialLoad =
     session.mode === 'cloud' &&
@@ -62,7 +69,8 @@ const ProtectedRoute = ({
     session.mode === 'cloud' && !hasLedger && session.ledgerStatus === 'error';
 
   return (
-    <>
+    <div className={styles.appSurface}>
+      <AmbientParticles />
       {initialLoad ? (
         <>
           <AppHeader />
@@ -97,7 +105,7 @@ const ProtectedRoute = ({
           {children}
         </>
       )}
-    </>
+    </div>
   );
 };
 
