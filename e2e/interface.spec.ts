@@ -1,5 +1,26 @@
 import { expect, test } from '@playwright/test';
 
+test('animated background stays decorative and respects reduced motion', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  const particles = page.locator('[data-ambient-particles]');
+  await expect(particles).toHaveAttribute('aria-hidden', 'true');
+  await expect(particles).toHaveCSS('pointer-events', 'none');
+  await expect(particles.locator('span').first()).not.toHaveCSS(
+    'animation-name',
+    'none'
+  );
+  await page.getByRole('link', { name: 'Profile' }).click();
+  await expect(page.locator('[data-ambient-particles]')).toHaveCount(1);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('[data-ambient-particles]')).toBeHidden();
+});
+
 test('keeps currency totals side by side when they fit on a narrow screen', async ({
   page,
 }) => {
