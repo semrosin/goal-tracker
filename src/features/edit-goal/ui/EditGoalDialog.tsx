@@ -125,7 +125,12 @@ export const EditGoalDialog = ({
   };
 
   return (
-    <Dialog isOpen={isOpen} title={t('goal.editTitle')} onClose={handleClose}>
+    <Dialog
+      isOpen={isOpen}
+      title={t('goal.editTitle')}
+      onClose={handleClose}
+      variant="goal"
+    >
       <form className={styles.form} noValidate onSubmit={handleSubmit}>
         <Field
           error={errors.title}

@@ -111,7 +111,12 @@ export const CreateGoalDialog = ({
   };
 
   return (
-    <Dialog isOpen={isOpen} title={t('goal.createTitle')} onClose={handleClose}>
+    <Dialog
+      isOpen={isOpen}
+      title={t('goal.createTitle')}
+      onClose={handleClose}
+      variant="goal"
+    >
       <form className={styles.form} noValidate onSubmit={handleSubmit}>
         <Field
           error={errors.title}

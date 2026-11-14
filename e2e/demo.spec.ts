@@ -9,6 +9,26 @@ const openDemo = async (page: Page) => {
   await page.goto('/app');
 };
 
+test('goal creation and edit dialogs share the accent border', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/app');
+  await page.getByRole('button', { name: 'New goal' }).click();
+  const create = page.getByRole('dialog', { name: 'New goal' });
+  await expect(create).toHaveCSS('border-top-color', 'rgb(214, 174, 199)');
+  await create.getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('link').filter({ hasText: 'Emergency fund' }).click();
+  await page.getByRole('button', { name: 'Edit', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveCSS(
+    'border-top-color',
+    'rgb(214, 174, 199)'
+  );
+});
+
 test('demo can create a goal and add a deposit', async ({ page }) => {
   await openDemo(page);
   await expect(page.getByRole('heading', { name: 'Мои цели' })).toBeVisible();
