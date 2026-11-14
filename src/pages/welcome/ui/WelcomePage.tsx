@@ -92,11 +92,15 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
             <p className={styles.lead}>{t('welcome.lead')}</p>
             <div className={styles.heroCta}>
               <div className={styles.actions}>
-                <Button className={styles.primaryAction} onClick={onSignUp}>
+                <Button className={styles.actionButton} onClick={onSignUp}>
                   {t('auth.createAccount')}{' '}
                   <ArrowRight aria-hidden="true" size={18} />
                 </Button>
-                <Button onClick={onSignIn} variant="secondary">
+                <Button
+                  className={styles.actionButton}
+                  onClick={onSignIn}
+                  variant="secondary"
+                >
                   {t('welcome.signIn')}
                 </Button>
               </div>
@@ -151,7 +155,7 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
             <h2>{t('welcome.ctaTitle')}</h2>
             <p>{t('welcome.ctaLead')}</p>
             <div className={styles.actions}>
-              <Button className={styles.primaryAction} onClick={onSignUp}>
+              <Button className={styles.actionButton} onClick={onSignUp}>
                 {t('welcome.ctaAction')}{' '}
                 <ArrowRight aria-hidden="true" size={18} />
               </Button>

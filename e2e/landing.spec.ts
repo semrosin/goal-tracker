@@ -83,3 +83,19 @@ test('the first screen reaches the bottom of the viewport', async ({
     await page.evaluate(() => window.innerHeight)
   );
 });
+
+test('landing actions have equal heights', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'EN' }).click();
+  const signUp = await page
+    .getByRole('button', { name: 'Create account' })
+    .first()
+    .boundingBox();
+  const signIn = await page
+    .getByRole('button', { name: 'Sign in' })
+    .first()
+    .boundingBox();
+  expect(signUp).not.toBeNull();
+  expect(signIn).not.toBeNull();
+  expect(signIn!.height).toBeCloseTo(signUp!.height, 1);
+});
