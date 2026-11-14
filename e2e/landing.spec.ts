@@ -128,3 +128,33 @@ test('public headers and language controls stay consistent across pages', async 
   expect(profileSwitch?.height).toBe(landingSwitch?.height);
   expect(profileSwitch?.width).toBe(landingSwitch?.width);
 });
+
+test('public layout stays aligned when navigating to sign in and sign up', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'EN' }).click();
+  const geometry = async () =>
+    page.evaluate(() => {
+      const header = document.querySelector('header')!;
+      const brand = header.querySelector('a')!;
+      const shell = header.parentElement!;
+      const backdrop = shell.firstElementChild!;
+      const leftRail = getComputedStyle(backdrop, '::before');
+      const rightRail = getComputedStyle(backdrop, '::after');
+      const box = brand.getBoundingClientRect();
+      return {
+        width: document.documentElement.clientWidth,
+        x: box.x,
+        right: box.right,
+        railLeft: leftRail.left,
+        railRight: rightRail.right,
+      };
+    });
+  await expect(page.locator('html')).toHaveCSS('scrollbar-gutter', 'stable');
+  const landing = await geometry();
+  await page.getByRole('button', { name: 'Sign in' }).first().click();
+  expect(await geometry()).toEqual(landing);
+  await page.getByRole('link', { name: 'Create account' }).click();
+  expect(await geometry()).toEqual(landing);
+});
