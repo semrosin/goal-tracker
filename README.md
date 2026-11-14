@@ -29,7 +29,7 @@ A bilingual savings goal tracker built with React and TypeScript. Create an emai
 - Choose RUB or USD for each goal. Overview totals stay separate by currency; amounts are not converted.
 - An optional target month and required contribution: `ceil(remaining / months including the current and target months)`.
 - A what-if calculator forecasts the completion month for a chosen monthly contribution. Completed and overdue goals have distinct states.
-- An offline demo with example goals remains for browsers that stored the preference earlier; its data stays in browser storage and is never uploaded automatically.
+- A local demo with example goals remains available to browsers that previously selected it; the welcome page no longer offers a new demo entry. Demo data stays in browser storage and is never uploaded automatically.
 - Supabase Auth for email/password registration, confirmation, sign-in, and password recovery. Postgres is the source of truth for an account.
 - Russian and English UI with a saved language choice.
 - A user profile with account details, language and sign-out settings, currency-separated totals, six-month savings and cash-flow charts, and goal progress. The language selected on the welcome page carries over to the profile.
@@ -42,9 +42,11 @@ Cloud tables use owner-only SELECT policies. Direct client writes are revoked; f
 
 The cloud client reloads a small complete ledger after each change instead of using realtime subscriptions or optimistic writes. This simplifies consistency and error recovery, but very large histories would need pagination. Amounts are integer RUB or USD; fractional currency and exchange rates are out of scope. Existing goals without a currency use RUB. Local data is deliberately separate from cloud accounts. A paused Supabase Free project affects accounts, while the static demo remains usable.
 
-## Contributing
+## Project documentation
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the Git workflow and project checks.
+- [Contributing](CONTRIBUTING.md): Git workflow and checks.
+- [Product roadmap](docs/product-roadmap.md) (Russian): proposals and remaining work, not a product specification.
+- `docs/superpowers/`: historical plans and designs; consult the code and this README for current behavior.
 
 ## Run locally
 
@@ -55,7 +57,9 @@ npm ci
 npm start
 ```
 
-Open `http://localhost:3000`. The app boots without environment values; for cloud accounts, copy `.env.example` to `.env`, then set `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` for a Supabase project with the migration applied. Webpack reads `.env` at startup. These values are public browser configuration; **never use a service-role or secret key here**.
+Open `http://localhost:3000`. The app boots without environment values; for cloud accounts, copy `.env.example` to `.env`, then set `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` for a Supabase project with all migrations applied. Webpack reads `.env` at startup. These values are public browser configuration; **never use a service-role or secret key here**.
+
+Configure Supabase Auth redirect URLs for `http://localhost:3000/auth/callback` and `http://localhost:3000/auth/reset-password`, as well as the equivalent URLs for each deployed origin and base path. Email confirmation uses the callback URL; password recovery uses the reset URL.
 
 Apply all migrations before deploying the frontend, including `20261114000100_goal_appearance.sql`, which adds goal appearance and extends the goal RPCs. Older clients remain compatible with the new RPC defaults.
 
@@ -69,3 +73,9 @@ npm run test:e2e
 ```
 
 Production output is `build/`. `npm run capture:screenshots` refreshes the six screenshots while `npm start` is running. The browser suite covers desktop, mobile, keyboard focus, demo operations, and the sign-in UI. pgTAP and two-session race tests run in CI; locally they require Supabase CLI, Docker, Bash, and `psql`.
+
+## Deploy to GitHub Pages
+
+The [Pages workflow](.github/workflows/deploy-pages.yml) runs on pushes to `main` and can be started manually. Configure GitHub Pages to use GitHub Actions, apply the Supabase migrations, and set the public `SUPABASE_URL` and `SUPABASE_PUBLISHABLE_KEY` as repository variables (the workflow also accepts secrets). The workflow detects the Pages base path; set the optional repository variable `PAGES_PUBLIC_PATH` to override it, for example `/` for a root deployment. Add the deployed callback and reset-password URLs, including the base path, to the Supabase Auth redirect allow list.
+
+The workflow copies `index.html` to `404.html` for client-side route fallback. Other static hosts need an equivalent SPA fallback and a build-time `PUBLIC_PATH` matching the hosting base path.
