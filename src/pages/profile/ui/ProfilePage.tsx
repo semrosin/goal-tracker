@@ -1,6 +1,5 @@
 import {
   ArrowDownLeft,
-  ArrowLeft,
   ArrowUpRight,
   ChartNoAxesCombined,
   Wallet,
@@ -75,10 +74,6 @@ export const ProfilePage = () => {
     <div className={styles.shell}>
       <AppHeader />
       <main className={styles.page}>
-        <Link className={styles.backLink} to="/app">
-          <ArrowLeft size={17} aria-hidden="true" />
-          {t('detail.back')}
-        </Link>
         <div className={styles.pageHeading}>
           {session.mode === 'demo' && (
             <span className={styles.demoBadge}>{t('profile.demo')}</span>
@@ -133,9 +128,6 @@ export const ProfilePage = () => {
                 <ChartNoAxesCombined size={40} aria-hidden="true" />
                 <h3>{t('profile.empty')}</h3>
                 <p className={styles.hint}>{t('profile.emptyHint')}</p>
-                <Link className={styles.backLink} to="/app">
-                  {t('detail.back')}
-                </Link>
               </div>
             ) : (
               <>

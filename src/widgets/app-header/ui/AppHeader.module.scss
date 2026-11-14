@@ -66,17 +66,28 @@
 }
 .goalsLink {
   align-items: center;
-  border-radius: 0.5rem;
-  color: #ced1d8;
+  color: #a9abb4;
   display: inline-flex;
+  font-size: 0.95rem;
+  font-weight: 600;
   min-height: 2.75rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.25rem;
+  position: relative;
   text-decoration: none;
 }
 .goalsLink:hover,
 .goalsLink[aria-current='page'] {
-  background: #20253c;
-  color: #fff;
+  color: #f7f7f7;
+}
+.goalsLink[aria-current='page']::after {
+  background: #8996ed;
+  border-radius: 1rem;
+  bottom: 0.2rem;
+  content: '';
+  height: 2px;
+  left: 0.25rem;
+  position: absolute;
+  right: 0.25rem;
 }
 .goalsLink:focus-visible {
   outline: 2px solid #b9c8ff;

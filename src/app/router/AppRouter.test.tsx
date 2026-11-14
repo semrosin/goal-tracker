@@ -94,10 +94,14 @@ describe('AppRouter', () => {
     expect(
       screen.getByRole('heading', { name: 'Цель не найдена' })
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Все цели' })).toHaveAttribute(
-      'href',
-      '/app'
-    );
+    expect(
+      screen.getByRole('link', { name: '\u0426\u0435\u043b\u0438' })
+    ).toHaveAttribute('href', '/app');
+    expect(
+      screen.queryByRole('link', {
+        name: '\u0412\u0441\u0435 \u0446\u0435\u043b\u0438',
+      })
+    ).not.toBeInTheDocument();
   });
 
   it('provides active goals navigation on a directly opened goal', () => {
@@ -117,10 +121,13 @@ describe('AppRouter', () => {
     expect(
       screen.getByRole('link', { name: '\u0426\u0435\u043b\u0438' })
     ).toHaveAttribute('aria-current', 'page');
-    fireEvent.click(
-      screen.getByRole('link', {
+    expect(
+      screen.queryByRole('link', {
         name: '\u0412\u0441\u0435 \u0446\u0435\u043b\u0438',
       })
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('link', { name: '\u0426\u0435\u043b\u0438' })
     );
     expect(
       screen.getByRole('heading', {

@@ -1,6 +1,5 @@
-import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { selectGoalById } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
@@ -36,10 +35,6 @@ export const GoalDetailPage = () => {
         <AppHeader />
         <main className={styles.page}>
           <h1>{t('detail.notFound')}</h1>
-          <Link className={styles.backLink} to="/app">
-            <ArrowLeft size={17} aria-hidden="true" />
-            {t('detail.back')}
-          </Link>
         </main>
       </>
     );
@@ -51,10 +46,6 @@ export const GoalDetailPage = () => {
     <>
       <AppHeader />
       <main className={styles.page}>
-        <Link className={styles.backLink} to="/app">
-          <ArrowLeft size={17} aria-hidden="true" />
-          {t('detail.back')}
-        </Link>
         <div className={styles.heading}>
           <h1>{goal.title}</h1>
           <Button onClick={() => setIsEditDialogOpen(true)} variant="secondary">
