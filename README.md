@@ -41,6 +41,10 @@ Cloud tables use owner-only SELECT policies. Direct client writes are revoked; f
 
 The cloud client reloads a small complete ledger after each change instead of using realtime subscriptions or optimistic writes. This simplifies consistency and error recovery, but very large histories would need pagination. Amounts are integer RUB or USD; fractional currency and exchange rates are out of scope. Existing goals without a currency use RUB. Local data is deliberately separate from cloud accounts. A paused Supabase Free project affects accounts, while the static demo remains usable.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the Git workflow and project checks.
+
 ## Run locally
 
 Node.js 22.11 or newer is required.
