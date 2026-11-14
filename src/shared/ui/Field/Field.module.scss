@@ -10,6 +10,16 @@
   margin-left: 0.25rem;
 }
 
+.inputRow {
+  display: flex;
+  min-width: 0;
+  position: relative;
+}
+
+.inputRow:has(select) .input {
+  padding-right: 5rem;
+}
+
 .input {
   background: #1b1b1b;
   border: 1px solid #414141;

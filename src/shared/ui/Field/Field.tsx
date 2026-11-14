@@ -1,11 +1,12 @@
 import { forwardRef, useId } from 'react';
-import type { InputHTMLAttributes } from 'react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
 
 import styles from './Field.module.scss';
 
 export type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   error?: string;
+  trailing?: ReactNode;
 };
 
 export const Field = forwardRef<HTMLInputElement, FieldProps>(
@@ -15,6 +16,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
       error,
       id,
       label,
+      trailing,
       'aria-describedby': ariaDescribedBy,
       ...props
     },
@@ -31,14 +33,17 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
         <label className={styles.label} htmlFor={inputId}>
           {label}
         </label>
-        <input
-          {...props}
-          ref={ref}
-          aria-describedby={describedBy}
-          aria-invalid={error === undefined ? undefined : true}
-          className={[styles.input, className].filter(Boolean).join(' ')}
-          id={inputId}
-        />
+        <div className={styles.inputRow}>
+          <input
+            {...props}
+            ref={ref}
+            aria-describedby={describedBy}
+            aria-invalid={error === undefined ? undefined : true}
+            className={[styles.input, className].filter(Boolean).join(' ')}
+            id={inputId}
+          />
+          {trailing}
+        </div>
         {error === undefined ? null : (
           <p className={styles.error} id={errorId} role="alert">
             {error}
