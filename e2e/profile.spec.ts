@@ -62,6 +62,7 @@ test('keeps a typical saved amount on one line on a narrow phone', async ({
     localStorage.setItem('goal-tracker-locale', 'ru');
   });
   await page.goto('/profile');
+  await expect(page.locator('html')).toHaveCSS('scrollbar-gutter', 'auto');
   await page.evaluate(() => document.fonts.ready);
   const value = page
     .getByRole('article', { name: 'Всего накоплено' })

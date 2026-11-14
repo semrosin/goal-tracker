@@ -5,7 +5,7 @@ import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher/LanguageSw
 import styles from './PublicHeader.module.scss';
 
 export const PublicHeader = () => (
-  <header className={styles.header}>
+  <header className={styles.header} data-public-layout>
     <div className={styles.inner}>
       <Link className={styles.brand} to="/">
         <img alt="" height={36} src={publicAsset('logo.svg')} width={36} />

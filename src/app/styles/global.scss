@@ -4,6 +4,9 @@
   background: #101010;
   color: #f7f7f7;
   color-scheme: dark;
+}
+
+html:has([data-public-layout]) {
   scrollbar-gutter: stable;
 }
 
