@@ -69,7 +69,7 @@ test('keeps currency totals side by side when they fit on a narrow screen', asyn
   expect(first).not.toBeNull();
   expect(second).not.toBeNull();
   expect(Math.abs(first!.y - second!.y)).toBeLessThan(1);
-  expect(first!.x + first!.width).toBeLessThanOrEqual(second!.x);
+  expect(second!.x - (first!.x + first!.width)).toBeGreaterThanOrEqual(32);
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth)
   ).toBeLessThanOrEqual(320);
