@@ -179,18 +179,20 @@ export const ProfilePage = () => {
                       <li key={goal.id}>
                         <div className={styles.goalHeading}>
                           <Link to={`/goals/${goal.id}`}>{goal.title}</Link>
+                          <span>
+                            {money(goal.balance)} / {money(goal.targetAmount)}
+                          </span>
+                        </div>
+                        <div className={styles.goalProgressRow}>
+                          <ProgressBar
+                            value={goal.progress}
+                            tone={goal.progress >= 100 ? 'success' : 'default'}
+                            label={t('profile.progressLabel', {
+                              title: goal.title,
+                            })}
+                          />
                           <strong>{Math.round(goal.progress)}%</strong>
                         </div>
-                        <ProgressBar
-                          value={goal.progress}
-                          tone={goal.progress >= 100 ? 'success' : 'default'}
-                          label={t('profile.progressLabel', {
-                            title: goal.title,
-                          })}
-                        />
-                        <p>
-                          {money(goal.balance)} / {money(goal.targetAmount)}
-                        </p>
                       </li>
                     ))}
                   </ul>

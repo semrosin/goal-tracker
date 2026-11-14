@@ -2,6 +2,31 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from '@playwright/test';
 
+test('places goal amounts above the bar and the percentage beside it', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const progress = page.getByRole('progressbar').first();
+  const row = progress.locator('..');
+  const percent = row.locator('strong');
+  const item = row.locator('..');
+  const heading = item.locator('div').first();
+  await expect(heading.locator('a')).toBeVisible();
+  await expect(heading.locator('span')).toContainText('/');
+  const barBox = await progress.boundingBox();
+  const percentBox = await percent.boundingBox();
+  const headingBox = await heading.boundingBox();
+  expect(barBox).not.toBeNull();
+  expect(percentBox).not.toBeNull();
+  expect(headingBox).not.toBeNull();
+  expect(headingBox!.y + headingBox!.height).toBeLessThan(barBox!.y);
+  expect(percentBox!.x).toBeGreaterThanOrEqual(barBox!.x + barBox!.width);
+});
+
 test('keeps a typical saved amount on one line on a narrow phone', async ({
   page,
 }) => {
