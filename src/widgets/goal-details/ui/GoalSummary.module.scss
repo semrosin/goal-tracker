@@ -1,89 +1,90 @@
-.summary {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  justify-content: space-between;
-  background: #141414;
-  border: 1px solid #353535;
+﻿.summary {
+  background: #171719;
+  border: 1px solid #303035;
   border-radius: 1rem;
+  min-width: 0;
   padding: 1.75rem;
 }
-
-.activeSurface {
-  background-image:
-    linear-gradient(rgba(112, 139, 165, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(112, 139, 165, 0.08) 1px, transparent 1px);
-  background-size: 2.5rem 2.5rem;
-  box-shadow: inset 0 0 14px 6px rgba(0, 0, 0, 0.05);
-}
-
-.completedSurface {
-  background-image: linear-gradient(
-    135deg,
-    rgba(16, 185, 129, 0.02) 2%,
-    transparent 2%,
-    transparent 50%,
-    rgba(16, 185, 129, 0.02) 50%,
-    rgba(16, 185, 129, 0.02) 52%,
-    transparent 52%
-  );
-  background-size: 2.5rem 2.5rem;
-  box-shadow: inset 0 0 14px 4px rgba(0, 0, 0, 0.05);
-}
-.summary h2 {
-  color: #f7f7f7;
-  font-size: 1.25rem;
-  margin: 0;
-}
 .description {
-  color: #d3d8e0;
+  color: #a9abb4;
   line-height: 1.5;
-  margin: 0.75rem 0 0.5rem;
+  margin: 0 0 1.75rem;
+  overflow-wrap: anywhere;
   white-space: pre-wrap;
+}
+.state {
+  align-items: center;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) 6.5rem;
 }
 .amounts {
   display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 .amounts div {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
   min-width: 0;
 }
-.progressHeader {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-.amounts div:last-child {
-  align-items: flex-end;
-}
-.amounts div:last-child strong {
-  text-align: right;
-}
-.amounts span,
-.progressHeader span {
-  color: #a7afbe;
+.amounts span {
+  color: #a9abb4;
   font-size: 0.875rem;
 }
-.amounts strong,
-.progressHeader strong {
-  color: #f7f7f7;
-  font-size: 1.125rem;
-}
 .amounts strong {
+  color: #f7f7f7;
+  font-size: 1.1rem;
   max-width: 100%;
   overflow-wrap: anywhere;
 }
+.amounts div:first-child strong {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
 .progress {
   display: grid;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  place-items: center;
+  position: relative;
+  width: 6.5rem;
 }
-.progressHeader {
-  align-items: baseline;
-  flex-direction: row;
-  justify-content: space-between;
+.progress svg {
+  transform: rotate(-90deg);
+  width: 100%;
+}
+.progress circle {
+  fill: none;
+  stroke-width: 5;
+}
+.track {
+  stroke: #383a43;
+}
+.value {
+  stroke: #8996ed;
+  stroke-linecap: round;
+}
+.completedSurface .value {
+  stroke: #49ba92;
+}
+.progress strong {
+  color: #f7f7f7;
+  font-size: 1.25rem;
+  position: absolute;
+}
+.state > :last-child {
+  grid-column: 1 / -1;
+}
+@media (max-width: 24rem) {
+  .summary {
+    padding: 1.25rem;
+  }
+  .state {
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) 5rem;
+  }
+  .progress {
+    width: 5rem;
+  }
 }
