@@ -17,7 +17,7 @@ test('profile inherits the landing language and preserves changes after reload',
   await page.goto('/');
   await page.getByRole('button', { name: 'EN' }).click();
   await page
-    .getByRole('banner')
+    .getByRole('main')
     .getByRole('button', { name: 'Sign in', exact: true })
     .click();
   await expect(
