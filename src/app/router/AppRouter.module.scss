@@ -1,35 +1,6 @@
 .appSurface {
-  background: #101010;
-  isolation: isolate;
+  background: #101010 linear-gradient(180deg, #1c1925, #101010 38rem) no-repeat;
   min-height: 100vh;
-  position: relative;
-}
-
-.appSurface::before,
-.appSurface::after {
-  background-image: radial-gradient(
-    circle,
-    rgba(169, 149, 245, 0.2) 1px,
-    transparent 1.2px
-  );
-  background-size: 12px 12px;
-  bottom: 0;
-  content: '';
-  pointer-events: none;
-  position: fixed;
-  top: 4.5rem;
-  width: max(0.75rem, calc((100vw - 80rem) / 2 + 1rem));
-  z-index: -1;
-}
-
-.appSurface::before {
-  border-right: 1px solid rgba(169, 149, 245, 0.12);
-  left: 0;
-}
-
-.appSurface::after {
-  border-left: 1px solid rgba(169, 149, 245, 0.12);
-  right: 0;
 }
 
 .statusPage {
