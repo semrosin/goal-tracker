@@ -4,3 +4,19 @@
   grid-template-columns: minmax(0, 1fr) 6.5rem;
   align-items: start;
 }
+
+@media (max-width: 25rem) {
+  .picker {
+    gap: 0.5rem;
+    grid-template-columns: minmax(0, 1fr) 5rem;
+
+    select {
+      font-size: 0.875rem;
+      padding-inline: 0.5rem;
+    }
+
+    input[type='number'] {
+      padding-inline: 0.5rem;
+    }
+  }
+}

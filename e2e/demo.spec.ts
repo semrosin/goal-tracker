@@ -20,6 +20,7 @@ test('goal creation and edit dialogs share the accent border', async ({
   await page.getByRole('button', { name: 'New goal' }).click();
   const create = page.getByRole('dialog', { name: 'New goal' });
   await expect(create).toHaveCSS('border-top-color', 'rgb(214, 174, 199)');
+  await expect(create).toHaveCSS('border-top-width', '2px');
   await create.getByRole('button', { name: 'Close' }).click();
   await page.getByRole('link').filter({ hasText: 'Emergency fund' }).click();
   await page.getByRole('button', { name: 'Edit', exact: true }).click();
@@ -27,6 +28,21 @@ test('goal creation and edit dialogs share the accent border', async ({
     'border-top-color',
     'rgb(214, 174, 199)'
   );
+});
+
+test('keeps the month selector readable in a narrow goal dialog', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'ru');
+  });
+  await page.goto('/app');
+  await page.getByRole('button', { name: 'Новая цель' }).click();
+  const month = await page.getByLabel('Месяц достижения').boundingBox();
+  expect(month).not.toBeNull();
+  expect(month!.width).toBeGreaterThanOrEqual(112);
 });
 
 test('demo can create a goal and add a deposit', async ({ page }) => {
