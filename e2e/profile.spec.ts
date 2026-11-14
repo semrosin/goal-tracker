@@ -2,6 +2,32 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { expect, test } from '@playwright/test';
 
+test('uses one profile typeface and a compact highlighted language switch', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+  });
+  await page.goto('/profile');
+  const heading = page.getByRole('heading', { name: 'Your statistics' });
+  const amount = page
+    .getByRole('article', { name: 'Total saved' })
+    .locator('strong');
+  await expect(heading).toHaveCSS('font-family', /Finlandica Text/);
+  await expect(amount).toHaveCSS('font-family', /Finlandica Text/);
+  const language = page.getByRole('group', { name: 'Language' });
+  await expect(language.getByRole('button', { name: 'EN' })).toHaveCSS(
+    'background-color',
+    'rgb(198, 168, 237)'
+  );
+  await language.getByRole('button', { name: 'RU' }).click();
+  await expect(page.getByRole('button', { name: 'RU' })).toHaveAttribute(
+    'aria-pressed',
+    'true'
+  );
+});
+
 test('places goal amounts above the bar and the percentage beside it', async ({
   page,
 }) => {
