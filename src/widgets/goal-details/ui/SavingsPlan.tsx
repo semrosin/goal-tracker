@@ -79,9 +79,6 @@ export const SavingsPlan = ({ goal, balance }: SavingsPlanProps) => {
           })}
         </p>
       ) : null}
-      {plan.status === 'overdue' ? (
-        <p className={styles.note}>{t('plan.overdueHint')}</p>
-      ) : null}
       {plan.status === 'without-deadline' ? (
         <p className={styles.note}>{t('plan.noDeadlineHint')}</p>
       ) : null}

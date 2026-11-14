@@ -243,14 +243,11 @@ const messages = {
     'plan.noDeadline': 'Без срока',
     'plan.targetMonth': 'Месяц достижения: {month}',
     'plan.monthlyContribution': '{amount} в месяц',
-    'plan.overdueHint':
-      'Измените месяц достижения или рассчитайте новый ежемесячный взнос.',
     'plan.noDeadlineHint':
-      'Добавьте месяц достижения, чтобы увидеть нужный ежемесячный взнос.',
+      'Добавьте месяц достижения, чтобы увидеть ежемесячный взнос.',
     'plan.whatIfLabel': 'Если откладывать в месяц',
     'plan.whatIfPlaceholder': 'Например, 5000',
-    'plan.whatIfHint':
-      'Укажите положительную сумму в целых рублях для прогноза.',
+    'plan.whatIfHint': 'Получите прогноз, указав сумму.',
     'plan.forecast': 'Прогноз достижения: {month}',
   },
   en: {
@@ -493,13 +490,11 @@ const messages = {
     'plan.noDeadline': 'No target month',
     'plan.targetMonth': 'Target month: {month}',
     'plan.monthlyContribution': '{amount} per month',
-    'plan.overdueHint': 'Change the target month or try a new monthly amount.',
     'plan.noDeadlineHint':
       'Add a target month to see the monthly amount needed.',
     'plan.whatIfLabel': 'If saving each month',
     'plan.whatIfPlaceholder': 'For example, 5000',
-    'plan.whatIfHint':
-      'Enter a positive whole amount in rubles to see a forecast.',
+    'plan.whatIfHint': 'To see a forecast enter an amount.',
     'plan.forecast': 'Forecast: {month}',
   },
 } as const;
