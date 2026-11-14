@@ -113,17 +113,30 @@ test('shows the English planning copy and month forecast', () => {
   }
 });
 
-test('aligns the target amount with the right edge', () => {
+test('keeps the goal amounts aligned together', () => {
   const source = readFileSync(
     join(__dirname, 'GoalSummary.module.scss'),
     'utf8'
   );
-  const targetAmountRules = source.match(
-    /\.amounts div:last-child\s*\{([\s\S]*?)\}/
-  )?.[1];
+  expect(source).not.toMatch(
+    /\.amounts div:last-child\s*\{[^}]*align-items\s*:\s*flex-end/
+  );
+});
 
-  expect(targetAmountRules).toBeDefined();
-  expect(targetAmountRules).toMatch(/align-items\s*:\s*flex-end/);
+test('does not draw a progress arc for an empty goal', () => {
+  const goal = {
+    id: 'empty',
+    title: 'Trip',
+    targetAmount: 1000,
+    createdAt: '2026-01-01T00:00:00.000Z',
+  };
+  renderWithLedger(<GoalSummary goal={goal} />, {
+    goals: [goal],
+    transactions: [],
+  });
+  const progress = screen.getByRole('progressbar');
+  expect(progress).toHaveAttribute('aria-valuenow', '0');
+  expect(progress.querySelectorAll('circle')).toHaveLength(1);
 });
 
 test('wraps a long amount within its grid cell', () => {
@@ -147,4 +160,28 @@ test('allows amount cells to shrink within the summary grid', () => {
 
   expect(amountCellRules).toBeDefined();
   expect(amountCellRules).toMatch(/min-width\s*:\s*0/);
+});
+
+test('shows circular progress with an accessible value for the goal', () => {
+  const goal = {
+    id: 'ring-goal',
+    title: 'Trip',
+    targetAmount: 1000,
+    createdAt: '2026-01-01T00:00:00.000Z',
+  };
+  renderWithLedger(<GoalSummary goal={goal} />, {
+    goals: [goal],
+    transactions: [
+      {
+        id: 'deposit',
+        goalId: goal.id,
+        type: 'deposit',
+        amount: 250,
+        createdAt: '2026-01-02T00:00:00.000Z',
+      },
+    ],
+  });
+  const progress = screen.getByRole('progressbar');
+  expect(progress).toHaveAttribute('aria-valuenow', '25');
+  expect(progress.querySelector('circle')).toBeInTheDocument();
 });

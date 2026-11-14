@@ -3,7 +3,6 @@ import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { formatMoney } from '../../../shared/lib/money';
 import { useI18n } from '../../../shared/lib/i18n';
-import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import { SavingsPlan } from './SavingsPlan';
 import styles from './GoalSummary.module.scss';
 
@@ -20,7 +19,7 @@ export const GoalSummary = ({
   const progress = Math.round(calculateProgress(balance, goal.targetAmount));
   return (
     <section
-      aria-labelledby="goal-summary-title"
+      aria-label={goal.title}
       className={`${styles.summary} ${
         isCompleted || balance >= goal.targetAmount
           ? styles.completedSurface
@@ -28,7 +27,6 @@ export const GoalSummary = ({
       }`}
     >
       <div className={styles.info}>
-        <h2 id="goal-summary-title">{t('goal.summaryTitle')}</h2>
         {goal.description?.trim() === '' ||
         goal.description === undefined ? null : (
           <p className={styles.description}>{goal.description}</p>
@@ -47,15 +45,28 @@ export const GoalSummary = ({
             </strong>
           </div>
         </div>
-        <div className={styles.progress}>
-          <div className={styles.progressHeader}>
-            <span>{t('goal.progress')}</span>
-            <strong>{progress}%</strong>
-          </div>
-          <ProgressBar
-            label={t('goal.progressLabel', { title: goal.title })}
-            value={progress}
-          />
+        <div
+          aria-label={t('goal.progressLabel', { title: goal.title })}
+          aria-valuemax={100}
+          aria-valuemin={0}
+          aria-valuenow={progress}
+          className={styles.progress}
+          role="progressbar"
+        >
+          <svg aria-hidden="true" viewBox="0 0 120 120">
+            <circle className={styles.track} cx="60" cy="60" r="52" />
+            {progress > 0 ? (
+              <circle
+                className={styles.value}
+                cx="60"
+                cy="60"
+                r="52"
+                pathLength="100"
+                strokeDasharray={`${progress} 100`}
+              />
+            ) : null}
+          </svg>
+          <strong>{progress}%</strong>
         </div>
         <SavingsPlan balance={balance} goal={goal} />
       </div>
