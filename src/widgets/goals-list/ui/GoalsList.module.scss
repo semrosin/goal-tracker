@@ -81,6 +81,48 @@
 .card [role='progressbar'] > div {
   background: var(--goal-accent);
 }
+@media (min-width: 64.001rem) {
+  // Eight cards form two mirrored blocks without changing keyboard order.
+  .card:nth-child(8n + 1) {
+    grid-column: 1 / span 2;
+  }
+  .card:nth-child(8n + 2) {
+    grid-column: 3;
+    grid-row: span 2;
+  }
+  .card:nth-child(8n + 3) {
+    grid-column: 1;
+  }
+  .card:nth-child(8n + 4) {
+    grid-column: 2;
+  }
+  .card:nth-child(8n + 5) {
+    grid-column: 1;
+    grid-row: span 2;
+  }
+  .card:nth-child(8n + 6) {
+    grid-column: 2 / span 2;
+  }
+  .card:nth-child(8n + 7) {
+    grid-column: 2;
+  }
+  .card:nth-child(8n + 8) {
+    grid-column: 3;
+  }
+  .card:nth-child(8n + 1):last-child,
+  .card:nth-child(8n + 5):last-child {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .card:nth-child(8n + 2):last-child,
+  .card:nth-child(8n + 5):has(+ .card:last-child) {
+    grid-row: auto;
+  }
+  .card:nth-child(8n + 3):last-child,
+  .card:nth-child(8n + 7):last-child {
+    grid-column-end: span 2;
+  }
+}
 @media (max-width: 64rem) {
   .list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
