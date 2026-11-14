@@ -29,6 +29,18 @@ const submitForm = async (name: 'Создать' | 'Сохранить' | 'Creat
 };
 
 describe('CreateGoalDialog', () => {
+  it('places the symbol-only currency selector beside the amount', () => {
+    renderWithLedger(<CreateGoalDialog isOpen onClose={jest.fn()} />);
+    const amount = screen.getByLabelText('Сумма');
+    const currency = screen.getByLabelText('Валюта');
+    expect(amount.parentElement).toBe(currency.parentElement);
+    expect(
+      within(currency).getByRole('option', { name: '₽' })
+    ).toBeInTheDocument();
+    expect(
+      within(currency).getByRole('option', { name: '$' })
+    ).toBeInTheDocument();
+  });
   it('labels the appearance choices in Russian', () => {
     renderWithLedger(<CreateGoalDialog isOpen onClose={jest.fn()} />);
     expect(screen.getByRole('group', { name: 'Цвет' })).toBeInTheDocument();

@@ -124,9 +124,9 @@ export const CreateGoalDialog = ({
           inputMode="numeric"
           label={t('goal.amountLabel')}
           onChange={(event) => setTargetAmount(event.target.value)}
+          trailing={<CurrencyPicker value={currency} onChange={setCurrency} />}
           value={targetAmount}
         />
-        <CurrencyPicker value={currency} onChange={setCurrency} />
         <GoalAppearancePicker
           color={color}
           icon={icon}
