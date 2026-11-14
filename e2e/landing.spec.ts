@@ -158,3 +158,33 @@ test('public layout stays aligned when navigating to sign in and sign up', async
   await page.getByRole('link', { name: 'Create account' }).click();
   expect(await geometry()).toEqual(landing);
 });
+
+test('browser and installed app use the GoalCraft logo', async ({ page }) => {
+  await page.goto('/');
+  const favicon = page.locator('link[rel="icon"][type="image/svg+xml"]');
+  const iconHref = await favicon.getAttribute('href');
+  expect(iconHref).toBeTruthy();
+  const iconResponse = await page.request.get(
+    new URL(iconHref!, page.url()).href
+  );
+  expect(iconResponse.ok()).toBe(true);
+  expect(iconResponse.headers()['content-type']).toContain('image/svg+xml');
+  expect(await iconResponse.text()).toContain('M41.72 11.15');
+  const manifestHref = await page
+    .locator('link[rel="manifest"]')
+    .getAttribute('href');
+  const manifestResponse = await page.request.get(
+    new URL(manifestHref!, page.url()).href
+  );
+  const manifest = await manifestResponse.json();
+  expect(manifest.icons.map((icon: { sizes: string }) => icon.sizes)).toEqual(
+    expect.arrayContaining(['192x192', '512x512'])
+  );
+  for (const icon of manifest.icons) {
+    const response = await page.request.get(
+      new URL(icon.src, manifestResponse.url()).href
+    );
+    expect(response.ok()).toBe(true);
+    expect(response.headers()['content-type']).toContain('image/png');
+  }
+});
