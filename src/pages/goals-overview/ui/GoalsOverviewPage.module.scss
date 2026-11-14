@@ -46,8 +46,10 @@
   color: #a5e3c8;
 }
 .multipleTotals {
-  display: grid;
-  gap: 0.5rem;
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
 }
 .multipleTotals strong {
   display: block;

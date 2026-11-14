@@ -1,5 +1,59 @@
 import { expect, test } from '@playwright/test';
 
+test('keeps currency totals side by side when they fit on a narrow screen', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.addInitScript(() => {
+    localStorage.setItem('goal-tracker-mode', 'demo');
+    localStorage.setItem('goal-tracker-locale', 'en');
+    localStorage.setItem(
+      'goal-tracker-demo-state',
+      JSON.stringify({
+        goals: [
+          {
+            id: 'usd',
+            title: 'Dollar goal',
+            targetAmount: 100,
+            currency: 'USD',
+            createdAt: '2026-01-01T00:00:00.000Z',
+          },
+          {
+            id: 'rub',
+            title: 'Ruble goal',
+            targetAmount: 100,
+            currency: 'RUB',
+            createdAt: '2026-01-01T00:00:00.000Z',
+          },
+        ],
+        transactions: [
+          {
+            id: 'deposit',
+            goalId: 'usd',
+            type: 'deposit',
+            amount: 2,
+            createdAt: '2026-01-02T00:00:00.000Z',
+          },
+        ],
+      })
+    );
+  });
+  await page.goto('/app');
+  const totals = page
+    .getByRole('article', { name: 'Total saved' })
+    .locator('strong');
+  await expect(totals).toHaveCount(2);
+  const first = await totals.nth(0).boundingBox();
+  const second = await totals.nth(1).boundingBox();
+  expect(first).not.toBeNull();
+  expect(second).not.toBeNull();
+  expect(Math.abs(first!.y - second!.y)).toBeLessThan(1);
+  expect(first!.x + first!.width).toBeLessThanOrEqual(second!.x);
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth)
+  ).toBeLessThanOrEqual(320);
+});
+
 test('English goal uses localized months and retains dollars after reload', async ({
   page,
 }) => {
