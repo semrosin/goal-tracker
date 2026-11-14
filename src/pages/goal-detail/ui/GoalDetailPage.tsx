@@ -56,8 +56,8 @@ export const GoalDetailPage = () => {
         </Link>
         <h1>{goal.title}</h1>
         <div className={styles.layout}>
-          <GoalSummary goal={goal} isCompleted={isCompleted} />
           <TransactionForm goalId={goal.id} isCompleted={isCompleted} />
+          <GoalSummary goal={goal} isCompleted={isCompleted} />
           <TransactionsHistory goalId={goal.id} isCompleted={isCompleted} />
           <div className={styles.actions}>
             <Button
