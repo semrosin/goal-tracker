@@ -28,7 +28,7 @@ const AuthShell = ({
 }: {
   children: ReactNode;
   title: string;
-  description: string;
+  description?: string;
 }) => {
   const { t } = useI18n();
   return (
@@ -44,7 +44,7 @@ const AuthShell = ({
       <section className={styles.card}>
         <p className={styles.eyebrow}>{t('auth.eyebrow')}</p>
         <h1>{title}</h1>
-        <p className={styles.description}>{description}</p>
+        {description && <p className={styles.description}>{description}</p>}
         {children}
       </section>
     </main>
@@ -75,10 +75,7 @@ export const SignInPage = () => {
   };
 
   return (
-    <AuthShell
-      title={t('auth.signIn')}
-      description={t('auth.signInDescription')}
-    >
+    <AuthShell title={t('auth.signIn')}>
       {!session.configured && (
         <p className={styles.notice} role="alert">
           {t('auth.unavailable')}

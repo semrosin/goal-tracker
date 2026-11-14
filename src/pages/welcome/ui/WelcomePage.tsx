@@ -76,7 +76,7 @@ export const WelcomePage = ({ onSignUp, onSignIn }: WelcomePageProps) => {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.brand}>
-            <img alt="" height={40} src={publicAsset('logo.svg')} width={40} />
+            <img alt="" height={36} src={publicAsset('logo.svg')} width={36} />
             <span>GoalCraft</span>
           </div>
           <div className={styles.headerActions}>

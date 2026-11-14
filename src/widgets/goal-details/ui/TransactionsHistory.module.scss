@@ -20,7 +20,14 @@
 }
 .item {
   align-items: center;
-  border-top: 1px solid #343438;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgb(255 255 255 / 18%) 0 10px,
+    transparent 10px 20px
+  );
+  background-position: left top;
+  background-repeat: repeat-x;
+  background-size: 20px 1px;
   display: grid;
   gap: 0.75rem;
   grid-template-columns: minmax(0, 1fr) auto auto;

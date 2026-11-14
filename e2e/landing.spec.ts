@@ -67,3 +67,19 @@ test('landing fits a mobile viewport', async ({ page }, testInfo) => {
   );
   expect(bottomOverflow).toBe(false);
 });
+
+test('the first screen reaches the bottom of the viewport', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'EN' }).click();
+  const section = page.getByRole('heading', {
+    name: 'Everything for your savings',
+  });
+  const top = await section.evaluate(
+    (heading) => heading.getBoundingClientRect().top
+  );
+  expect(top).toBeGreaterThanOrEqual(
+    await page.evaluate(() => window.innerHeight)
+  );
+});
