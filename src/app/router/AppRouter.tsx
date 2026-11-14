@@ -52,7 +52,8 @@ const ProtectedRoute = ({
   if (session.mode === 'expired')
     return <Navigate replace to="/auth/sign-in" />;
   if (session.mode === 'guest') return <Navigate replace to="/" />;
-  if (!requireLedger) return <>{children}</>;
+  if (!requireLedger)
+    return <div className={styles.appSurface}>{children}</div>;
 
   const initialLoad =
     session.mode === 'cloud' &&
@@ -62,7 +63,7 @@ const ProtectedRoute = ({
     session.mode === 'cloud' && !hasLedger && session.ledgerStatus === 'error';
 
   return (
-    <>
+    <div className={styles.appSurface}>
       {initialLoad ? (
         <>
           <AppHeader />
@@ -97,7 +98,7 @@ const ProtectedRoute = ({
           {children}
         </>
       )}
-    </>
+    </div>
   );
 };
 
