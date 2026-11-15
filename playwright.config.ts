@@ -7,7 +7,7 @@ export default defineConfig({
   outputDir: join(tmpdir(), 'goal-tracker-playwright'),
   reporter: 'list',
   use: {
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL: 'http://127.0.0.1:3100',
     locale: 'ru-RU',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
@@ -20,9 +20,10 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm start',
-    url: 'http://127.0.0.1:3000',
-    reuseExistingServer: !process.env.CI,
+    command: 'npm start -- --port 3100 --no-open',
+    env: { SUPABASE_URL: '', SUPABASE_PUBLISHABLE_KEY: '' },
+    url: 'http://127.0.0.1:3100',
+    reuseExistingServer: false,
     timeout: 60_000,
   },
 });

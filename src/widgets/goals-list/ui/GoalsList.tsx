@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
-import { calculateProgress, GoalIcon } from '../../../entities/goal';
+import { calculateProgress, GoalIcon, type Goal } from '../../../entities/goal';
 import { useLedgerSelector } from '../../../entities/ledger';
 import { calculateBalance } from '../../../entities/transaction';
 import { formatMoney } from '../../../shared/lib/money';
@@ -9,9 +9,11 @@ import { useI18n } from '../../../shared/lib/i18n';
 import { ProgressBar } from '../../../shared/ui/ProgressBar/ProgressBar';
 import styles from './GoalsList.module.scss';
 
-export const GoalsList = () => {
+export const GoalsList = ({ goals: visibleGoals }: { goals?: Goal[] }) => {
   const { locale, t } = useI18n();
-  const goals = useLedgerSelector((state) => state.goals);
+  const allGoals = useLedgerSelector((state) => state.goals);
+  const goals = visibleGoals ?? allGoals;
+  const { search } = useLocation();
   const transactions = useLedgerSelector((state) => state.transactions);
 
   return (
@@ -26,7 +28,7 @@ export const GoalsList = () => {
             key={goal.id}
             className={`${styles.card} ${isCompleted ? styles.completedCard : ''}`}
             data-color={goal.color ?? 'violet'}
-            to={`/goals/${goal.id}`}
+            to={`/goals/${goal.id}${search}`}
           >
             <div className={styles.cardHeader}>
               <div className={styles.identity}>

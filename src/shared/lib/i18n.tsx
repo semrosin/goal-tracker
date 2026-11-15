@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+﻿import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 
 export type Locale = 'ru' | 'en';
@@ -7,6 +7,27 @@ const storageKey = 'goal-tracker-locale';
 
 const messages = {
   ru: {
+    'filters.search': 'Поиск целей',
+    'filters.status': 'Статус',
+    'filters.currency': 'Валюта',
+    'filters.deadline': 'Срок',
+    'filters.sort': 'Сортировка',
+    'filters.empty': 'Цели не найдены',
+    'filters.emptyHint': 'Измените условия поиска или сбросьте фильтры.',
+    'filters.reset': 'Сбросить фильтры',
+    'filters.option.all': 'Все',
+    'filters.option.active': 'Активные',
+    'filters.option.completed': 'Выполненные',
+    'filters.option.RUB': 'RUB',
+    'filters.option.USD': 'USD',
+    'filters.option.dated': 'Со сроком',
+    'filters.option.none': 'Без срока',
+    'filters.option.overdue': 'Просроченные',
+    'filters.option.original': 'Исходный порядок',
+    'filters.option.deadline': 'По сроку',
+    'filters.option.progress': 'По прогрессу',
+    'filters.option.name': 'По названию',
+
     'appearance.color': 'Цвет',
     'appearance.icon': 'Иконка',
     'appearance.violet': 'Фиолетовый',
@@ -250,6 +271,27 @@ const messages = {
     'plan.forecast': 'Прогноз достижения: {month}',
   },
   en: {
+    'filters.search': 'Search goals',
+    'filters.status': 'Status',
+    'filters.currency': 'Currency',
+    'filters.deadline': 'Deadline',
+    'filters.sort': 'Sort by',
+    'filters.empty': 'No goals found',
+    'filters.emptyHint': 'Change your search or reset the filters.',
+    'filters.reset': 'Reset filters',
+    'filters.option.all': 'All',
+    'filters.option.active': 'Active',
+    'filters.option.completed': 'Completed',
+    'filters.option.RUB': 'RUB',
+    'filters.option.USD': 'USD',
+    'filters.option.dated': 'With a deadline',
+    'filters.option.none': 'No deadline',
+    'filters.option.overdue': 'Overdue',
+    'filters.option.original': 'Original order',
+    'filters.option.deadline': 'Deadline',
+    'filters.option.progress': 'Progress',
+    'filters.option.name': 'Name',
+
     'appearance.color': 'Color',
     'appearance.icon': 'Icon',
     'appearance.violet': 'Violet',

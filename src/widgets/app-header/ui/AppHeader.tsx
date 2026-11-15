@@ -8,14 +8,15 @@ import styles from './AppHeader.module.scss';
 
 export const AppHeader = ({ children }: { children?: ReactNode }) => {
   const { t } = useI18n();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const goalsPath = pathname.startsWith('/goals/') ? `/app${search}` : '/app';
 
   return (
     <header className={styles.header}>
       <div className={styles.content}>
         <Link
           className={styles.brand}
-          to="/app"
+          to={goalsPath}
           aria-label={t('overview.title')}
         >
           <img
@@ -29,7 +30,7 @@ export const AppHeader = ({ children }: { children?: ReactNode }) => {
         <nav className={styles.navigation} aria-label={t('nav.goals')}>
           <Link
             className={styles.goalsLink}
-            to="/app"
+            to={goalsPath}
             aria-current={
               pathname === '/app' || pathname.startsWith('/goals/')
                 ? 'page'
