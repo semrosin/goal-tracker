@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 import { screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { renderWithLedger } from '../../../entities/ledger/testing/renderWithLedger';
 import { LocaleProvider } from '../../../shared/lib/i18n';
@@ -99,4 +100,48 @@ test('places the create action with the goals list', () => {
     })
   ).not.toBeInTheDocument();
   localStorage.removeItem('goal-tracker-locale');
+});
+
+test('filters goals by description and resets an empty result', async () => {
+  const user = userEvent;
+  renderWithLedger(<GoalsOverviewPage />, {
+    goals: [
+      {
+        id: 'a',
+        title: 'Море',
+        description: 'Летний отпуск',
+        targetAmount: 100,
+        createdAt: '2026-01-01T00:00:00.000Z',
+      },
+    ],
+    transactions: [],
+  });
+  await user.type(
+    screen.getByRole('searchbox', { name: 'Поиск целей' }),
+    'зима'
+  );
+  expect(screen.getByText('Цели не найдены')).toBeInTheDocument();
+  await user.click(screen.getByRole('button', { name: 'Сбросить фильтры' }));
+  await user.type(
+    screen.getByRole('searchbox', { name: 'Поиск целей' }),
+    'отпуск'
+  );
+  expect(screen.getByRole('link', { name: /Море/ })).toBeInTheDocument();
+});
+
+test('search accepts text that matches a filter default value', async () => {
+  renderWithLedger(<GoalsOverviewPage />, {
+    goals: [
+      {
+        id: 'a',
+        title: 'All goals',
+        targetAmount: 100,
+        createdAt: '2026-01-01T00:00:00.000Z',
+      },
+    ],
+    transactions: [],
+  });
+  const search = screen.getByRole('searchbox', { name: 'Поиск целей' });
+  await userEvent.type(search, 'all');
+  expect(search).toHaveValue('all');
 });

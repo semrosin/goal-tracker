@@ -24,6 +24,8 @@ A bilingual savings goal tracker built with React and TypeScript. Create an emai
 
 ## Features
 
+- Search goals by title or description, filter by status, currency and deadline, and sort the list. List conditions are kept in the URL when opening a goal.
+
 - Multiple goals with deposits, withdrawals, progress, and ordered transaction history. The goal page shows saved, target, and remaining amounts alongside separate operation, plan, and history sections.
 - Choose a preset color and icon for each goal; appearance follows the goal across devices.
 - Choose RUB or USD for each goal. Overview totals stay separate by currency; amounts are not converted.
@@ -72,7 +74,7 @@ npm run build
 npm run test:e2e
 ```
 
-Production output is `build/`. `npm run capture:screenshots` refreshes the six screenshots while `npm start` is running. The browser suite covers desktop, mobile, keyboard focus, demo operations, and the sign-in UI. pgTAP and two-session race tests run in CI; locally they require Supabase CLI, Docker, Bash, and `psql`.
+Production output is `build/`. `npm run capture:screenshots` refreshes the six screenshots while `npm start` is running. The browser suite runs an isolated server on port 3100 without Supabase configuration and covers desktop, mobile, keyboard focus, demo operations, goal filters, and the sign-in UI. pgTAP and two-session race tests run in CI; locally they require Supabase CLI, Docker, Bash, and `psql`.
 
 ## Deploy to GitHub Pages
 

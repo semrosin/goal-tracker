@@ -18,3 +18,9 @@ export {
   type GoalIconName,
 } from './model/appearance';
 export { GoalAppearancePicker, GoalIcon } from './ui/GoalAppearance';
+
+export {
+  filterGoals,
+  normalizeGoalFilters,
+  type GoalFilters,
+} from './model/filterGoals';
